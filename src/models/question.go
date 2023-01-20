@@ -1,0 +1,22 @@
+package models
+
+import (
+	"time"
+
+	"go.mongodb.org/mongo-driver/bson/primitive"
+)
+
+// Questions is a model for each question in our app
+type Question struct {
+	ID      primitive.ObjectID `json:"id" bson:"_id"`
+	Content string             `json:"content"`
+
+	SentTo User  `json:"sentTo"`
+	SentBy User  `json:"sentBy,omitempty"`
+	Reply  Reply `json:"reply,omitempty"`
+
+	IsAnonymous        bool `json:"isAnonymous"`
+	IsHiddenByReceiver bool `json:"isHiddenByReceiver,omitempty"`
+
+	CreatedAt time.Time `json:"createdAt"`
+}
