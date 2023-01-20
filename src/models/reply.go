@@ -7,5 +7,5 @@ type Reply struct {
 	ID        primitive.ObjectID `json:"id" bson:"_id"`
 	Content   string             `json:"content"`
 	Replied   bool               `json:"replied"`
-	RepliedBy User               `json:"repliedBy"`
+	RepliedBy string             `json:"repliedBy"`
 }

@@ -11,9 +11,9 @@ type Question struct {
 	ID      primitive.ObjectID `json:"id" bson:"_id"`
 	Content string             `json:"content"`
 
-	SentTo User  `json:"sentTo"`
-	SentBy User  `json:"sentBy,omitempty"`
-	Reply  Reply `json:"reply,omitempty"`
+	SendTo string `json:"sendTo"`
+	SentBy string `json:"sentBy,omitempty"`
+	Reply  Reply  `json:"reply,omitempty"`
 
 	IsAnonymous        bool `json:"isAnonymous"`
 	IsHiddenByReceiver bool `json:"isHiddenByReceiver,omitempty"`
