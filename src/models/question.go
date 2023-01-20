@@ -6,7 +6,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-// Questions is a model for each question in our app
+// Questions is a model for each question in app.
 type Question struct {
 	ID      primitive.ObjectID `json:"id" bson:"_id"`
 	Content string             `json:"content"`

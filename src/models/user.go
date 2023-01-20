@@ -6,7 +6,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-// User is a model for each user in our app
+// User is a model for each user in app.
 type User struct {
 	ID        primitive.ObjectID `json:"id" bson:"_id"`
 	Nick      string             `json:"nick"`
@@ -29,7 +29,7 @@ type User struct {
 	CreatedAt     time.Time `json:"createdAt"`
 }
 
-// BlockedUser is a model for each blocked user in our app
+// BlockedUser is a model for each blocked user in app.
 type BlockedUser struct {
 	ID          primitive.ObjectID `json:"id" bson:"_id"`
 	UserToBlock User               `json:"userToBlock"`
