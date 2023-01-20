@@ -13,6 +13,8 @@ func InitRouter() {
 
 	router := fiber.New()
 
+	InitRoutes(router)
+
 	log.Printf("App running in port %s \n", PORT)
 
 	log.Fatal(router.Listen(PORT))
