@@ -7,13 +7,17 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+func initRouterConfig(router *fiber.App) {
+	InitRoutes(router)
+	InitMiddlewares(router)
+}
+
 // InitRouter starts a new http server.
 func InitRouter() {
 	PORT := os.Getenv("PORT")
 
 	router := fiber.New()
-
-	InitRoutes(router)
+	initRouterConfig(router)
 
 	log.Printf("App running in port %s \n", PORT)
 
