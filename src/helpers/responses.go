@@ -6,7 +6,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-// ParseResponse returns a json with request info like status, message, data, etc.
+// ParseResponse returns a JSON with response info like status, message, data, etc.
 func ParseResponse(c *fiber.Ctx, payload models.Response) error {
 	return c.JSON(fiber.Map{
 		"ok":      payload.Ok,
@@ -16,8 +16,10 @@ func ParseResponse(c *fiber.Ctx, payload models.Response) error {
 	})
 }
 
-// ParseResponse returns a json with request info like status, message, data, etc.
+// ParseResponse returns a JSON with response info like status, message, data, etc.
 func ParseSuccessResponse(c *fiber.Ctx, payload models.Response) error {
+	c.SendStatus(payload.Status)
+
 	return ParseResponse(c, models.Response{
 		Ok:      true,
 		Message: nil,
