@@ -3,7 +3,7 @@ package controllers
 import (
 	"core/src/database"
 	helpers "core/src/helpers/responses"
-	"core/src/usecases"
+	usecases "core/src/usecases/auth"
 
 	"github.com/gofiber/fiber/v2"
 )
