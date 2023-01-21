@@ -1,6 +1,7 @@
 package models
 
 import (
+	"strings"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -27,6 +28,10 @@ type User struct {
 	ProExpiresAt  time.Time `json:"proExpiresAt,omitempty"`
 	LastPublishAt time.Time `json:"lastPublishAt,omitempty"`
 	CreatedAt     time.Time `json:"createdAt,omitempty"`
+}
+
+func (u User) NormalizeNick() string {
+	return strings.ToLower(strings.TrimSpace(u.Nick))
 }
 
 // BlockedUser is a model for each blocked user in app.
