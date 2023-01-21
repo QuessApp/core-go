@@ -9,7 +9,7 @@ import (
 // ParseControllerResponse will handle controller requests.
 // If controller returns an error, the above function will format the error.
 // Otherwise, it returns the success response with data.
-func ParseControllerResponse(c *fiber.Ctx, err models.RequestError, data interface{}) error {
+func ParseControllerResponse(c *fiber.Ctx, err models.RequestError, data interface{}, successStatus int) error {
 	if err.Message != nil {
 		return ParseResponse(c, models.Response{
 			Ok:      false,
@@ -20,7 +20,7 @@ func ParseControllerResponse(c *fiber.Ctx, err models.RequestError, data interfa
 	}
 
 	return ParseSuccessResponse(c, models.Response{
-		Status: 201,
+		Status: successStatus,
 		Data:   data,
 	})
 }

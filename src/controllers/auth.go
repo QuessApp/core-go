@@ -14,5 +14,5 @@ func RegisterUser(c *fiber.Ctx) error {
 
 	createdUser, err := usecases.RegisterUser(c, db)
 
-	return helpers.ParseControllerResponse(c, err, createdUser)
+	return helpers.ParseControllerResponse(c, err, createdUser, 201)
 }
