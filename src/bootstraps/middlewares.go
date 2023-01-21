@@ -7,6 +7,6 @@ import (
 )
 
 // InitMiddlewares inits app middlewares
-func InitMiddlewares(router *fiber.App) {
-	middlewares.Recover(router)
+func InitMiddlewares(app *fiber.App) {
+	middlewares.Recover(app)
 }

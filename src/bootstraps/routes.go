@@ -9,4 +9,6 @@ import (
 // InitRoutes inits all routes in app.
 func InitRoutes(router *fiber.App) {
 	routes.App(router)
+	routes.Questions(router)
+	routes.Auth(router)
 }
