@@ -15,7 +15,7 @@ import (
 func RegisterUser(c *fiber.Ctx) error {
 	db, _ := database.Connect()
 
-	createdUser, err := usecases.RegisterUser(c, db)
+	_, err := usecases.RegisterUser(c, db)
 
 	if err != nil {
 		return exceptions.NewHttpException(c, models.Response{
@@ -25,7 +25,6 @@ func RegisterUser(c *fiber.Ctx) error {
 	}
 
 	return helpers.ParseSuccessResponse(c, models.Response{
-		Data:   createdUser,
 		Status: 201,
 	})
 }

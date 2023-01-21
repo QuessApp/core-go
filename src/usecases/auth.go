@@ -9,7 +9,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-// RegisterUser reads payload from request body then try to create a new user in database.
+// RegisterUser reads payload from request body then try to register a new user in database.
 func RegisterUser(c *fiber.Ctx, db *mongo.Database) (interface{}, error) {
 	var payload models.User
 
@@ -17,13 +17,13 @@ func RegisterUser(c *fiber.Ctx, db *mongo.Database) (interface{}, error) {
 		return nil, err
 	}
 
-	repository := repositories.NewUsersRepository(db)
+	repository := repositories.NewAuthRepository(db)
 
-	createdUser, err := repository.Create(payload)
+	registeredUser, err := repository.RegisterUser(payload)
 
 	if err != nil {
 		return nil, err
 	}
 
-	return createdUser, nil
+	return registeredUser, nil
 }
