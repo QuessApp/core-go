@@ -1,11 +1,11 @@
 package usecases
 
 import (
+	helpers "core/src/helpers/requests"
 	"core/src/models"
 	"core/src/repositories"
 	validations "core/src/validations/auth"
 	"encoding/json"
-	"fmt"
 
 	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -16,9 +16,7 @@ func RegisterUser(c *fiber.Ctx, db *mongo.Database) (interface{}, models.Request
 	var payload models.User
 
 	if err := json.Unmarshal(c.Body(), &payload); err != nil {
-		return nil, models.RequestError{
-			Message: fmt.Sprint(err),
-		}
+		return nil, helpers.NewRequestError(err, 500)
 	}
 
 	usersRepository := repositories.NewUsersRepository(db)
@@ -39,9 +37,7 @@ func RegisterUser(c *fiber.Ctx, db *mongo.Database) (interface{}, models.Request
 	res, err := authRepository.RegisterUser(payload)
 
 	if err != nil {
-		return nil, models.RequestError{
-			Message: fmt.Sprint(err),
-		}
+		return nil, helpers.NewRequestError(err, 500)
 	}
 
 	return res, models.RequestError{}
