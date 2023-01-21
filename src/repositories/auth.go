@@ -10,17 +10,17 @@ import (
 )
 
 // auth represents auth repository.
-type auth struct {
+type Auth struct {
 	db *mongo.Database
 }
 
 // NewAuthRepository creates auth repository.
-func NewAuthRepository(db *mongo.Database) *auth {
-	return &auth{db}
+func NewAuthRepository(db *mongo.Database) *Auth {
+	return &Auth{db}
 }
 
 // RegisterUser registers a new user in database.
-func (a auth) RegisterUser(payload models.User) (*mongo.InsertOneResult, error) {
+func (a Auth) RegisterUser(payload models.User) (*mongo.InsertOneResult, error) {
 	coll := a.db.Collection("users")
 
 	user := models.User{

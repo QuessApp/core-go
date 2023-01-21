@@ -3,38 +3,45 @@ package repositories
 import (
 	"context"
 	"core/src/models"
-	"time"
 
-	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
 // users represents users repository.
-type users struct {
+type Users struct {
 	db *mongo.Database
 }
 
 // NewUsersRepository creates users repository.
-func NewUsersRepository(db *mongo.Database) *users {
-	return &users{db}
+func NewUsersRepository(db *mongo.Database) *Users {
+	return &Users{db}
 }
 
-// Create creates a new user in database.
-func (u users) Create(payload models.User) (*mongo.InsertOneResult, error) {
+// FindUserByEmail finds an user by their email.
+func (u Users) FindUserByEmail(email string) models.User {
 	coll := u.db.Collection("users")
 
-	user := models.User{
-		ID:              primitive.NewObjectID(),
-		Nick:            payload.Nick,
-		Name:            payload.Name,
-		Email:           payload.Email,
-		PostsLimit:      30,
-		EnableAppEmails: true,
-		IsShadowBanned:  false,
-		IsPro:           false,
-		CreatedAt:       time.Now(),
-		AvatarUrl:       "",
-	}
+	var foundUser models.User
 
-	return coll.InsertOne(context.TODO(), user)
+	coll.FindOne(context.TODO(),
+		bson.M{
+			"email": bson.M{"$eq": email},
+		}).Decode(&foundUser)
+
+	return foundUser
+}
+
+// FindUserByNick finds an user by their nick.
+func (u Users) FindUserByNick(nick string) models.User {
+	coll := u.db.Collection("users")
+
+	var foundUser models.User
+
+	coll.FindOne(context.TODO(),
+		bson.M{
+			"nick": bson.M{"$eq": nick},
+		}).Decode(&foundUser)
+
+	return foundUser
 }
