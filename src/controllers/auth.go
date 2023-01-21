@@ -2,11 +2,8 @@ package controllers
 
 import (
 	"core/src/database"
-	"core/src/exceptions"
-	"core/src/helpers"
-	"core/src/models"
+	helpers "core/src/helpers/responses"
 	"core/src/usecases"
-	"fmt"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -15,16 +12,7 @@ import (
 func RegisterUser(c *fiber.Ctx) error {
 	db, _ := database.Connect()
 
-	_, err := usecases.RegisterUser(c, db)
+	createdUser, err := usecases.RegisterUser(c, db)
 
-	if err != nil {
-		return exceptions.NewHttpException(c, models.Response{
-			Message: fmt.Sprint(err),
-			Status:  400,
-		})
-	}
-
-	return helpers.ParseSuccessResponse(c, models.Response{
-		Status: 201,
-	})
+	return helpers.ParseControllerResponse(c, err, createdUser)
 }
