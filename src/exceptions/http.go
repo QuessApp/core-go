@@ -1,14 +1,14 @@
 package exceptions
 
 import (
-	"core/src/helpers"
+	helpers "core/src/helpers/responses"
 	"core/src/models"
 
 	"github.com/gofiber/fiber/v2"
 )
 
-// NewHttpException returns a JSON with request info like status, message, data, etc.
-func NewHttpException(c *fiber.Ctx, payload models.Response) error {
+// HttpException returns a JSON with request info like status, message, data, etc.
+func HttpException(c *fiber.Ctx, payload models.Response) error {
 	c.SendStatus(payload.Status)
 
 	return helpers.ParseResponse(c, models.Response{
