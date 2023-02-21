@@ -14,9 +14,7 @@ import (
 func RegisterUser(payload entities.User, usersRepository *repositories.Users, authRepository *repositories.Auth) (*entities.User, error) {
 	payload.Format()
 
-	err := payload.Validate()
-
-	if err != nil {
+	if err := payload.Validate(); err != nil {
 		return nil, err
 	}
 
