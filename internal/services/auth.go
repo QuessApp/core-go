@@ -10,8 +10,8 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-// RegisterUser reads payload from request body then try to register a new user in database.
-func RegisterUser(payload entities.User, usersRepository *repositories.Users, authRepository *repositories.Auth) (*entities.User, error) {
+// SignUp reads payload from request body then try to register a new user in database.
+func SignUp(payload entities.User, usersRepository *repositories.Users, authRepository *repositories.Auth) (*entities.User, error) {
 	payload.Format()
 
 	if err := payload.Validate(); err != nil {
@@ -38,7 +38,7 @@ func RegisterUser(payload entities.User, usersRepository *repositories.Users, au
 
 	payload.Password = string(hashedPassword)
 
-	err = authRepository.RegisterUser(payload)
+	err = authRepository.SignUp(payload)
 
 	if err != nil {
 		return nil, err

@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"context"
+	collections "core/internal/constants"
 	appEntities "core/internal/entities"
 	pkgEntities "core/pkg/entities"
 
@@ -21,7 +22,7 @@ func NewUsersRepository(db *mongo.Database) *Users {
 
 // FindUserByEmail finds an user by their email.
 func (u Users) FindUserByEmail(email string) *appEntities.User {
-	coll := u.db.Collection("users")
+	coll := u.db.Collection(collections.USERS)
 
 	var foundUser appEntities.User
 
@@ -35,7 +36,7 @@ func (u Users) FindUserByEmail(email string) *appEntities.User {
 
 // FindUserByNick finds an user by their nick.
 func (u Users) FindUserByNick(nick string) *appEntities.User {
-	coll := u.db.Collection("users")
+	coll := u.db.Collection(collections.USERS)
 
 	var foundUser appEntities.User
 
@@ -55,7 +56,7 @@ func (u Users) FindUserByID(id string) (*appEntities.User, error) {
 		return nil, err
 	}
 
-	coll := u.db.Collection("users")
+	coll := u.db.Collection(collections.USERS)
 
 	var foundUser appEntities.User
 
@@ -66,7 +67,7 @@ func (u Users) FindUserByID(id string) (*appEntities.User, error) {
 
 // IsNickInUse checks is an user already take a nick.
 func (u Users) IsNickInUse(nick string) bool {
-	coll := u.db.Collection("users")
+	coll := u.db.Collection(collections.USERS)
 
 	var user appEntities.User
 
@@ -89,7 +90,7 @@ func (u *Users) DecrementLimit(userId string) error {
 
 	foundUser.PostsLimit -= 1
 
-	coll := u.db.Collection("users")
+	coll := u.db.Collection(collections.USERS)
 
 	filter := bson.D{{Key: "_id", Value: foundUser.ID}}
 	update := bson.D{{Key: "$set", Value: bson.D{{Key: "postsLimit", Value: foundUser.PostsLimit}}}}
