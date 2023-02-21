@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"context"
+	collections "core/internal/constants"
 	appEntities "core/internal/entities"
 	pkgEntities "core/pkg/entities"
 
@@ -22,7 +23,7 @@ func NewQuestionsRepository(db *mongo.Database) *Questions {
 
 // Create creates a question in database.
 func (q Questions) Create(payload *appEntities.Question) error {
-	questionsColl := q.db.Collection("questions")
+	questionsColl := q.db.Collection(collections.QUESTIONS)
 
 	payload.ID = pkgEntities.NewID()
 	payload.CreatedAt = time.Now()
