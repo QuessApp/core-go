@@ -15,7 +15,7 @@ func LoadRoutes(db *mongo.Database, cfg *configs.Conf) func(authRepository *repo
 		app := fiber.New()
 		middlewares.LoadMiddlewares(app, cfg)
 
-		LoadAuthRoutes(app, db, authRepository, usersRepository)
+		LoadAuthRoutes(app, db)(authRepository, usersRepository)
 		log.Fatal(app.Listen(cfg.ServerPort))
 	}
 }
