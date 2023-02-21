@@ -24,7 +24,7 @@ func (u Users) FindUserByEmail(email string) *entities.User {
 
 	var foundUser entities.User
 
-	coll.FindOne(context.TODO(),
+	coll.FindOne(context.Background(),
 		bson.M{
 			"email": bson.M{"$eq": email},
 		}).Decode(&foundUser)
@@ -38,7 +38,7 @@ func (u Users) FindUserByNick(nick string) *entities.User {
 
 	var foundUser entities.User
 
-	coll.FindOne(context.TODO(),
+	coll.FindOne(context.Background(),
 		bson.M{
 			"nick": bson.M{"$eq": nick},
 		}).Decode(&foundUser)

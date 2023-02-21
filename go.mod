@@ -6,11 +6,11 @@ require (
 	github.com/go-chi/jwtauth v1.2.0
 	github.com/go-ozzo/ozzo-validation v3.6.0+incompatible
 	github.com/go-ozzo/ozzo-validation/v4 v4.3.0
-	github.com/gofiber/fiber v1.14.6
 	github.com/gofiber/fiber/v2 v2.41.0
 	github.com/spf13/viper v1.15.0
 	go.mongodb.org/mongo-driver v1.11.1
 	golang.org/x/crypto v0.0.0-20220622213112-05595931fe9d
+	gorm.io/gorm v1.24.5
 )
 
 require (
@@ -18,9 +18,7 @@ require (
 	github.com/asaskevich/govalidator v0.0.0-20200108200545-475eaeb16496 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/goccy/go-json v0.3.5 // indirect
-	github.com/gofiber/utils v0.0.10 // indirect
 	github.com/golang/snappy v0.0.1 // indirect
-	github.com/gorilla/schema v1.1.0 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/klauspost/compress v1.15.14 // indirect
 	github.com/lestrrat-go/backoff/v2 v2.0.7 // indirect

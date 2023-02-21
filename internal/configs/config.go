@@ -21,6 +21,7 @@ type Conf struct {
 	DBPassword string `mapstructure:"DB_PASSWORD"`
 	DBName     string `mapstructure:"DB_NAME"`
 
+	CORSOrigins  string `mapstructure:"ALLOW_ORIGINS"`
 	JWTSecret    string `mapstructure:"JWT_SECRET"`
 	JWTExpiresIn int    `mapstructure:"JWT_EXPIRES_IN"`
 	JWTToken     *jwtauth.JWTAuth
