@@ -10,6 +10,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
+// LoadRoutes loads all routes of app.
 func LoadRoutes(db *mongo.Database, cfg *configs.Conf, questionsRepository *repositories.Questions, authRepository *repositories.Auth, usersRepository *repositories.Users) {
 	app := fiber.New()
 	middlewares.LoadMiddlewares(app, cfg)
