@@ -35,8 +35,8 @@ func (q Questions) Create(payload *appEntities.Question) error {
 		SendTo:      payload.SendTo,
 		CreatedAt:   payload.CreatedAt,
 		SentBy:      payload.SentBy,
-		IsReplied:   false,
-		Reply:       nil,
+
+		Reply: nil,
 	}
 
 	_, err := questionsColl.InsertOne(context.TODO(), question)
