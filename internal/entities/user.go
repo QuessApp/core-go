@@ -40,7 +40,7 @@ type User struct {
 	CreatedAt any `json:"createdAt,omitempty" bson:"createdAt"`
 }
 
-// Format formats user information. It removes special characters from nick, trim space email, etc.
+// Format formats user information. It removes special characters from nick, trim email, etc.
 func (u *User) Format() {
 	u.Nick = regexp.MustCompile(`[^a-zA-Z0-9]+`).ReplaceAllString(u.Nick, "")
 	u.Nick = strings.TrimSpace(strings.ToLower(u.Nick))
