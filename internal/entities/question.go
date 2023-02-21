@@ -11,7 +11,7 @@ import (
 
 // Questions is a model for each question in app.
 type Question struct {
-	ID      entities.ID `json:"id" bson:"_id"`
+	ID      entities.ID `json:"id" bson:"_id,omitempty"`
 	Content string      `json:"content"`
 
 	SendTo string `json:"sendTo" bson:"sendTo"`
@@ -23,7 +23,7 @@ type Question struct {
 	IsHiddenByReceiver bool `json:"isHiddenByReceiver,omitempty" bson:"isHiddenByReceiver"`
 	IsReplied          bool `json:"isReplied" bson:"isReplied"`
 
-	CreatedAt time.Time `json:"createdAt" bson:"createdAt"`
+	CreatedAt time.Time `json:"createdAt" bson:"createdAt,omitempty"`
 }
 
 // Validate validates passed struct then returns a string.

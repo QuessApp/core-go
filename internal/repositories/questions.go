@@ -21,15 +21,18 @@ func NewQuestionsRepository(db *mongo.Database) *Questions {
 }
 
 // Create creates a question in database.
-func (q Questions) Create(payload appEntities.Question) error {
+func (q Questions) Create(payload *appEntities.Question) error {
 	questionsColl := q.db.Collection("questions")
 
+	payload.ID = pkgEntities.NewID()
+	payload.CreatedAt = time.Now()
+
 	question := appEntities.Question{
-		ID:          pkgEntities.NewID(),
+		ID:          payload.ID,
 		Content:     payload.Content,
 		IsAnonymous: payload.IsAnonymous,
 		SendTo:      payload.SendTo,
-		CreatedAt:   time.Now(),
+		CreatedAt:   payload.CreatedAt,
 		SentBy:      payload.SentBy,
 		IsReplied:   false,
 		Reply:       nil,

@@ -27,7 +27,7 @@ func CreateQuestion(payload entities.Question, questionsRepository *repositories
 		return nil, err
 	}
 
-	err := questionsRepository.Create(payload)
+	err := questionsRepository.Create(&payload)
 
 	if err != nil {
 		return nil, err
