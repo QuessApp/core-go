@@ -2,7 +2,8 @@ package repositories
 
 import (
 	"context"
-	"core/internal/entities"
+	appEntities "core/internal/entities"
+	pkgEntities "core/pkg/entities"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -19,10 +20,10 @@ func NewUsersRepository(db *mongo.Database) *Users {
 }
 
 // FindUserByEmail finds an user by their email.
-func (u Users) FindUserByEmail(email string) *entities.User {
+func (u Users) FindUserByEmail(email string) *appEntities.User {
 	coll := u.db.Collection("users")
 
-	var foundUser entities.User
+	var foundUser appEntities.User
 
 	coll.FindOne(context.Background(),
 		bson.M{
@@ -33,10 +34,10 @@ func (u Users) FindUserByEmail(email string) *entities.User {
 }
 
 // FindUserByNick finds an user by their nick.
-func (u Users) FindUserByNick(nick string) *entities.User {
+func (u Users) FindUserByNick(nick string) *appEntities.User {
 	coll := u.db.Collection("users")
 
-	var foundUser entities.User
+	var foundUser appEntities.User
 
 	coll.FindOne(context.Background(),
 		bson.M{
@@ -47,23 +48,53 @@ func (u Users) FindUserByNick(nick string) *entities.User {
 }
 
 // FindUserByID finds an user by id.
-func (u Users) FindUserByID(id string) *entities.User {
+func (u Users) FindUserByID(id string) (*appEntities.User, error) {
+	parsedId, err := pkgEntities.ParseID(id)
+
+	if err != nil {
+		return nil, err
+	}
+
 	coll := u.db.Collection("users")
 
-	var foundUser entities.User
+	var foundUser appEntities.User
 
-	coll.FindOne(context.Background(), bson.D{{Key: "_id", Value: id}}).Decode(&foundUser)
+	coll.FindOne(context.Background(), bson.D{{Key: "_id", Value: parsedId}}).Decode(&foundUser)
 
-	return &foundUser
+	return &foundUser, nil
 }
 
 // IsNickInUse checks is an user already take a nick.
 func (u Users) IsNickInUse(nick string) bool {
 	coll := u.db.Collection("users")
 
-	var user entities.User
+	var user appEntities.User
 
 	coll.FindOne(context.Background(), bson.D{{Key: "nick", Value: nick}}).Decode(&user)
 
 	return user.Nick != ""
+}
+
+// DecrementLimit decrements user's post limit if user is not a PRO member.
+func (u *Users) DecrementLimit(userId string) error {
+	foundUser, err := u.FindUserByID(userId)
+
+	if err != nil {
+		return err
+	}
+
+	if foundUser.IsPro {
+		return nil
+	}
+
+	foundUser.PostsLimit -= 1
+
+	coll := u.db.Collection("users")
+
+	filter := bson.D{{Key: "_id", Value: foundUser.ID}}
+	update := bson.D{{Key: "$set", Value: bson.D{{Key: "postsLimit", Value: foundUser.PostsLimit}}}}
+
+	_, err = coll.UpdateOne(context.Background(), filter, update)
+
+	return err
 }
