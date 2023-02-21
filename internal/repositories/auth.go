@@ -2,12 +2,12 @@ package repositories
 
 import (
 	"context"
-	"core/internal/entities"
+	appEntities "core/internal/entities"
+	pkgEntities "core/pkg/entities"
 
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -22,11 +22,11 @@ func NewAuthRepository(db *mongo.Database) *Auth {
 }
 
 // RegisterUser registers a new user in database.
-func (a Auth) RegisterUser(payload entities.User) error {
+func (a Auth) RegisterUser(payload appEntities.User) error {
 	coll := a.db.Collection("users")
 
-	user := entities.User{
-		ID:              primitive.NewObjectID(),
+	user := appEntities.User{
+		ID:              pkgEntities.NewID(),
 		Nick:            payload.Nick,
 		Name:            payload.Name,
 		Email:           payload.Email,
@@ -52,9 +52,9 @@ func (a Auth) RegisterUser(payload entities.User) error {
 func (a Auth) IsEmailInUse(email string) bool {
 	coll := a.db.Collection("users")
 
-	var user entities.User
+	var user appEntities.User
 
-	coll.FindOne(context.Background(), bson.D{{"email", email}}).Decode(&user)
+	coll.FindOne(context.Background(), bson.D{{Key: "email", Value: email}}).Decode(&user)
 
 	return user.Email != ""
 }

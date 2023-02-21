@@ -52,7 +52,7 @@ func (u Users) FindUserByID(id string) *entities.User {
 
 	var foundUser entities.User
 
-	coll.FindOne(context.Background(), bson.D{{"_id", id}}).Decode(&foundUser)
+	coll.FindOne(context.Background(), bson.D{{Key: "_id", Value: id}}).Decode(&foundUser)
 
 	return &foundUser
 }
@@ -63,7 +63,7 @@ func (u Users) IsNickInUse(nick string) bool {
 
 	var user entities.User
 
-	coll.FindOne(context.Background(), bson.D{{"nick", nick}}).Decode(&user)
+	coll.FindOne(context.Background(), bson.D{{Key: "nick", Value: nick}}).Decode(&user)
 
 	return user.Nick != ""
 }

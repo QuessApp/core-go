@@ -7,8 +7,9 @@ import (
 	"errors"
 )
 
-func CreateQuestion(payload entities.Question, usersRepository *repositories.Users) (*entities.Question, error) {
-	userToSendQuestion := usersRepository.FindUserByNick(payload.SendTo.Nick)
+// CreateQuestion reads payload from request body then try to create a new question in database.
+func CreateQuestion(payload entities.Question, questionsRepository *repositories.Questions, usersRepository *repositories.Users) (*entities.Question, error) {
+	userToSendQuestion := usersRepository.FindUserByNick(payload.SendTo)
 
 	// TODO: VALIDATE USER IS BLOCKED BY RECEIVER, IS SENDING TO YOURSELF, DID BLOCK RECEIVER, etc.
 
@@ -16,5 +17,11 @@ func CreateQuestion(payload entities.Question, usersRepository *repositories.Use
 		return nil, errors.New(appErrors.USER_NOT_FOUND)
 	}
 
-	return nil, nil
+	err := questionsRepository.Create(payload)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &payload, nil
 }

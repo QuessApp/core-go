@@ -28,16 +28,16 @@ type User struct {
 	EnableAppEmails bool `json:"enableAppEmails,omitempty" bson:"enableAppEmails"`
 	IsShadowBanned  bool `json:"isShadowBanned,omitempty" bson:"isShadowBanned"`
 	PostsLimit      int  `json:"postsLimit,omitempty" bson:"postsLimit"`
-	// CustomerId of Stripe. Type should be String or nil.
+	// CustomerId of Stripe. Type must be String or nil.
 	CustomerID any  `json:"customerId,omitempty" bson:"customerId"`
 	IsPro      bool `json:"isPro,omitempty" bson:"isPro"`
-	// SubscriptionID of Stripe. Type should be String or nil.
+	// SubscriptionID of Stripe. Type must be String or nil.
 	SubscriptionID any `json:"subscriptionId,omitempty" bson:"subscriptionId"`
-	// ProExpiresAt of Stripe. Type should be Time.time or nil.
+	// ProExpiresAt of Stripe. Type must be Time.time or nil.
 	ProExpiresAt any `json:"proExpiresAt,omitempty" bson:"proExpiresAt"`
-	// LastPublishAt is the last published post of user. Type should be Time.time or nil.
+	// LastPublishAt is the last published post of user. Type must be Time.time or nil.
 	LastPublishAt any `json:"lastPublishAt,omitempty" bson:"lastPublishAt"`
-	// CreatedAt is the date that user is created. Type should be Time.time or nil.
+	// CreatedAt is the date that user is created. Type must be Time.time or nil.
 	CreatedAt any `json:"createdAt,omitempty" bson:"createdAt"`
 }
 

@@ -2,35 +2,40 @@ package repositories
 
 import (
 	"context"
-	"core/internal/entities"
+	appEntities "core/internal/entities"
+	pkgEntities "core/pkg/entities"
 
 	"time"
 
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-type questions struct {
+// Questions represents questions repository.
+type Questions struct {
 	db *mongo.Database
 }
 
 // NewQuestionsRepository returns questions repository.
-func NewQuestionsRepository(db *mongo.Database) *questions {
-	return &questions{db}
+func NewQuestionsRepository(db *mongo.Database) *Questions {
+	return &Questions{db}
 }
 
 // Create creates a question in database.
-func (q questions) Create(payload entities.Question) (*mongo.InsertOneResult, error) {
+func (q Questions) Create(payload appEntities.Question) error {
 	questionsColl := q.db.Collection("questions")
 
-	question := entities.Question{
+	question := appEntities.Question{
+		ID:          pkgEntities.NewID(),
 		Content:     payload.Content,
 		IsAnonymous: payload.IsAnonymous,
 		SendTo:      payload.SendTo,
 		CreatedAt:   time.Now(),
 		SentBy:      payload.SentBy,
+		IsReplied:   false,
+		Reply:       nil,
 	}
 
-	result, err := questionsColl.InsertOne(context.TODO(), question)
+	_, err := questionsColl.InsertOne(context.TODO(), question)
 
-	return result, err
+	return err
 }
