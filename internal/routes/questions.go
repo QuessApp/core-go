@@ -8,6 +8,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
+// LoadQuestionsRoute loads all questions routes of app.
 func LoadQuestionsRoute(app *fiber.App, db *mongo.Database, questionsRepository *repositories.Questions, usersRepository *repositories.Users) {
 	g := app.Group("/questions")
 
