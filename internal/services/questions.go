@@ -8,7 +8,7 @@ import (
 )
 
 // CreateQuestion reads payload from request body then try to create a new question in database.
-func CreateQuestion(payload entities.Question, questionsRepository *repositories.Questions, usersRepository *repositories.Users) error {
+func CreateQuestion(payload *entities.Question, questionsRepository *repositories.Questions, usersRepository *repositories.Users) error {
 	if err := payload.Validate(); err != nil {
 		return err
 	}
@@ -27,7 +27,7 @@ func CreateQuestion(payload entities.Question, questionsRepository *repositories
 		return err
 	}
 
-	err := questionsRepository.Create(&payload)
+	err := questionsRepository.Create(payload)
 
 	if err != nil {
 		return err
