@@ -37,7 +37,7 @@ type User struct {
 	PostsLimit      int  `json:"postsLimit,omitempty" bson:"postsLimit"`
 	// CustomerId of Stripe. Type must be String or nil.
 	CustomerID any  `json:"customerId,omitempty" bson:"customerId"`
-	IsPro      bool `json:"isPro,omitempty" bson:"isPro"`
+	IsPRO      bool `json:"isPro,omitempty" bson:"isPro"`
 	// SubscriptionID of Stripe. Type must be String or nil.
 	SubscriptionID any `json:"subscriptionId,omitempty" bson:"subscriptionId"`
 	// ProExpiresAt of Stripe. Type must be Time.time or nil.

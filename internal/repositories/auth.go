@@ -38,7 +38,7 @@ func (a Auth) SignUp(payload *appEntities.User) error {
 		PostsLimit:      30,
 		EnableAppEmails: true,
 		IsShadowBanned:  false,
-		IsPro:           false,
+		IsPRO:           false,
 		CreatedAt:       payload.CreatedAt,
 		AvatarURL:       "",
 		CustomerID:      nil,
