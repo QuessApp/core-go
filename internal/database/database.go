@@ -7,7 +7,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func Connect(URI, dbName string) (*mongo.Database, error) {
+// Connect handles database connection.
+func Connect(URI, DBName string) (*mongo.Database, error) {
 	client, err := mongo.Connect(context.Background(), options.Client().ApplyURI(URI))
 
 	if err != nil {
@@ -20,5 +21,5 @@ func Connect(URI, dbName string) (*mongo.Database, error) {
 	// 	}
 	// }()
 
-	return client.Database(dbName), nil
+	return client.Database(DBName), nil
 }
