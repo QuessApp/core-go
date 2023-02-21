@@ -1,7 +1,7 @@
 package errors
 
-var (
-	EMAIL_IN_USE   = "Email já em uso"
-	NICK_IN_USE    = "Nome de usuário já em uso"
-	USER_NOT_FOUND = "Usuário não encontrado"
+const (
+	EMAIL_IN_USE   = "email já em uso"
+	NICK_IN_USE    = "nome de usuário já em uso"
+	USER_NOT_FOUND = "usuário não encontrado"
 )

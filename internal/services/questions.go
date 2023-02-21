@@ -14,11 +14,17 @@ func CreateQuestion(payload entities.Question, questionsRepository *repositories
 	}
 
 	userToSendQuestion := usersRepository.FindUserByNick(payload.SendTo)
+	userExists := userToSendQuestion.Nick != ""
 
 	// TODO: VALIDATE USER IS BLOCKED BY RECEIVER, IS SENDING TO YOURSELF, DID BLOCK RECEIVER, etc.
 
-	if userToSendQuestion.Nick == "" {
+	if !userExists {
 		return nil, errors.New(appErrors.USER_NOT_FOUND)
+	}
+
+	//                                       auth user from JWT
+	if err := usersRepository.DecrementLimit("63f4fe22a86d99b4d55b6a7e"); err != nil {
+		return nil, err
 	}
 
 	err := questionsRepository.Create(payload)

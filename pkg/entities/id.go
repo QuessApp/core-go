@@ -9,3 +9,8 @@ type ID = primitive.ObjectID
 func NewID() ID {
 	return primitive.NewObjectID()
 }
+
+// ParseID parses id from string to object id.
+func ParseID(id string) (ID, error) {
+	return primitive.ObjectIDFromHex(id)
+}
