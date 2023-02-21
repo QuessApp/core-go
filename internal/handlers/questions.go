@@ -18,9 +18,7 @@ func CreateQuestionHandler(c *fiber.Ctx, questionsRepository *repositories.Quest
 		return responses.ParseUnsuccesfull(c, http.StatusBadRequest, err.Error())
 	}
 
-	err := services.CreateQuestion(payload, questionsRepository, usersRepository)
-
-	if err != nil {
+	if err := services.CreateQuestion(payload, questionsRepository, usersRepository); err != nil {
 		return responses.ParseUnsuccesfull(c, http.StatusBadRequest, err.Error())
 	}
 
