@@ -8,6 +8,7 @@ import (
 	"core/pkg/validations"
 
 	"core/pkg/entities"
+	"core/pkg/regexes"
 
 	validation "github.com/go-ozzo/ozzo-validation"
 	"github.com/go-ozzo/ozzo-validation/v4/is"
@@ -40,9 +41,9 @@ type User struct {
 	CreatedAt any `json:"createdAt,omitempty" bson:"createdAt"`
 }
 
-// Format formats user information. It removes special characters from nick, trim space email, etc.
+// Format formats user information. It removes special characters from nick, trim email, etc.
 func (u *User) Format() {
-	u.Nick = regexp.MustCompile(`[^a-zA-Z0-9]+`).ReplaceAllString(u.Nick, "")
+	u.Nick = regexp.MustCompile(regexes.SPECIAL_CHARS).ReplaceAllString(u.Nick, "")
 	u.Nick = strings.TrimSpace(strings.ToLower(u.Nick))
 	u.Email = strings.TrimSpace(u.Email)
 }
