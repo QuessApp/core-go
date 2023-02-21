@@ -23,11 +23,14 @@ func NewAuthRepository(db *mongo.Database) *Auth {
 }
 
 // SignUp registers a new user in database.
-func (a Auth) SignUp(payload appEntities.User) error {
+func (a Auth) SignUp(payload *appEntities.User) error {
 	coll := a.db.Collection(collections.USERS)
 
+	payload.ID = pkgEntities.NewID()
+	payload.CreatedAt = time.Now()
+
 	user := appEntities.User{
-		ID:              pkgEntities.NewID(),
+		ID:              payload.ID,
 		Nick:            payload.Nick,
 		Name:            payload.Name,
 		Email:           payload.Email,
@@ -36,7 +39,7 @@ func (a Auth) SignUp(payload appEntities.User) error {
 		EnableAppEmails: true,
 		IsShadowBanned:  false,
 		IsPro:           false,
-		CreatedAt:       time.Now(),
+		CreatedAt:       payload.CreatedAt,
 		AvatarURL:       "",
 		CustomerID:      nil,
 		LastPublishAt:   nil,
