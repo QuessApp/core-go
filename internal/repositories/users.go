@@ -84,7 +84,7 @@ func (u *Users) DecrementLimit(userId string) error {
 		return err
 	}
 
-	if foundUser.IsPro {
+	if foundUser.IsPRO {
 		return nil
 	}
 
