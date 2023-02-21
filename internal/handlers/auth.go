@@ -18,7 +18,7 @@ func SignUpUserHandler(c *fiber.Ctx, usersRepository *repositories.Users, authRe
 		return responses.ParseUnsuccesfull(c, http.StatusBadRequest, err.Error())
 	}
 
-	u, err := services.SignUp(payload, usersRepository, authRepository)
+	u, err := services.SignUp(&payload, usersRepository, authRepository)
 
 	if err != nil {
 		return responses.ParseUnsuccesfull(c, http.StatusBadRequest, err.Error())
@@ -26,6 +26,7 @@ func SignUpUserHandler(c *fiber.Ctx, usersRepository *repositories.Users, authRe
 
 	data := &entities.ResponseWithUser{
 		User: &entities.User{
+			ID:        u.ID,
 			AvatarURL: u.AvatarURL,
 			Name:      u.Name,
 			Email:     u.Email,

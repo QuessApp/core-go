@@ -11,7 +11,7 @@ import (
 )
 
 // SignUp reads payload from request body then try to register a new user in database.
-func SignUp(payload entities.User, usersRepository *repositories.Users, authRepository *repositories.Auth) (*entities.User, error) {
+func SignUp(payload *entities.User, usersRepository *repositories.Users, authRepository *repositories.Auth) (*entities.User, error) {
 	payload.Format()
 
 	if err := payload.Validate(); err != nil {
@@ -44,5 +44,5 @@ func SignUp(payload entities.User, usersRepository *repositories.Users, authRepo
 		return nil, err
 	}
 
-	return &payload, nil
+	return payload, nil
 }

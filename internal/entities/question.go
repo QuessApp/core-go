@@ -21,7 +21,7 @@ type Question struct {
 
 	IsAnonymous        bool `json:"isAnonymous" bson:"IsAnonymous"`
 	IsHiddenByReceiver bool `json:"isHiddenByReceiver,omitempty" bson:"isHiddenByReceiver"`
-	IsReplied          bool `json:"isReplied" bson:"isReplied"`
+	IsReplied          bool `json:"isReplied,omitempty" bson:"isReplied"`
 
 	CreatedAt time.Time `json:"createdAt" bson:"createdAt,omitempty"`
 }
