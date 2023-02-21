@@ -14,6 +14,13 @@ import (
 	"github.com/go-ozzo/ozzo-validation/v4/is"
 )
 
+// BlockedUser is a model for each blocked user in app.
+type BlockedUser struct {
+	ID          entities.ID `json:"id" bson:"_id" `
+	UserToBlock string      `json:"userToBlock" bson:"userToBlock"`
+	BlockedBy   string      `json:"blockedBy" bson:"blockedBy"`
+}
+
 // User is a model for each user in app.
 type User struct {
 	ID        entities.ID `json:"id" bson:"_id"`
@@ -58,11 +65,4 @@ func (u User) Validate() error {
 	)
 
 	return validations.GetValidationError(validationResult)
-}
-
-// BlockedUser is a model for each blocked user in app.
-type BlockedUser struct {
-	ID          entities.ID `json:"id" bson:"_id" `
-	UserToBlock string      `json:"userToBlock" bson:"userToBlock"`
-	BlockedBy   string      `json:"blockedBy" bson:"blockedBy"`
 }

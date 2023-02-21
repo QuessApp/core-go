@@ -1,11 +1,11 @@
 package errors
 
-var (
-	CONTENT_REQUIRED = "Campo de conteúdo é obrigatório"
-	CONTENT_LENGTH   = "Campo de conteúdo deve conter entre 3 a 250 caracteres"
+const (
+	CONTENT_REQUIRED = "campo de conteúdo é obrigatório"
+	CONTENT_LENGTH   = "campo de conteúdo deve conter entre 3 a 250 caracteres"
 
-	SEND_TO_REQUIRED = "Campo de destinatário é obrigatório"
-	SEND_TO_LENGTH   = "Campo de destinatário deve conter entre 3 a 50 caracteres"
+	SEND_TO_REQUIRED = "campo de destinatário é obrigatório"
+	SEND_TO_LENGTH   = "campo de destinatário deve conter entre 3 a 50 caracteres"
 
-	IS_ANONYMOUS_REQUIRED = "Campo de anônimo é obrigatório"
+	IS_ANONYMOUS_REQUIRED = "campo de anônimo é obrigatório"
 )
