@@ -18,15 +18,11 @@ func SignUp(payload *entities.User, usersRepository *repositories.Users, authRep
 		return nil, err
 	}
 
-	isEmailInUse := authRepository.IsEmailInUse(payload.Email)
-
-	if isEmailInUse {
+	if isEmailInUse := authRepository.IsEmailInUse(payload.Email); isEmailInUse {
 		return nil, errors.New(appErrors.EMAIL_IN_USE)
 	}
 
-	isNickInUse := usersRepository.IsNickInUse(payload.Nick)
-
-	if isNickInUse {
+	if isNickInUse := usersRepository.IsNickInUse(payload.Nick); isNickInUse {
 		return nil, errors.New(appErrors.NICK_IN_USE)
 	}
 
@@ -38,9 +34,7 @@ func SignUp(payload *entities.User, usersRepository *repositories.Users, authRep
 
 	payload.Password = string(hashedPassword)
 
-	err = authRepository.SignUp(payload)
-
-	if err != nil {
+	if err = authRepository.SignUp(payload); err != nil {
 		return nil, err
 	}
 
