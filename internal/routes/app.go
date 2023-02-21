@@ -10,12 +10,12 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func LoadRoutes(db *mongo.Database, cfg *configs.Conf) func(authRepository *repositories.Auth, usersRepository *repositories.Users) {
-	return func(authRepository *repositories.Auth, usersRepository *repositories.Users) {
-		app := fiber.New()
-		middlewares.LoadMiddlewares(app, cfg)
+func LoadRoutes(db *mongo.Database, cfg *configs.Conf, authRepository *repositories.Auth, usersRepository *repositories.Users) {
 
-		LoadAuthRoutes(app, db)(authRepository, usersRepository)
-		log.Fatal(app.Listen(cfg.ServerPort))
-	}
+	app := fiber.New()
+	middlewares.LoadMiddlewares(app, cfg)
+
+	LoadAuthRoutes(app, db, authRepository, usersRepository)
+	log.Fatal(app.Listen(cfg.ServerPort))
+
 }

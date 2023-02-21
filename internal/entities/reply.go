@@ -7,5 +7,5 @@ type Reply struct {
 	ID        entities.ID `json:"id" bson:"_id"`
 	Content   string      `json:"content"`
 	Replied   bool        `json:"replied"`
-	RepliedBy string      `json:"repliedBy"`
+	RepliedBy *User       `json:"repliedBy" bson:"repliedBy"`
 }

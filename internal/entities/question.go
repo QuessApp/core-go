@@ -10,12 +10,12 @@ type Question struct {
 	ID      entities.ID `json:"id" bson:"_id"`
 	Content string      `json:"content"`
 
-	SendTo string `json:"sendTo"`
-	SentBy string `json:"sentBy,omitempty"`
-	Reply  Reply  `json:"reply,omitempty"`
+	SendTo *User `json:"sendTo" bson:"sendTo"`
+	SentBy *User `json:"sentBy,omitempty" bson:"sentBy"`
+	Reply  Reply `json:"reply,omitempty"`
 
-	IsAnonymous        bool `json:"isAnonymous"`
-	IsHiddenByReceiver bool `json:"isHiddenByReceiver,omitempty"`
+	IsAnonymous        bool `json:"isAnonymous" bson:"IsAnonymous"`
+	IsHiddenByReceiver bool `json:"isHiddenByReceiver,omitempty" bson:"isHiddenByReceiver"`
 
-	CreatedAt time.Time `json:"createdAt"`
+	CreatedAt time.Time `json:"createdAt" bson:"createdAt"`
 }

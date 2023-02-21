@@ -27,7 +27,7 @@ func (q questions) Create(payload entities.Question) (*mongo.InsertOneResult, er
 		IsAnonymous: payload.IsAnonymous,
 		SendTo:      payload.SendTo,
 		CreatedAt:   time.Now(),
-		SentBy:      "caioamfr",
+		SentBy:      payload.SentBy,
 	}
 
 	result, err := questionsColl.InsertOne(context.TODO(), question)
