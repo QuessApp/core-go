@@ -5,8 +5,8 @@ import (
 	"errors"
 )
 
-// ValidateDidBlockedReceiver returns error message if user is blocked or catch any error.
-func ValidateDidBlockedReceiver(didBlockedReceiver bool, err error) error {
+// DidBlockedReceiver returns error message if user is blocked or catch any error.
+func DidBlockedReceiver(didBlockedReceiver bool, err error) error {
 	if err != nil {
 		return err
 	}
@@ -18,8 +18,8 @@ func ValidateDidBlockedReceiver(didBlockedReceiver bool, err error) error {
 	return nil
 }
 
-// ValidateIsBlockedByReceiver returns error message if user is blocked by receiver of the question.
-func ValidateIsBlockedByReceiver(isBlockedByReceiver bool, err error) error {
+// IsBlockedByReceiver returns error message if user is blocked by receiver of the question.
+func IsBlockedByReceiver(isBlockedByReceiver bool, err error) error {
 	if err != nil {
 		return err
 	}

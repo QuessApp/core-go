@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"core/internal/entities"
+	"core/internal/dtos"
 	"core/internal/repositories"
 	"core/internal/services"
 	pkg "core/pkg/entities"
@@ -14,7 +14,7 @@ import (
 
 // CreateQuestionHandler is a handler to create a question.
 func CreateQuestionHandler(c *fiber.Ctx, questionsRepository *repositories.Questions, blocksRepository *repositories.Blocks, usersRepository *repositories.Users) error {
-	payload := entities.Question{}
+	payload := dtos.CreateQuestionDTO{}
 
 	if err := c.BodyParser(&payload); err != nil {
 		return responses.ParseUnsuccesfull(c, http.StatusBadRequest, err.Error())
@@ -23,7 +23,6 @@ func CreateQuestionHandler(c *fiber.Ctx, questionsRepository *repositories.Quest
 	authenticatedUserId := jwt.GetUserByToken(c).ID
 
 	payload.SentBy = authenticatedUserId
-	payload.SendTo, _ = pkg.ParseID(payload.SendTo.(string))
 
 	if err := services.CreateQuestion(&payload, authenticatedUserId, questionsRepository, blocksRepository, usersRepository); err != nil {
 		return responses.ParseUnsuccesfull(c, http.StatusBadRequest, err.Error())

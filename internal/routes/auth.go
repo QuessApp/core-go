@@ -16,4 +16,8 @@ func LoadAuthRoutes(app *fiber.App, db *mongo.Database, cfg *configs.Conf, authR
 	g.Post("/signup", func(c *fiber.Ctx) error {
 		return handlers.SignUpUserHandler(c, cfg, usersRepository, authRepository)
 	})
+
+	g.Post("/signin", func(c *fiber.Ctx) error {
+		return handlers.SignInUserHandler(c, cfg, usersRepository)
+	})
 }

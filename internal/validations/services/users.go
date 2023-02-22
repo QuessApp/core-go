@@ -6,8 +6,8 @@ import (
 	"errors"
 )
 
-// ValidateUserExists returns error message if user does not exists.
-func ValidateUserExists(u *entities.User) error {
+// UserExists returns error message if user does not exists.
+func UserExists(u *entities.User) error {
 	userExists := u.Nick != ""
 
 	if !userExists {
