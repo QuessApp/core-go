@@ -71,25 +71,13 @@ func (u Users) IsNickInUse(nick string) bool {
 }
 
 // DecrementLimit decrements user's post limit if user is not a PRO member.
-func (u *Users) DecrementLimit(userId pkg.ID) error {
-	foundUser, err := u.FindUserByID(userId)
-
-	if err != nil {
-		return err
-	}
-
-	if foundUser.IsPRO {
-		return nil
-	}
-
-	foundUser.PostsLimit -= 1
-
+func (u *Users) DecrementLimit(userId pkg.ID, newValue int) error {
 	coll := u.db.Collection(collections.USERS)
 
-	filter := bson.D{{Key: "_id", Value: foundUser.ID}}
-	update := bson.D{{Key: "$set", Value: bson.D{{Key: "postsLimit", Value: foundUser.PostsLimit}}}}
+	filter := bson.D{{Key: "_id", Value: userId}}
+	update := bson.D{{Key: "$set", Value: bson.D{{Key: "postsLimit", Value: newValue}}}}
 
-	_, err = coll.UpdateOne(context.Background(), filter, update)
+	_, err := coll.UpdateOne(context.Background(), filter, update)
 
 	return err
 }

@@ -6,6 +6,7 @@ import (
 	"core/internal/repositories"
 	validations "core/internal/validations/services"
 	pkg "core/pkg/entities"
+	"time"
 )
 
 // CreateQuestion reads payload from request body then try to create a new question in database.
@@ -45,7 +46,12 @@ func CreateQuestion(payload *dtos.CreateQuestionDTO, authenticatedUserId pkg.ID,
 		return err
 	}
 
-	if err := usersRepository.DecrementLimit(payload.SentBy); err != nil {
+	if err := validations.ReachedPostsLimitToCreateQuestion(userThatIsSendingQuestion); err != nil {
+		return err
+	}
+
+	// TODO: maybe use Go routines?
+	if err := DecrementUserLimit(userThatIsSendingQuestion.ID, usersRepository); err != nil {
 		return err
 	}
 
@@ -55,13 +61,11 @@ func CreateQuestion(payload *dtos.CreateQuestionDTO, authenticatedUserId pkg.ID,
 		return nil
 	}
 
-	if err := validations.ReachedPostsLimitToCreateQuestion(userThatIsSendingQuestion); err != nil {
-		return err
-	}
-
 	if err := questionsRepository.Create(payload); err != nil {
 		return err
 	}
+
+	userThatIsSendingQuestion.LastPublishAt = time.Now()
 
 	return nil
 }
