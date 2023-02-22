@@ -10,4 +10,5 @@ import (
 func LoadMiddlewares(app *fiber.App, cfg *configs.Conf) {
 	LoadRecoverMiddleware(app)
 	LoadCORSMiddleware(app, cfg)
+	LoadLoggerMiddleware(app)
 }
