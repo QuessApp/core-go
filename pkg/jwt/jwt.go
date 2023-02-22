@@ -53,14 +53,12 @@ func DecodeUserToken(c *fiber.Ctx) pkg.DecodeUserTokenResult {
 	user := c.Locals("user").(*jwt.Token)
 	claims := user.Claims.(jwt.MapClaims)
 
-	claimedUser := claims["user"].(map[string]interface{})
-
-	parsedId, _ := pkg.ParseID(claimedUser["id"].(string))
+	parsedId, _ := pkg.ParseID(claims["id"].(string))
 
 	u := pkg.DecodeUserTokenResult{
 		ID:    parsedId,
-		Name:  claimedUser["name"].(string),
-		Email: claimedUser["email"].(string),
+		Name:  claims["name"].(string),
+		Email: claims["email"].(string),
 	}
 
 	return u
