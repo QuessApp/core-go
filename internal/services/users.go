@@ -10,9 +10,9 @@ import (
 func DecrementUserLimit(userId pkg.ID, usersRepository *repositories.Users) error {
 	foundUser, err := usersRepository.FindUserByID(userId)
 
-	log.Printf("Fail to find user by id %s\n", err)
-
 	if err != nil {
+		log.Printf("Fail to find user by id %s\n", err)
+
 		return err
 	}
 

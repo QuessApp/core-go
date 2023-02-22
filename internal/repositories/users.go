@@ -54,9 +54,9 @@ func (u Users) FindUserByID(userId pkg.ID) (*internal.User, error) {
 
 	var foundUser internal.User
 
-	coll.FindOne(context.Background(), bson.D{{Key: "_id", Value: userId}}).Decode(&foundUser)
+	err := coll.FindOne(context.Background(), bson.D{{Key: "_id", Value: userId}}).Decode(&foundUser)
 
-	return &foundUser, nil
+	return &foundUser, err
 }
 
 // IsNickInUse checks is an user already take a nick.
