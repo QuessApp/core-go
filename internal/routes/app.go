@@ -11,12 +11,13 @@ import (
 )
 
 // LoadRoutes loads all routes of app.
-func LoadRoutes(db *mongo.Database, cfg *configs.Conf, questionsRepository *repositories.Questions, authRepository *repositories.Auth, usersRepository *repositories.Users) {
+func LoadRoutes(db *mongo.Database, cfg *configs.Conf, questionsRepository *repositories.Questions, authRepository *repositories.Auth, usersRepository *repositories.Users, blocksRepository *repositories.Blocks) {
 	app := fiber.New()
 	middlewares.LoadMiddlewares(app, cfg)
 
-	LoadAuthRoutes(app, db, authRepository, usersRepository)
-	LoadQuestionsRoute(app, db, questionsRepository, usersRepository)
+	LoadAuthRoutes(app, db, cfg, authRepository, usersRepository)
+	LoadQuestionsRoute(app, db, questionsRepository, blocksRepository, usersRepository)
+	LoadBlocksRoutes(app, db, usersRepository, blocksRepository)
 
 	log.Fatal(app.Listen(cfg.ServerPort))
 }

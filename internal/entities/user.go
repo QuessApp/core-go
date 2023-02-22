@@ -17,8 +17,8 @@ import (
 // BlockedUser is a model for each blocked user in app.
 type BlockedUser struct {
 	ID          entities.ID `json:"id" bson:"_id" `
-	UserToBlock string      `json:"userToBlock" bson:"userToBlock"`
-	BlockedBy   string      `json:"blockedBy" bson:"blockedBy"`
+	UserToBlock entities.ID `json:"userToBlock" bson:"userToBlock"`
+	BlockedBy   entities.ID `json:"blockedBy" bson:"blockedBy"`
 }
 
 // User is a model for each user in app.
@@ -62,6 +62,15 @@ func (u User) Validate() error {
 		validation.Field(&u.Password, validation.Required.Error(errors.PASSWORD_FIELD_REQUIRED), validation.Length(6, 200).Error(errors.PASSWORD_FIELD_LENGTH)),
 		validation.Field(&u.Name, validation.Required.Error(errors.NAME_FIELD_REQUIRED), validation.Length(3, 50).Error(errors.NAME_FIELD_LENGTH)),
 		validation.Field(&u.Email, validation.Required.Error(errors.EMAIL_FIELD_REQUIRED), validation.Length(5, 200).Error(errors.EMAIL_FIELD_LENGTH), is.Email.Error(errors.EMAIL_FORMAT_INVALID)),
+	)
+
+	return validations.GetValidationError(validationResult)
+}
+
+// Validate validates passed struct then returns a string.
+func (u BlockedUser) Validate() error {
+	validationResult := validation.ValidateStruct(&u,
+		validation.Field(&u.UserToBlock, validation.Required.Error(errors.USER_TO_BLOCK_REQUIRED)),
 	)
 
 	return validations.GetValidationError(validationResult)

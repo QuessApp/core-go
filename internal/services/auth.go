@@ -3,9 +3,7 @@ package services
 import (
 	"core/internal/entities"
 	"core/internal/repositories"
-	appErrors "core/pkg/errors"
-
-	"errors"
+	validations "core/internal/validations/services"
 
 	"golang.org/x/crypto/bcrypt"
 )
@@ -18,12 +16,12 @@ func SignUp(payload *entities.User, usersRepository *repositories.Users, authRep
 		return nil, err
 	}
 
-	if isEmailInUse := authRepository.IsEmailInUse(payload.Email); isEmailInUse {
-		return nil, errors.New(appErrors.EMAIL_IN_USE)
+	if err := validations.ValidateIsEmailInUse(authRepository.IsEmailInUse(payload.Email)); err != nil {
+		return nil, err
 	}
 
-	if isNickInUse := usersRepository.IsNickInUse(payload.Nick); isNickInUse {
-		return nil, errors.New(appErrors.NICK_IN_USE)
+	if err := validations.ValidateIsNickInUse(usersRepository.IsNickInUse(payload.Nick)); err != nil {
+		return nil, err
 	}
 
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(payload.Password), bcrypt.DefaultCost)

@@ -26,6 +26,7 @@ func main() {
 	authRepository := repositories.NewAuthRepository(db)
 	usersRepository := repositories.NewUsersRepository(db)
 	questionsRepository := repositories.NewQuestionsRepository(db)
+	blocksRepository := repositories.NewBlocksRepository(db)
 
-	routes.LoadRoutes(db, config, questionsRepository, authRepository, usersRepository)
+	routes.LoadRoutes(db, config, questionsRepository, authRepository, usersRepository, blocksRepository)
 }

@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"core/internal/configs"
 	"core/internal/handlers"
 	"core/internal/repositories"
 
@@ -9,10 +10,10 @@ import (
 )
 
 // LoadAuthRoutes loads all auth routes of app.
-func LoadAuthRoutes(app *fiber.App, db *mongo.Database, authRepository *repositories.Auth, usersRepository *repositories.Users) {
+func LoadAuthRoutes(app *fiber.App, db *mongo.Database, cfg *configs.Conf, authRepository *repositories.Auth, usersRepository *repositories.Users) {
 	g := app.Group("/auth")
 
 	g.Post("/signup", func(c *fiber.Ctx) error {
-		return handlers.SignUpUserHandler(c, usersRepository, authRepository)
+		return handlers.SignUpUserHandler(c, cfg, usersRepository, authRepository)
 	})
 }
