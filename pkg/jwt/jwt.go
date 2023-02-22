@@ -10,6 +10,16 @@ import (
 	"github.com/golang-jwt/jwt/v4"
 )
 
+const (
+	THIRTY_DAYS_IN_HOURS = time.Hour * 720
+	ONE_DAY_IN_HOURS     = time.Hour + 24
+)
+
+var (
+	ACCESS_TOKEN_EXPIRES_IN  = time.Now().Add(ONE_DAY_IN_HOURS).Unix()
+	REFRESH_TOKEN_EXPIRES_IN = time.Now().Add(THIRTY_DAYS_IN_HOURS).Unix()
+)
+
 // CreateUserToken creates an user JWT token with followed fields:
 // id, name, email, exp. It returns string and error.
 func CreateUserToken(u *entities.User, expiresIn int64, secret string) (string, error) {
@@ -28,17 +38,13 @@ func CreateUserToken(u *entities.User, expiresIn int64, secret string) (string, 
 // CreateAccessToken creates an user JWT token with followed fields:
 // id, name, email, exp. It returns string and error.
 func CreateAccessToken(u *entities.User, cfg *configs.Conf) (string, error) {
-	expiresIn := time.Now().Add(time.Hour + 24).Unix()
-
-	return CreateUserToken(u, expiresIn, cfg.JWTSecret)
+	return CreateUserToken(u, ACCESS_TOKEN_EXPIRES_IN, cfg.JWTSecret)
 }
 
 // CreateRefreshToken creates an user JWT token with followed fields:
 // id, name, email, exp. It returns string and error.
 func CreateRefreshToken(u *entities.User, cfg *configs.Conf) (string, error) {
-	expiresIn := time.Now().Add(time.Hour + 720).Unix()
-
-	return CreateUserToken(u, expiresIn, cfg.JWTSecret)
+	return CreateUserToken(u, REFRESH_TOKEN_EXPIRES_IN, cfg.JWTSecret)
 }
 
 // DecodeUserToken decodes an user JWT token with followed fields:
