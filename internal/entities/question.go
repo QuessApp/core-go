@@ -1,7 +1,7 @@
 package entities
 
 import (
-	"core/pkg/entities"
+	pkg "core/pkg/entities"
 	"core/pkg/errors"
 	"core/pkg/validations"
 	"time"
@@ -11,11 +11,13 @@ import (
 
 // Questions is a model for each question in app.
 type Question struct {
-	ID      entities.ID `json:"id" bson:"_id,omitempty"`
-	Content string      `json:"content"`
+	ID      pkg.ID `json:"id" bson:"_id,omitempty"`
+	Content string `json:"content"`
 
-	SendTo entities.ID `json:"sendTo" bson:"sendTo"`
-	SentBy entities.ID `json:"sentBy,omitempty" bson:"sentBy"`
+	// SendTo represents the user that will receive the question. Type must bet Entities.ID, nill ou Entities.User
+	SendTo any `json:"sendTo,omitempty" bson:"sendTo"`
+	// SentBy represents the user who sent the question. Type must bet Entities.ID, nill ou Entities.User
+	SentBy any `json:"sentBy,omitempty" bson:"sentBy"`
 	// Reply is replied data content. Type must be Entities.Reply or nil.
 	Reply any `json:"reply,omitempty"`
 
@@ -35,4 +37,17 @@ func (q Question) Validate() error {
 	)
 
 	return validations.GetValidationError(validationResult)
+}
+
+// MapAnonymousFields maps question in order to hide who sent the question, if the questions is anonymous.Otherwise, just returns the whole data.
+func (q Question) MapAnonymousFields() *Question {
+	if q.IsAnonymous {
+		return &Question{
+			ID:          q.ID,
+			Content:     q.Content,
+			IsAnonymous: q.IsAnonymous,
+			CreatedAt:   q.CreatedAt,
+		}
+	}
+	return &q
 }

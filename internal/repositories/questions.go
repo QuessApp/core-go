@@ -3,11 +3,13 @@ package repositories
 import (
 	"context"
 	collections "core/internal/constants"
+	"core/internal/entities"
 	internal "core/internal/entities"
 	pkg "core/pkg/entities"
 
 	"time"
 
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -23,7 +25,7 @@ func NewQuestionsRepository(db *mongo.Database) *Questions {
 
 // Create creates a question in database.
 func (q Questions) Create(payload *internal.Question) error {
-	questionsColl := q.db.Collection(collections.QUESTIONS)
+	coll := q.db.Collection(collections.QUESTIONS)
 
 	payload.ID = pkg.NewID()
 	payload.CreatedAt = time.Now()
@@ -39,7 +41,20 @@ func (q Questions) Create(payload *internal.Question) error {
 		Reply: nil,
 	}
 
-	_, err := questionsColl.InsertOne(context.TODO(), question)
+	_, err := coll.InsertOne(context.TODO(), question)
 
 	return err
+}
+
+// FindByID finds a question by id.
+func (q Questions) FindByID(id pkg.ID) entities.Question {
+	coll := q.db.Collection(collections.QUESTIONS)
+
+	filter := bson.D{{Key: "_id", Value: id}}
+
+	question := entities.Question{}
+
+	coll.FindOne(context.Background(), filter).Decode(&question)
+
+	return question
 }

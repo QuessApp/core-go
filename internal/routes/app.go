@@ -16,8 +16,8 @@ func LoadRoutes(db *mongo.Database, cfg *configs.Conf, questionsRepository *repo
 	middlewares.LoadMiddlewares(app, cfg)
 
 	LoadAuthRoutes(app, db, cfg, authRepository, usersRepository)
-	LoadQuestionsRoute(app, db, questionsRepository, blocksRepository, usersRepository)
-	LoadBlocksRoutes(app, db, usersRepository, blocksRepository)
+	LoadQuestionsRoute(app, db, cfg, questionsRepository, blocksRepository, usersRepository)
+	LoadBlocksRoutes(app, db, cfg, usersRepository, blocksRepository)
 
 	log.Fatal(app.Listen(cfg.ServerPort))
 }
