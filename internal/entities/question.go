@@ -2,11 +2,7 @@ package entities
 
 import (
 	pkg "core/pkg/entities"
-	"core/pkg/errors"
-	"core/pkg/validations"
 	"time"
-
-	validation "github.com/go-ozzo/ozzo-validation"
 )
 
 // Questions is a model for each question in app.
@@ -26,17 +22,6 @@ type Question struct {
 	IsReplied          bool `json:"isReplied,omitempty" bson:"isReplied"`
 
 	CreatedAt time.Time `json:"createdAt" bson:"createdAt,omitempty"`
-}
-
-// Validate validates passed struct then returns a string.
-func (q Question) Validate() error {
-	validationResult := validation.ValidateStruct(&q,
-		validation.Field(&q.Content, validation.Required.Error(errors.CONTENT_REQUIRED), validation.Length(3, 250).Error(errors.CONTENT_LENGTH)),
-		validation.Field(&q.SendTo, validation.Required.Error(errors.SEND_TO_REQUIRED), validation.Length(3, 50).Error(errors.SEND_TO_LENGTH)),
-		validation.Field(&q.IsAnonymous, validation.Required.Error(errors.IS_ANONYMOUS_REQUIRED)),
-	)
-
-	return validations.GetValidationError(validationResult)
 }
 
 // MapAnonymousFields maps question in order to hide who sent the question, if the questions is anonymous.Otherwise, just returns the whole data.
