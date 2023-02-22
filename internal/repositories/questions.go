@@ -3,8 +3,8 @@ package repositories
 import (
 	"context"
 	collections "core/internal/constants"
-	appEntities "core/internal/entities"
-	pkgEntities "core/pkg/entities"
+	internal "core/internal/entities"
+	pkg "core/pkg/entities"
 
 	"time"
 
@@ -22,13 +22,13 @@ func NewQuestionsRepository(db *mongo.Database) *Questions {
 }
 
 // Create creates a question in database.
-func (q Questions) Create(payload *appEntities.Question) error {
+func (q Questions) Create(payload *internal.Question) error {
 	questionsColl := q.db.Collection(collections.QUESTIONS)
 
-	payload.ID = pkgEntities.NewID()
+	payload.ID = pkg.NewID()
 	payload.CreatedAt = time.Now()
 
-	question := appEntities.Question{
+	question := internal.Question{
 		ID:          payload.ID,
 		Content:     payload.Content,
 		IsAnonymous: payload.IsAnonymous,

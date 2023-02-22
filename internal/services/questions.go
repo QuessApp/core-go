@@ -3,33 +3,50 @@ package services
 import (
 	"core/internal/entities"
 	"core/internal/repositories"
-	appErrors "core/pkg/errors"
-	"errors"
+	validations "core/internal/validations/services"
 )
 
 // CreateQuestion reads payload from request body then try to create a new question in database.
-func CreateQuestion(payload *entities.Question, questionsRepository *repositories.Questions, usersRepository *repositories.Users) error {
+func CreateQuestion(payload *entities.Question, questionsRepository *repositories.Questions, blocksRepository *repositories.Blocks, usersRepository *repositories.Users) error {
 	if err := payload.Validate(); err != nil {
 		return err
 	}
 
-	userToSendQuestion := usersRepository.FindUserByNick(payload.SendTo)
-	userExists := userToSendQuestion.Nick != ""
-
-	// TODO: VALIDATE USER IS BLOCKED BY RECEIVER, IS SENDING TO YOURSELF, DID BLOCK RECEIVER, etc.
-
-	if !userExists {
-		return errors.New(appErrors.USER_NOT_FOUND)
-	}
-
-	//                                       auth user from JWT
-	if err := usersRepository.DecrementLimit("63f4fe22a86d99b4d55b6a7e"); err != nil {
+	if err := validations.ValidateDidBlockedReceiver(blocksRepository.IsUserBlocked(payload.SendTo)); err != nil {
 		return err
 	}
 
-	err := questionsRepository.Create(payload)
+	if err := validations.ValidateIsBlockedByReceiver(blocksRepository.IsUserBlocked(payload.SentBy)); err != nil {
+		return err
+	}
+
+	userToSendQuestion, err := usersRepository.FindUserByID(payload.SendTo)
 
 	if err != nil {
+		return err
+	}
+
+	if err := validations.ValidateUserExists(userToSendQuestion); err != nil {
+		return err
+	}
+
+	userThatIsSendingQuestion, err := usersRepository.FindUserByID(payload.SentBy)
+
+	if err != nil {
+		return err
+	}
+
+	if err := usersRepository.DecrementLimit(payload.SentBy); err != nil {
+		return err
+	}
+
+	if userThatIsSendingQuestion.IsShadowBanned {
+		// fake question, dont create
+		// record in database
+		return nil
+	}
+
+	if err := questionsRepository.Create(payload); err != nil {
 		return err
 	}
 
