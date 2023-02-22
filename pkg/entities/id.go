@@ -14,3 +14,8 @@ func NewID() ID {
 func ParseID(id string) (ID, error) {
 	return primitive.ObjectIDFromHex(id)
 }
+
+// IsZeroID returns a bool value if provided is zero value.
+func IsZeroID(id ID) bool {
+	return id.IsZero()
+}

@@ -8,4 +8,10 @@ const (
 	SEND_TO_LENGTH   = "campo de destinatário deve conter entre 3 a 50 caracteres"
 
 	IS_ANONYMOUS_REQUIRED = "campo de anônimo é obrigatório"
+
+	QUESTION_NOT_FOUND           = "a pergunta com o id informado não existe"
+	QUESTION_NOT_SENT_FOR_ME     = "esta pergunta não foi enviada para você"
+	SENDING_QUESTION_TO_YOURSELF = "você não pode enviar uma pergunta para si mesmo"
+
+	QUESTION_NOT_AUTHORIZED = "você não possui acesso à essa pergunta"
 )

@@ -75,3 +75,13 @@ func (u BlockedUser) Validate() error {
 
 	return validations.GetValidationError(validationResult)
 }
+
+// GetBasicInfos gets basic data of an user like id, name, nick, etc.
+func (u User) GetBasicInfos() *User {
+	return &User{
+		ID:        u.ID,
+		Name:      u.Name,
+		Nick:      u.Nick,
+		AvatarURL: u.AvatarURL,
+	}
+}

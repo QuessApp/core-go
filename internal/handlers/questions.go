@@ -4,6 +4,7 @@ import (
 	"core/internal/entities"
 	"core/internal/repositories"
 	"core/internal/services"
+	pkg "core/pkg/entities"
 	"core/pkg/jwt"
 	"core/pkg/responses"
 	"net/http"
@@ -19,11 +20,33 @@ func CreateQuestionHandler(c *fiber.Ctx, questionsRepository *repositories.Quest
 		return responses.ParseUnsuccesfull(c, http.StatusBadRequest, err.Error())
 	}
 
-	payload.SentBy = jwt.GetUserByToken(c).ID
+	authenticatedUserId := jwt.GetUserByToken(c).ID
 
-	if err := services.CreateQuestion(&payload, questionsRepository, blocksRepository, usersRepository); err != nil {
+	payload.SentBy = authenticatedUserId
+	payload.SendTo, _ = pkg.ParseID(payload.SendTo.(string))
+
+	if err := services.CreateQuestion(&payload, authenticatedUserId, questionsRepository, blocksRepository, usersRepository); err != nil {
 		return responses.ParseUnsuccesfull(c, http.StatusBadRequest, err.Error())
 	}
 
 	return responses.ParseSuccessful(c, http.StatusCreated, nil)
+}
+
+// FindQuestionByIDHandler is a handler to find a question by its id.
+func FindQuestionByIDHandler(c *fiber.Ctx, questionsRepository *repositories.Questions, usersRepository *repositories.Users) error {
+	id, err := pkg.ParseID(c.Params("id"))
+
+	if err != nil {
+		return responses.ParseUnsuccesfull(c, http.StatusBadRequest, err.Error())
+	}
+
+	authenticatedUserId := jwt.GetUserByToken(c).ID
+
+	question, err := services.FindQuestionByID(id, authenticatedUserId, questionsRepository, usersRepository)
+
+	if err != nil {
+		return responses.ParseUnsuccesfull(c, http.StatusBadRequest, err.Error())
+	}
+
+	return responses.ParseSuccessful(c, http.StatusOK, question)
 }
