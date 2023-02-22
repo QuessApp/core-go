@@ -43,7 +43,7 @@ func CreateRefreshToken(u *entities.User, cfg *configs.Conf) (string, error) {
 
 // DecodeUserToken decodes an user JWT token with followed fields:
 // id, name and email.
-func DecodeUserToken(c *fiber.Ctx) entities.User {
+func DecodeUserToken(c *fiber.Ctx) pkg.DecodeUserTokenResult {
 	user := c.Locals("user").(*jwt.Token)
 	claims := user.Claims.(jwt.MapClaims)
 
@@ -51,7 +51,7 @@ func DecodeUserToken(c *fiber.Ctx) entities.User {
 
 	parsedId, _ := pkg.ParseID(claimedUser["id"].(string))
 
-	u := entities.User{
+	u := pkg.DecodeUserTokenResult{
 		ID:    parsedId,
 		Name:  claimedUser["name"].(string),
 		Email: claimedUser["email"].(string),
@@ -61,6 +61,6 @@ func DecodeUserToken(c *fiber.Ctx) entities.User {
 }
 
 // GetUserByToken decodes a token and get user info from token.
-func GetUserByToken(c *fiber.Ctx) entities.User {
+func GetUserByToken(c *fiber.Ctx) pkg.DecodeUserTokenResult {
 	return DecodeUserToken(c)
 }
