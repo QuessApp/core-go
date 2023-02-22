@@ -28,6 +28,7 @@ func SignUpUserHandler(c *fiber.Ctx, cfg *configs.Conf, usersRepository *reposit
 	return responses.ParseSuccessful(c, http.StatusCreated, u)
 }
 
+// SignInUserHandler is a handler to sign in an user.
 func SignInUserHandler(c *fiber.Ctx, cfg *configs.Conf, usersRepository *repositories.Users) error {
 	payload := dtos.SignInUserDTO{}
 
