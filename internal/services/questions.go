@@ -56,7 +56,7 @@ func CreateQuestion(payload *dtos.CreateQuestionDTO, authenticatedUserId pkg.ID,
 	}
 
 	if err := validations.ReachedPostsLimitToCreateQuestion(userThatIsSendingQuestion); err != nil {
-		return nil
+		return err
 	}
 
 	if err := questionsRepository.Create(payload); err != nil {
