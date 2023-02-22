@@ -38,8 +38,7 @@ func (q Questions) Create(payload *dtos.CreateQuestionDTO) error {
 		SendTo:      payload.SendTo,
 		CreatedAt:   payload.CreatedAt,
 		SentBy:      payload.SentBy,
-
-		Reply: nil,
+		Reply:       nil,
 	}
 
 	_, err := coll.InsertOne(context.TODO(), question)

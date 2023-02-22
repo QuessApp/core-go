@@ -6,7 +6,6 @@ import (
 	"core/internal/repositories"
 	validations "core/internal/validations/services"
 	pkg "core/pkg/entities"
-	"time"
 )
 
 // CreateQuestion reads payload from request body then try to create a new question in database.
@@ -65,7 +64,7 @@ func CreateQuestion(payload *dtos.CreateQuestionDTO, authenticatedUserId pkg.ID,
 		return err
 	}
 
-	userThatIsSendingQuestion.LastPublishAt = time.Now()
+	// TODO: update user lastPublishAt field.
 
 	return nil
 }
