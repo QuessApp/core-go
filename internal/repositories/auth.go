@@ -3,6 +3,7 @@ package repositories
 import (
 	"context"
 	collections "core/internal/constants"
+	"core/internal/dtos"
 	internal "core/internal/entities"
 	pkg "core/pkg/entities"
 
@@ -23,7 +24,7 @@ func NewAuthRepository(db *mongo.Database) *Auth {
 }
 
 // SignUp registers a new user in database.
-func (a Auth) SignUp(payload *internal.User) error {
+func (a Auth) SignUp(payload *dtos.SignUpUserDTO) (*internal.User, error) {
 	coll := a.db.Collection(collections.USERS)
 
 	payload.ID = pkg.NewID()
@@ -49,7 +50,7 @@ func (a Auth) SignUp(payload *internal.User) error {
 
 	_, err := coll.InsertOne(context.Background(), user)
 
-	return err
+	return &user, err
 }
 
 // IsEmailInUse checks is an user already take an email.

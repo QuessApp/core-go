@@ -3,6 +3,7 @@ package repositories
 import (
 	"context"
 	collections "core/internal/constants"
+	"core/internal/dtos"
 	"core/internal/entities"
 	internal "core/internal/entities"
 	pkg "core/pkg/entities"
@@ -24,7 +25,7 @@ func NewQuestionsRepository(db *mongo.Database) *Questions {
 }
 
 // Create creates a question in database.
-func (q Questions) Create(payload *internal.Question) error {
+func (q Questions) Create(payload *dtos.CreateQuestionDTO) error {
 	coll := q.db.Collection(collections.QUESTIONS)
 
 	payload.ID = pkg.NewID()
