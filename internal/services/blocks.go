@@ -18,7 +18,7 @@ func BlockUser(payload *entities.BlockedUser, usersRepository *repositories.User
 		return err
 	}
 
-	if err := validations.ValidateUserExists(doesUserToBeBlockedExists); err != nil {
+	if err := validations.UserExists(doesUserToBeBlockedExists); err != nil {
 		return err
 	}
 

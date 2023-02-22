@@ -1,26 +1,29 @@
 package services
 
 import (
+	"core/internal/configs"
+	"core/internal/dtos"
 	"core/internal/entities"
 	"core/internal/repositories"
 	validations "core/internal/validations/services"
+	"core/pkg/jwt"
 
 	"golang.org/x/crypto/bcrypt"
 )
 
 // SignUp reads payload from request body then try to register a new user in database.
-func SignUp(payload *entities.User, usersRepository *repositories.Users, authRepository *repositories.Auth) (*entities.User, error) {
+func SignUp(cfg *configs.Conf, payload *dtos.SignUpUserDTO, usersRepository *repositories.Users, authRepository *repositories.Auth) (*entities.ResponseWithUser, error) {
 	payload.Format()
 
 	if err := payload.Validate(); err != nil {
 		return nil, err
 	}
 
-	if err := validations.ValidateIsEmailInUse(authRepository.IsEmailInUse(payload.Email)); err != nil {
+	if err := validations.IsEmailInUse(authRepository.IsEmailInUse(payload.Email)); err != nil {
 		return nil, err
 	}
 
-	if err := validations.ValidateIsNickInUse(usersRepository.IsNickInUse(payload.Nick)); err != nil {
+	if err := validations.IsNickInUse(usersRepository.IsNickInUse(payload.Nick)); err != nil {
 		return nil, err
 	}
 
@@ -32,9 +35,75 @@ func SignUp(payload *entities.User, usersRepository *repositories.Users, authRep
 
 	payload.Password = string(hashedPassword)
 
-	if err = authRepository.SignUp(payload); err != nil {
+	u, err := authRepository.SignUp(payload)
+
+	if err != nil {
 		return nil, err
 	}
 
-	return payload, nil
+	accessToken, err := jwt.CreateAccessToken(u, cfg)
+
+	if err != nil {
+		return nil, err
+	}
+
+	refreshToken, err := jwt.CreateRefreshToken(u, cfg)
+
+	if err != nil {
+		return nil, err
+	}
+
+	data := &entities.ResponseWithUser{
+		User: &entities.User{
+			ID:        u.ID,
+			AvatarURL: u.AvatarURL,
+			Name:      u.Name,
+			Email:     u.Email,
+		},
+		AccessToken:  accessToken,
+		RefreshToken: refreshToken,
+	}
+
+	return data, nil
+}
+
+// SignIn reads nick and password from an user and try to return user's data.
+func SignIn(cfg *configs.Conf, nick, password string, usersRepository *repositories.Users) (*entities.ResponseWithUser, error) {
+	u := usersRepository.FindUserByNick(nick)
+
+	if err := validations.UserExists(u); err != nil {
+		return nil, err
+	}
+
+	if err := validations.IsPasswordCorrect(bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(password))); err != nil {
+		return nil, err
+	}
+
+	accessToken, err := jwt.CreateAccessToken(u, cfg)
+
+	if err != nil {
+		return nil, err
+	}
+
+	refreshToken, err := jwt.CreateRefreshToken(u, cfg)
+
+	if err != nil {
+		return nil, err
+	}
+
+	data := &entities.ResponseWithUser{
+		User: &entities.User{
+			ID:              u.ID,
+			AvatarURL:       u.AvatarURL,
+			Name:            u.Name,
+			Email:           u.Email,
+			PostsLimit:      u.PostsLimit,
+			IsPRO:           u.IsPRO,
+			EnableAppEmails: u.EnableAppEmails,
+		},
+		AccessToken:  accessToken,
+		RefreshToken: refreshToken,
+	}
+
+	return data, nil
 }
