@@ -3,8 +3,8 @@ package repositories
 import (
 	"context"
 	collections "core/internal/constants"
-	appEntities "core/internal/entities"
-	pkgEntities "core/pkg/entities"
+	internal "core/internal/entities"
+	pkg "core/pkg/entities"
 
 	"time"
 
@@ -23,13 +23,13 @@ func NewAuthRepository(db *mongo.Database) *Auth {
 }
 
 // SignUp registers a new user in database.
-func (a Auth) SignUp(payload *appEntities.User) error {
+func (a Auth) SignUp(payload *internal.User) error {
 	coll := a.db.Collection(collections.USERS)
 
-	payload.ID = pkgEntities.NewID()
+	payload.ID = pkg.NewID()
 	payload.CreatedAt = time.Now()
 
-	user := appEntities.User{
+	user := internal.User{
 		ID:              payload.ID,
 		Nick:            payload.Nick,
 		Name:            payload.Name,
@@ -56,7 +56,7 @@ func (a Auth) SignUp(payload *appEntities.User) error {
 func (a Auth) IsEmailInUse(email string) bool {
 	coll := a.db.Collection(collections.USERS)
 
-	var user appEntities.User
+	var user internal.User
 
 	coll.FindOne(context.Background(), bson.D{{Key: "email", Value: email}}).Decode(&user)
 
