@@ -80,7 +80,7 @@ func FindQuestionByID(id pkg.ID, authenticatedUserId pkg.ID, questionsRepository
 		return nil, err
 	}
 
-	if err := validations.QuestionIsSentForMe(foundQuestion, authenticatedUserId); err != nil {
+	if err := validations.QuestionCanViewQuestion(foundQuestion, authenticatedUserId); err != nil {
 		return nil, err
 	}
 

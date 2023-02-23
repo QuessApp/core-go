@@ -17,10 +17,10 @@ func QuestionExists(q *entities.Question) error {
 	return nil
 }
 
-// QuestionIsSentForMe returns error message if question is not sent for me (authenticated user).
-func QuestionIsSentForMe(q *internal.Question, authenticatedUserId pkgEntities.ID) error {
-	if q.SendTo != authenticatedUserId {
-		return errors.New(pkgErrors.QUESTION_NOT_SENT_FOR_ME)
+// QuestionCanViewQuestion returns error message if user is not authorized to view the question.
+func QuestionCanViewQuestion(q *internal.Question, authenticatedUserId pkgEntities.ID) error {
+	if q.SendTo != authenticatedUserId && q.SentBy != authenticatedUserId {
+		return errors.New(pkgErrors.QUESTION_NOT_AUTHORIZED)
 	}
 
 	return nil
