@@ -4,7 +4,7 @@ import (
 	"context"
 	collections "core/internal/constants"
 	"core/internal/dtos"
-	"core/internal/entities"
+
 	internal "core/internal/entities"
 	pkg "core/pkg/entities"
 
@@ -47,12 +47,12 @@ func (q Questions) Create(payload *dtos.CreateQuestionDTO) error {
 }
 
 // FindByID finds a question by id.
-func (q Questions) FindByID(id pkg.ID) (*entities.Question, error) {
+func (q Questions) FindByID(id pkg.ID) (*internal.Question, error) {
 	coll := q.db.Collection(collections.QUESTIONS)
 
 	filter := bson.D{{Key: "_id", Value: id}}
 
-	question := entities.Question{}
+	question := internal.Question{}
 
 	err := coll.FindOne(context.Background(), filter).Decode(&question)
 
