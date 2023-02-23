@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"core/internal/entities"
+	"core/internal/dtos"
 	"core/internal/repositories"
 	"core/internal/services"
 	pkg "core/pkg/entities"
@@ -14,7 +14,7 @@ import (
 
 // BlockUserHandler is a handler to block an user.
 func BlockUserHandler(c *fiber.Ctx, usersRepository *repositories.Users, blocksRepository *repositories.Blocks) error {
-	payload := entities.BlockedUser{}
+	payload := dtos.BlockUserDTO{}
 	id, err := pkg.ParseID(c.Params("id"))
 
 	if err != nil {
