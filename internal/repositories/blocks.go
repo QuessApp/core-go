@@ -21,27 +21,16 @@ func NewBlocksRepository(db *mongo.Database) *Blocks {
 }
 
 // BlockUser blocks an user.
-func (b *Blocks) BlockUser(userToBlock, blockedById string) error {
-	userToBlockId, err := pkg.ParseID(userToBlock)
-
-	if err != nil {
-		return err
-	}
-
-	userIdThatIsBlocking, err := pkg.ParseID(blockedById)
-
-	if err != nil {
-		return err
-	}
-
+func (b *Blocks) BlockUser(payload *internal.BlockedUser) error {
 	coll := b.db.Collection(collections.BLOCKS)
 
 	block := internal.BlockedUser{
-		UserToBlock: userToBlockId,
-		BlockedBy:   userIdThatIsBlocking,
+		ID:          pkg.NewID(),
+		UserToBlock: payload.UserToBlock,
+		BlockedBy:   payload.BlockedBy,
 	}
 
-	_, err = coll.InsertOne(context.Background(), block)
+	_, err := coll.InsertOne(context.Background(), block)
 
 	return err
 }
@@ -53,7 +42,7 @@ func (b *Blocks) IsUserBlocked(userId pkg.ID) (bool, error) {
 	filter := bson.D{{Key: "userToBlock", Value: userId}}
 	foundUser := internal.User{}
 
-	coll.FindOne(context.Background(), filter).Decode(&foundUser)
+	err := coll.FindOne(context.Background(), filter).Decode(&foundUser)
 
-	return foundUser.Nick != "", nil
+	return foundUser.Nick != "", err
 }

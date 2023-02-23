@@ -47,14 +47,14 @@ func (q Questions) Create(payload *dtos.CreateQuestionDTO) error {
 }
 
 // FindByID finds a question by id.
-func (q Questions) FindByID(id pkg.ID) entities.Question {
+func (q Questions) FindByID(id pkg.ID) (*entities.Question, error) {
 	coll := q.db.Collection(collections.QUESTIONS)
 
 	filter := bson.D{{Key: "_id", Value: id}}
 
 	question := entities.Question{}
 
-	coll.FindOne(context.Background(), filter).Decode(&question)
+	err := coll.FindOne(context.Background(), filter).Decode(&question)
 
-	return question
+	return &question, err
 }

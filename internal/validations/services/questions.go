@@ -9,7 +9,7 @@ import (
 )
 
 // QuestionExists returns error message if question does not exisits in bd.
-func QuestionExists(q entities.Question) error {
+func QuestionExists(q *entities.Question) error {
 	if pkgEntities.IsZeroID(q.ID) && q.Content == "" {
 		return errors.New(pkgErrors.QUESTION_NOT_FOUND)
 	}
@@ -18,7 +18,7 @@ func QuestionExists(q entities.Question) error {
 }
 
 // QuestionIsSentForMe returns error message if question is not sent for me (authenticated user).
-func QuestionIsSentForMe(q internal.Question, authenticatedUserId pkgEntities.ID) error {
+func QuestionIsSentForMe(q *internal.Question, authenticatedUserId pkgEntities.ID) error {
 	if q.SendTo != authenticatedUserId {
 		return errors.New(pkgErrors.QUESTION_NOT_SENT_FOR_ME)
 	}

@@ -22,7 +22,8 @@ func BlockUser(payload *entities.BlockedUser, usersRepository *repositories.User
 		return err
 	}
 
-	if err := blocksRepository.BlockUser(payload.UserToBlock.String(), payload.UserToBlock.String()); err != nil {
+	if err := blocksRepository.BlockUser(payload); err != nil {
+
 		return err
 	}
 
