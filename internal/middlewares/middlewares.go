@@ -8,7 +8,7 @@ import (
 
 // LoadMiddlewares applies middlewares to fiber router.
 func LoadMiddlewares(app *fiber.App, cfg *configs.Conf) {
-	LoadRecoverMiddleware(app)
+	LoadRecoverMiddleware(app, cfg)
 	LoadCORSMiddleware(app, cfg)
 	LoadLoggerMiddleware(app)
 }

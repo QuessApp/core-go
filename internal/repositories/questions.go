@@ -46,7 +46,7 @@ func (q Questions) Create(payload *dtos.CreateQuestionDTO) error {
 	return err
 }
 
-// FindByID finds a question by id.
+// FindByID finds a question by id in database.
 func (q Questions) FindByID(id pkgEntities.ID) *internalEntities.Question {
 	coll := q.db.Collection(collections.QUESTIONS)
 
@@ -57,4 +57,15 @@ func (q Questions) FindByID(id pkgEntities.ID) *internalEntities.Question {
 	coll.FindOne(context.Background(), filter).Decode(&question)
 
 	return &question
+}
+
+// Delete deletes a question from database.
+func (q Questions) Delete(id pkgEntities.ID) error {
+	coll := q.db.Collection(collections.QUESTIONS)
+
+	filter := bson.D{{Key: "_id", Value: id}}
+
+	_, err := coll.DeleteOne(context.Background(), filter)
+
+	return err
 }

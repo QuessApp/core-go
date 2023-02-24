@@ -49,3 +49,20 @@ func FindQuestionByIDHandler(c *fiber.Ctx, questionsRepository *repositories.Que
 
 	return responses.ParseSuccessful(c, http.StatusOK, question)
 }
+
+// DeleteQuestionHandler is a handler to delete a question by its id.
+func DeleteQuestionHandler(c *fiber.Ctx, questionsRepository *repositories.Questions) error {
+	id, err := pkg.ParseID(c.Params("id"))
+
+	if err != nil {
+		return responses.ParseUnsuccesfull(c, http.StatusBadRequest, err.Error())
+	}
+
+	authenticatedUserId := jwt.GetUserByToken(c).ID
+
+	if err := services.DeleteQuestion(id, authenticatedUserId, questionsRepository); err != nil {
+		return responses.ParseUnsuccesfull(c, http.StatusBadRequest, err.Error())
+	}
+
+	return responses.ParseSuccessful(c, http.StatusOK, nil)
+}

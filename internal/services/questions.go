@@ -55,7 +55,7 @@ func CreateQuestion(payload *dtos.CreateQuestionDTO, authenticatedUserId pkg.ID,
 		return err
 	}
 
-	// TODO: update user lastPublishAt field.
+	// TODO: update user lastPublishAt field and send email to user.
 
 	return nil
 }
@@ -84,4 +84,23 @@ func FindQuestionByID(id pkg.ID, authenticatedUserId pkg.ID, questionsRepository
 	foundQuestion.SentBy = u
 
 	return foundQuestion.MapAnonymousFields(), nil
+}
+
+// DeleteQuestion deletes a question from database by id.
+func DeleteQuestion(id pkg.ID, authenticatedUserId pkg.ID, questionsRepository *repositories.Questions) error {
+	foundQuestion := questionsRepository.FindByID(id)
+
+	if err := validations.QuestionExists(foundQuestion); err != nil {
+		return err
+	}
+
+	if err := validations.CanUserDeleteQuestion(foundQuestion, authenticatedUserId); err != nil {
+		return err
+	}
+
+	if err := questionsRepository.Delete(id); err != nil {
+		return err
+	}
+
+	return nil
 }
