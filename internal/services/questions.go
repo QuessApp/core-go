@@ -10,7 +10,6 @@ import (
 
 // CreateQuestion reads payload from request body then try to create a new question in database.
 func CreateQuestion(payload *dtos.CreateQuestionDTO, authenticatedUserId pkg.ID, questionsRepository *repositories.Questions, blocksRepository *repositories.Blocks, usersRepository *repositories.Users) error {
-
 	if err := payload.Validate(); err != nil {
 		return err
 	}
@@ -29,21 +28,13 @@ func CreateQuestion(payload *dtos.CreateQuestionDTO, authenticatedUserId pkg.ID,
 		return err
 	}
 
-	userToSendQuestion, err := usersRepository.FindUserByID(payload.SendTo)
-
-	if err != nil {
-		return err
-	}
+	userToSendQuestion := usersRepository.FindUserByID(payload.SendTo)
 
 	if err := validations.UserExists(userToSendQuestion); err != nil {
 		return err
 	}
 
-	userThatIsSendingQuestion, err := usersRepository.FindUserByID(payload.SentBy)
-
-	if err != nil {
-		return err
-	}
+	userThatIsSendingQuestion := usersRepository.FindUserByID(payload.SentBy)
 
 	if err := validations.ReachedPostsLimitToCreateQuestion(userThatIsSendingQuestion); err != nil {
 		return err
@@ -77,15 +68,11 @@ func FindQuestionByID(id pkg.ID, authenticatedUserId pkg.ID, questionsRepository
 		return nil, err
 	}
 
-	if err := validations.QuestionIsSentForMe(foundQuestion, authenticatedUserId); err != nil {
+	if err := validations.QuestionCanViewQuestion(foundQuestion, authenticatedUserId); err != nil {
 		return nil, err
 	}
 
-	questionOwner, err := usersRepository.FindUserByID(foundQuestion.SentBy.(pkg.ID))
-
-	if err != nil {
-		return nil, err
-	}
+	questionOwner := usersRepository.FindUserByID(foundQuestion.SentBy.(pkg.ID))
 
 	u := entities.User{
 		ID:        questionOwner.ID,

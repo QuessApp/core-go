@@ -68,14 +68,14 @@ func SignUp(cfg *configs.Conf, payload *dtos.SignUpUserDTO, usersRepository *rep
 }
 
 // SignIn reads nick and password from an user and try to return user's data.
-func SignIn(cfg *configs.Conf, nick, password string, usersRepository *repositories.Users) (*entities.ResponseWithUser, error) {
-	u := usersRepository.FindUserByNick(nick)
+func SignIn(cfg *configs.Conf, payload *dtos.SignInUserDTO, usersRepository *repositories.Users) (*entities.ResponseWithUser, error) {
+	u := usersRepository.FindUserByNick(payload.Nick)
 
 	if err := validations.UserExists(u); err != nil {
 		return nil, err
 	}
 
-	if err := validations.IsPasswordCorrect(bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(password))); err != nil {
+	if err := validations.IsPasswordCorrect(bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(payload.Password))); err != nil {
 		return nil, err
 	}
 

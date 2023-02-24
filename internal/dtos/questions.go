@@ -20,10 +20,10 @@ type CreateQuestionDTO struct {
 }
 
 // Validate validates passed struct then returns a string.
-func (q CreateQuestionDTO) Validate() error {
-	validationResult := validation.ValidateStruct(&q,
-		validation.Field(&q.Content, validation.Required.Error(errors.CONTENT_REQUIRED), validation.Length(3, 250).Error(errors.CONTENT_LENGTH)),
-		validation.Field(&q.SendTo, validation.Required.Error(errors.SEND_TO_REQUIRED), validation.Length(3, 50).Error(errors.SEND_TO_LENGTH)),
+func (d CreateQuestionDTO) Validate() error {
+	validationResult := validation.ValidateStruct(&d,
+		validation.Field(&d.Content, validation.Required.Error(errors.CONTENT_REQUIRED), validation.Length(3, 250).Error(errors.CONTENT_LENGTH)),
+		validation.Field(&d.SendTo, validation.Required.Error(errors.SEND_TO_REQUIRED), validation.Length(3, 50).Error(errors.SEND_TO_LENGTH)),
 	)
 
 	return validations.GetValidationError(validationResult)

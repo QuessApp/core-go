@@ -2,6 +2,7 @@ package responses
 
 import (
 	"core/internal/entities"
+	pkgErrors "core/pkg/errors"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -30,4 +31,12 @@ func ParseUnsuccesfull(c *fiber.Ctx, status int, err string) error {
 
 	c.Status(status)
 	return c.JSON(res)
+}
+
+func HasRecordsInMongo(err error) bool {
+	if err.Error() == pkgErrors.MONGO_NO_DOCUMENTS {
+		return false
+	}
+
+	return true
 }

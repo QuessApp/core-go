@@ -17,4 +17,7 @@ func LoadBlocksRoutes(app *fiber.App, db *mongo.Database, cfg *configs.Conf, use
 	g.Post("/user/:id", func(c *fiber.Ctx) error {
 		return handlers.BlockUserHandler(c, usersRepository, blocksRepository)
 	})
+	g.Patch("/user/:id", func(c *fiber.Ctx) error {
+		return handlers.UnblockUserHandler(c, usersRepository, blocksRepository)
+	})
 }

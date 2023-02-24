@@ -14,5 +14,6 @@ const (
 	EMAIL_FIELD_LENGTH   = "campo de e-mail deve conter entre 5 a 200 caracteres"
 	EMAIL_FORMAT_INVALID = "campo de e-mail possui formato inválido"
 
-	USER_TO_BLOCK_REQUIRED = "campo de quem deve ser bloqueado é obrigatório"
+	USER_TO_BLOCK_REQUIRED   = "campo de quem deve ser bloqueado é obrigatório"
+	USER_TO_UNBLOCK_REQUIRED = "campo de quem deve ser bloqueado é obrigatório"
 )

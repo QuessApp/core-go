@@ -36,7 +36,7 @@ func SignInUserHandler(c *fiber.Ctx, cfg *configs.Conf, usersRepository *reposit
 		return responses.ParseUnsuccesfull(c, http.StatusBadRequest, err.Error())
 	}
 
-	u, err := services.SignIn(cfg, payload.Nick, payload.Password, usersRepository)
+	u, err := services.SignIn(cfg, &payload, usersRepository)
 
 	if err != nil {
 		return responses.ParseUnsuccesfull(c, http.StatusBadRequest, err.Error())

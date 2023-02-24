@@ -67,15 +67,6 @@ func (u User) Validate() error {
 	return validations.GetValidationError(validationResult)
 }
 
-// Validate validates passed struct then returns a string.
-func (u BlockedUser) Validate() error {
-	validationResult := validation.ValidateStruct(&u,
-		validation.Field(&u.UserToBlock, validation.Required.Error(errors.USER_TO_BLOCK_REQUIRED)),
-	)
-
-	return validations.GetValidationError(validationResult)
-}
-
 // GetBasicInfos gets basic data of an user like id, name, nick, etc.
 func (u User) GetBasicInfos() *User {
 	return &User{
