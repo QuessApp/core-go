@@ -10,7 +10,7 @@ import (
 
 // QuestionExists returns error message if question does not exisits in bd.
 func QuestionExists(q *entities.Question) error {
-	if pkgEntities.IsZeroID(q.ID) && q.Content == "" {
+	if q == nil {
 		return errors.New(pkgErrors.QUESTION_NOT_FOUND)
 	}
 

@@ -56,7 +56,5 @@ func (b *Blocks) IsUserBlocked(userId pkgEntities.ID) bool {
 
 	coll.FindOne(context.Background(), filter).Decode(&foundRegistry)
 
-	areValidIds := !pkgEntities.IsZeroID(foundRegistry.ID) && !pkgEntities.IsZeroID(foundRegistry.UserToBlock)
-
-	return areValidIds
+	return !pkgEntities.IsZeroID(foundRegistry.ID)
 }

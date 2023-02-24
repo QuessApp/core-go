@@ -8,9 +8,7 @@ import (
 
 // UserExists returns error message if user does not exists.
 func UserExists(u *entities.User) error {
-	userExists := u != nil
-
-	if !userExists {
+	if u == nil {
 		return errors.New(pkg.USER_NOT_FOUND)
 	}
 

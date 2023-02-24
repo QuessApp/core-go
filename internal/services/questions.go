@@ -62,11 +62,7 @@ func CreateQuestion(payload *dtos.CreateQuestionDTO, authenticatedUserId pkg.ID,
 
 // FindQuestionByID finds for a question in database by question id.
 func FindQuestionByID(id pkg.ID, authenticatedUserId pkg.ID, questionsRepository *repositories.Questions, usersRepository *repositories.Users) (*entities.Question, error) {
-	foundQuestion, err := questionsRepository.FindByID(id)
-
-	if err != nil {
-		return nil, err
-	}
+	foundQuestion := questionsRepository.FindByID(id)
 
 	if err := validations.QuestionExists(foundQuestion); err != nil {
 		return nil, err

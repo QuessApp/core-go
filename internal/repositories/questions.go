@@ -5,8 +5,8 @@ import (
 	collections "core/internal/constants"
 	"core/internal/dtos"
 
-	internal "core/internal/entities"
-	pkg "core/pkg/entities"
+	internalEntities "core/internal/entities"
+	pkgEntities "core/pkg/entities"
 
 	"time"
 
@@ -28,10 +28,10 @@ func NewQuestionsRepository(db *mongo.Database) *Questions {
 func (q Questions) Create(payload *dtos.CreateQuestionDTO) error {
 	coll := q.db.Collection(collections.QUESTIONS)
 
-	payload.ID = pkg.NewID()
+	payload.ID = pkgEntities.NewID()
 	payload.CreatedAt = time.Now()
 
-	question := internal.Question{
+	question := internalEntities.Question{
 		ID:          payload.ID,
 		Content:     payload.Content,
 		IsAnonymous: payload.IsAnonymous,
@@ -47,14 +47,14 @@ func (q Questions) Create(payload *dtos.CreateQuestionDTO) error {
 }
 
 // FindByID finds a question by id.
-func (q Questions) FindByID(id pkg.ID) (*internal.Question, error) {
+func (q Questions) FindByID(id pkgEntities.ID) *internalEntities.Question {
 	coll := q.db.Collection(collections.QUESTIONS)
 
 	filter := bson.D{{Key: "_id", Value: id}}
 
-	question := internal.Question{}
+	question := internalEntities.Question{}
 
-	err := coll.FindOne(context.Background(), filter).Decode(&question)
+	coll.FindOne(context.Background(), filter).Decode(&question)
 
-	return &question, err
+	return &question
 }
