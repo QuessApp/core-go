@@ -55,7 +55,7 @@ func CreateQuestion(payload *dtos.CreateQuestionDTO, authenticatedUserId pkg.ID,
 		return err
 	}
 
-	// TODO: update user lastPublishAt field.
+	// TODO: update user lastPublishAt field and send email to user.
 
 	return nil
 }
