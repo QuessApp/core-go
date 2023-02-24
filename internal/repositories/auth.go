@@ -57,7 +57,7 @@ func (a Auth) SignUp(payload *dtos.SignUpUserDTO) (*internal.User, error) {
 func (a Auth) IsEmailInUse(email string) bool {
 	coll := a.db.Collection(collections.USERS)
 
-	var user internal.User
+	user := internal.User{}
 
 	coll.FindOne(context.Background(), bson.D{{Key: "email", Value: email}}).Decode(&user)
 
