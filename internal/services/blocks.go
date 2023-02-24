@@ -4,6 +4,7 @@ import (
 	"core/internal/dtos"
 	"core/internal/repositories"
 	validations "core/internal/validations/services"
+	pkg "core/pkg/entities"
 )
 
 // BlockUser blocks an user.
@@ -12,11 +13,7 @@ func BlockUser(payload *dtos.BlockUserDTO, usersRepository *repositories.Users, 
 		return err
 	}
 
-	doesUserToBeBlockedExists, err := usersRepository.FindUserByID(payload.UserToBlock)
-
-	if err != nil {
-		return err
-	}
+	doesUserToBeBlockedExists := usersRepository.FindUserByID(payload.UserToBlock)
 
 	if err := validations.UserExists(doesUserToBeBlockedExists); err != nil {
 		return err
@@ -31,6 +28,21 @@ func BlockUser(payload *dtos.BlockUserDTO, usersRepository *repositories.Users, 
 	}
 
 	if err := blocksRepository.BlockUser(payload); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// UnblockUser unblocks an user.
+func UnblockUser(userId pkg.ID, usersRepository *repositories.Users, blocksRepository *repositories.Blocks) error {
+	if err := validations.IsReallyBlocked(blocksRepository.IsUserBlocked(userId)); err != nil {
+		return err
+	}
+
+	err := blocksRepository.UnblockUser(userId)
+
+	if err != nil {
 		return err
 	}
 

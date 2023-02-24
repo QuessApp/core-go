@@ -17,17 +17,7 @@ type BlockUserDTO struct {
 
 // UnblockUserDTO is a dto for payload to unblock an user.
 type UnblockUserDTO struct {
-	pkg.ID    `json:"id" bson:"_id"`
-	BlockedBy pkg.ID `json:"blockedBy" bson:"blockedBy"`
-}
-
-// Validate validates passed struct then returns a string.
-func (d UnblockUserDTO) Validate() error {
-	validationResult := validation.ValidateStruct(&d,
-		validation.Field(&d.BlockedBy, validation.Required.Error(errors.USER_TO_BLOCK_REQUIRED)),
-	)
-
-	return validations.GetValidationError(validationResult)
+	BlockedUserID pkg.ID
 }
 
 // Validate validates passed struct then returns a string.

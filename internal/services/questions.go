@@ -28,21 +28,13 @@ func CreateQuestion(payload *dtos.CreateQuestionDTO, authenticatedUserId pkg.ID,
 		return err
 	}
 
-	userToSendQuestion, err := usersRepository.FindUserByID(payload.SendTo)
-
-	if err != nil {
-		return err
-	}
+	userToSendQuestion := usersRepository.FindUserByID(payload.SendTo)
 
 	if err := validations.UserExists(userToSendQuestion); err != nil {
 		return err
 	}
 
-	userThatIsSendingQuestion, err := usersRepository.FindUserByID(payload.SentBy)
-
-	if err != nil {
-		return err
-	}
+	userThatIsSendingQuestion := usersRepository.FindUserByID(payload.SentBy)
 
 	if err := validations.ReachedPostsLimitToCreateQuestion(userThatIsSendingQuestion); err != nil {
 		return err
@@ -84,11 +76,7 @@ func FindQuestionByID(id pkg.ID, authenticatedUserId pkg.ID, questionsRepository
 		return nil, err
 	}
 
-	questionOwner, err := usersRepository.FindUserByID(foundQuestion.SentBy.(pkg.ID))
-
-	if err != nil {
-		return nil, err
-	}
+	questionOwner := usersRepository.FindUserByID(foundQuestion.SentBy.(pkg.ID))
 
 	u := entities.User{
 		ID:        questionOwner.ID,

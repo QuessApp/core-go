@@ -6,7 +6,6 @@ import (
 	"core/internal/dtos"
 	internal "core/internal/entities"
 	pkgEntities "core/pkg/entities"
-	pkgErrors "core/pkg/errors"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -37,20 +36,27 @@ func (b *Blocks) BlockUser(payload *dtos.BlockUserDTO) error {
 	return err
 }
 
+// UnblockUser removes block from database.
+func (b *Blocks) UnblockUser(blockId pkgEntities.ID) error {
+	coll := b.db.Collection(collections.BLOCKS)
+
+	filter := bson.D{{Key: "userToBlock", Value: blockId}}
+
+	_, err := coll.DeleteOne(context.Background(), filter)
+
+	return err
+}
+
 // IsBlocked returns if user is blocked by someone.
-func (b *Blocks) IsUserBlocked(userId pkgEntities.ID) (bool, error) {
+func (b *Blocks) IsUserBlocked(userId pkgEntities.ID) bool {
 	coll := b.db.Collection(collections.BLOCKS)
 
 	filter := bson.D{{Key: "userToBlock", Value: userId}}
-	foundRegistry := internal.BlockedUser{}
+	foundRegistry := &internal.BlockedUser{}
 
-	err := coll.FindOne(context.Background(), filter).Decode(&foundRegistry)
-
-	if err.Error() == pkgErrors.MONGO_NO_DOCUMENTS {
-		return false, nil
-	}
+	coll.FindOne(context.Background(), filter).Decode(&foundRegistry)
 
 	areValidIds := !pkgEntities.IsZeroID(foundRegistry.ID) && !pkgEntities.IsZeroID(foundRegistry.UserToBlock)
 
-	return areValidIds, err
+	return areValidIds
 }

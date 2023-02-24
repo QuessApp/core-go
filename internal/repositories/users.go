@@ -49,14 +49,14 @@ func (u Users) FindUserByNick(nick string) *internal.User {
 }
 
 // FindUserByID finds an user by id.
-func (u Users) FindUserByID(userId pkg.ID) (*internal.User, error) {
+func (u Users) FindUserByID(userId pkg.ID) *internal.User {
 	coll := u.db.Collection(collections.USERS)
 
 	var foundUser internal.User
 
-	err := coll.FindOne(context.Background(), bson.D{{Key: "_id", Value: userId}}).Decode(&foundUser)
+	coll.FindOne(context.Background(), bson.D{{Key: "_id", Value: userId}}).Decode(&foundUser)
 
-	return &foundUser, err
+	return &foundUser
 }
 
 // IsNickInUse checks is an user already take a nick.

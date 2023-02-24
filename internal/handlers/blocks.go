@@ -18,7 +18,6 @@ func BlockUserHandler(c *fiber.Ctx, usersRepository *repositories.Users, blocksR
 	id, err := pkg.ParseID(c.Params("id"))
 
 	if err != nil {
-
 		return responses.ParseUnsuccesfull(c, http.StatusBadRequest, err.Error())
 	}
 
@@ -26,6 +25,21 @@ func BlockUserHandler(c *fiber.Ctx, usersRepository *repositories.Users, blocksR
 	payload.UserToBlock = id
 
 	if err := services.BlockUser(&payload, usersRepository, blocksRepository); err != nil {
+		return responses.ParseUnsuccesfull(c, http.StatusBadRequest, err.Error())
+	}
+
+	return responses.ParseSuccessful(c, http.StatusCreated, nil)
+}
+
+// UnblockUserHandler is a handler to unblock an user.
+func UnblockUserHandler(c *fiber.Ctx, usersRepository *repositories.Users, blocksRepository *repositories.Blocks) error {
+	id, err := pkg.ParseID(c.Params("id"))
+
+	if err != nil {
+		return responses.ParseUnsuccesfull(c, http.StatusBadRequest, err.Error())
+	}
+
+	if err := services.UnblockUser(id, usersRepository, blocksRepository); err != nil {
 		return responses.ParseUnsuccesfull(c, http.StatusBadRequest, err.Error())
 	}
 

@@ -8,13 +8,7 @@ import (
 
 // DecrementUserLimit decrements user posts limit.
 func DecrementUserLimit(userId pkg.ID, usersRepository *repositories.Users) error {
-	foundUser, err := usersRepository.FindUserByID(userId)
-
-	if err != nil {
-		log.Printf("Fail to find user by id %s\n", err)
-
-		return err
-	}
+	foundUser := usersRepository.FindUserByID(userId)
 
 	if foundUser.IsPRO {
 		log.Printf("Not necessary to decrement user %s limit. The user is a PRO member.\n", foundUser.Nick)

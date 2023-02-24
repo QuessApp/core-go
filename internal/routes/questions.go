@@ -15,7 +15,9 @@ func LoadQuestionsRoute(app *fiber.App, db *mongo.Database, cfg *configs.Conf, q
 	g := app.Group("/questions", middlewares.JWTMiddleware(app, cfg))
 
 	g.Post("", func(c *fiber.Ctx) error {
-		return handlers.CreateQuestionHandler(c, questionsRepository, blocksRepository, usersRepository)
+		h := handlers.CreateQuestionHandler(c, questionsRepository, blocksRepository, usersRepository)
+
+		return h
 	})
 	g.Get("/:id", func(c *fiber.Ctx) error {
 		return handlers.FindQuestionByIDHandler(c, questionsRepository, usersRepository)
