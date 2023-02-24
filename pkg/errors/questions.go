@@ -15,5 +15,5 @@ const (
 
 	REACHED_QUESTIONS_LIMIT = "você não pode enviar esta pergunta porque já atingiu o limite de envios"
 
-	CANT_DELETE_NOT_SENT_BY_YOU = "você não pode deletar esta pergunta porque ela não enviada por você"
+	CANT_DELETE_QUESTION_NOT_SENT_BY_YOU = "você não pode deletar esta pergunta porque ela não enviada por você"
 )

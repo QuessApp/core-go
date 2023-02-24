@@ -46,7 +46,7 @@ func ReachedPostsLimitToCreateQuestion(u *internalEntities.User) error {
 // CanUserDeleteQuestion returns error message if the user who is trying to delete the question is not the question owner.
 func CanUserDeleteQuestion(q *internalEntities.Question, authenticatedUserId pkgEntities.ID) error {
 	if q.SentBy != authenticatedUserId {
-		return errors.New(pkgErrors.CANT_DELETE_NOT_SENT_BY_YOU)
+		return errors.New(pkgErrors.CANT_DELETE_QUESTION_NOT_SENT_BY_YOU)
 	}
 
 	return nil
