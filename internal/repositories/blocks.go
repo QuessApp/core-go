@@ -52,7 +52,7 @@ func (b *Blocks) IsUserBlocked(userId pkgEntities.ID) bool {
 	coll := b.db.Collection(collections.BLOCKS)
 
 	filter := bson.D{{Key: "userToBlock", Value: userId}}
-	foundRegistry := &internal.BlockedUser{}
+	foundRegistry := internal.BlockedUser{}
 
 	coll.FindOne(context.Background(), filter).Decode(&foundRegistry)
 
