@@ -3,6 +3,7 @@ package entities
 import (
 	"regexp"
 	"strings"
+	"time"
 
 	"core/pkg/errors"
 	"core/pkg/validations"
@@ -36,16 +37,16 @@ type User struct {
 	IsShadowBanned  bool `json:"isShadowBanned,omitempty" bson:"isShadowBanned"`
 	PostsLimit      int  `json:"postsLimit,omitempty" bson:"postsLimit"`
 	// CustomerId of Stripe. Type must be String or nil.
-	CustomerID any  `json:"customerId,omitempty" bson:"customerId"`
-	IsPRO      bool `json:"isPro,omitempty" bson:"isPro"`
+	CustomerID *string `json:"customerId,omitempty" bson:"customerId"`
+	IsPRO      bool    `json:"isPro,omitempty" bson:"isPro"`
 	// SubscriptionID of Stripe. Type must be String or nil.
-	SubscriptionID any `json:"subscriptionId,omitempty" bson:"subscriptionId"`
+	SubscriptionID *string `json:"subscriptionId,omitempty" bson:"subscriptionId"`
 	// ProExpiresAt of Stripe. Type must be Time.time or nil.
-	ProExpiresAt any `json:"proExpiresAt,omitempty" bson:"proExpiresAt"`
+	ProExpiresAt *string `json:"proExpiresAt,omitempty" bson:"proExpiresAt"`
 	// LastPublishAt is the last published post of user. Type must be Time.time or nil.
-	LastPublishAt any `json:"lastPublishAt,omitempty" bson:"lastPublishAt"`
+	LastPublishAt *time.Time `json:"lastPublishAt,omitempty" bson:"lastPublishAt"`
 	// CreatedAt is the date that user is created. Type must be Time.time or nil.
-	CreatedAt any `json:"createdAt,omitempty" bson:"createdAt"`
+	CreatedAt *time.Time `json:"createdAt,omitempty" bson:"createdAt"`
 }
 
 // Format formats user information. It removes special characters from nick, trim email, etc.
