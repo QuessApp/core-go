@@ -1,29 +1,13 @@
 package routes
 
 import (
-	"core/internal/configs"
+	"core/cmd/app/entities"
 	"core/internal/middlewares"
-	"core/internal/repositories"
 	"log"
-
-	"github.com/gofiber/fiber/v2"
-	"go.mongodb.org/mongo-driver/mongo"
 )
 
-// AppCtx is a global model for app. It defines the router, db, config, repositories, etc.
-// Use AppCtx to avoid long function params.
-type AppCtx struct {
-	App                 *fiber.App
-	DB                  *mongo.Database
-	Cfg                 *configs.Conf
-	QuestionsRepository *repositories.Questions
-	BlocksRepository    *repositories.Blocks
-	UsersRepository     *repositories.Users
-	AuthRepository      *repositories.Auth
-}
-
 // LoadRoutes loads all routes of app.
-func LoadRoutes(AppCtx *AppCtx) {
+func LoadRoutes(AppCtx *entities.AppCtx) {
 	middlewares.LoadMiddlewares(AppCtx.App, AppCtx.Cfg)
 
 	LoadAuthRoutes(AppCtx)

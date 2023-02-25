@@ -1,46 +1,43 @@
 package handlers
 
 import (
-	"core/internal/configs"
+	"core/cmd/app/entities"
 	"core/internal/dtos"
-	"core/internal/repositories"
 	"core/internal/services"
 	"core/pkg/responses"
 	"net/http"
-
-	"github.com/gofiber/fiber/v2"
 )
 
 // SignUpUserHandler is a handler to sign up an user.
-func SignUpUserHandler(c *fiber.Ctx, cfg *configs.Conf, usersRepository *repositories.Users, authRepository *repositories.Auth) error {
+func SignUpUserHandler(handlerCtx *entities.HandlersContext) error {
 	payload := dtos.SignUpUserDTO{}
 
-	if err := c.BodyParser(&payload); err != nil {
-		return responses.ParseUnsuccesfull(c, http.StatusBadRequest, err.Error())
+	if err := handlerCtx.C.BodyParser(&payload); err != nil {
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
-	u, err := services.SignUp(cfg, &payload, usersRepository, authRepository)
+	u, err := services.SignUp(handlerCtx.Cfg, &payload, handlerCtx.UsersRepository, handlerCtx.AuthRepository)
 
 	if err != nil {
-		return responses.ParseUnsuccesfull(c, http.StatusBadRequest, err.Error())
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
-	return responses.ParseSuccessful(c, http.StatusCreated, u)
+	return responses.ParseSuccessful(handlerCtx.C, http.StatusCreated, u)
 }
 
 // SignInUserHandler is a handler to sign in an user.
-func SignInUserHandler(c *fiber.Ctx, cfg *configs.Conf, usersRepository *repositories.Users) error {
+func SignInUserHandler(handlerCtx *entities.HandlersContext) error {
 	payload := dtos.SignInUserDTO{}
 
-	if err := c.BodyParser(&payload); err != nil {
-		return responses.ParseUnsuccesfull(c, http.StatusBadRequest, err.Error())
+	if err := handlerCtx.C.BodyParser(&payload); err != nil {
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
-	u, err := services.SignIn(cfg, &payload, usersRepository)
+	u, err := services.SignIn(handlerCtx.Cfg, &payload, handlerCtx.UsersRepository)
 
 	if err != nil {
-		return responses.ParseUnsuccesfull(c, http.StatusBadRequest, err.Error())
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
-	return responses.ParseSuccessful(c, http.StatusCreated, u)
+	return responses.ParseSuccessful(handlerCtx.C, http.StatusCreated, u)
 }
