@@ -1,6 +1,7 @@
 package validations
 
 import (
+	"core/internal/dtos"
 	internalEntities "core/internal/entities"
 	internalErrors "core/internal/errors"
 	"errors"
@@ -66,6 +67,15 @@ func CanHideQuestion(q *internalEntities.Question, authenticatedUserId toolkitEn
 func IsHiddenByReceiver(isHiddenByReceiver bool) error {
 	if isHiddenByReceiver {
 		return errors.New(internalErrors.CANT_HIDE_ALREADY_HIDDEN)
+	}
+
+	return nil
+}
+
+// IsInvalidSendToID returns error message if the user to send id is invalid.
+func IsInvalidSendToID(payload *dtos.CreateQuestionDTO) error {
+	if toolkitEntities.IsZeroID(payload.SendTo) {
+		return errors.New(internalErrors.CANT_SEND_INVALID_ID)
 	}
 
 	return nil

@@ -18,4 +18,5 @@ const (
 	CANT_DELETE_QUESTION_NOT_SENT_BY_YOU = "você não pode deletar esta pergunta porque ela não enviada por você"
 
 	CANT_HIDE_ALREADY_HIDDEN = "você não pode ocultar esta pergunta porque ela já está oculta"
+	CANT_SEND_INVALID_ID     = "id do destinátário é invalido"
 )
