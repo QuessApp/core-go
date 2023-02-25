@@ -11,6 +11,10 @@ import (
 
 // CreateQuestion reads payload from request body then try to create a new question in database.
 func CreateQuestion(payload *dtos.CreateQuestionDTO, authenticatedUserId toolkitEntities.ID, questionsRepository *repositories.Questions, blocksRepository *repositories.Blocks, usersRepository *repositories.Users) error {
+	if err := validations.IsInvalidSendToID(payload); err != nil {
+		return err
+	}
+
 	if err := payload.Validate(); err != nil {
 		return err
 	}
