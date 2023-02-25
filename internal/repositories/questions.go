@@ -73,7 +73,7 @@ func (q Questions) GetAll(page *int64, sort, filter *string, authenticatedUserId
 	}
 
 	if *filter == "replied" {
-		findFilterOptions = bson.D{{Key: "isReplied", Value: false}}
+		findFilterOptions = bson.D{{Key: "isReplied", Value: true}}
 	}
 
 	findOptions := options.Find().SetSort(bson.D{{Key: "createdAt", Value: 1}})
