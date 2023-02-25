@@ -22,6 +22,10 @@ func TestFormat(t *testing.T) {
 	fakeUser.Format()
 	assert.Equal(t, fakeUser.Nick, "testuser")
 
+}
+
+func TestGetBasicInfos(t *testing.T) {
+	fakeUser := mocks.NewUser()
 	newUser := fakeUser.GetBasicInfos()
 
 	assert.Empty(t, newUser.GetBasicInfos().Password)
