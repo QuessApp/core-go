@@ -13,13 +13,13 @@ import (
 func LoadRecoverMiddleware(app *fiber.App, cfg *configs.Conf) {
 	app.Use(recover.New(recover.Config{
 		Next: func(c *fiber.Ctx) bool {
-			shouldSkip := cfg.Env == "development"
+			isDev := cfg.Env == "development"
 
-			if shouldSkip {
+			if isDev {
 				log.Println("[DEV] For development purpouses like debugging the recover middleware is disabled.")
 			}
 
-			return shouldSkip
+			return isDev
 		},
 	}))
 }

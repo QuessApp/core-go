@@ -13,6 +13,7 @@ type Conf struct {
 	APPName    string `mapstructure:"APP_NAME"`
 	ServerPort string `mapstructure:"SERVER_PORT"`
 	Env        string `mapstructure:"ENV"`
+	APIKey     string `mapstructure:"API_KEY"`
 
 	DBDriver   string `mapstructure:"DB_DRIVER"`
 	DBHost     string `mapstructure:"DB_HOST"`
