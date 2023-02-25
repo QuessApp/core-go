@@ -24,5 +24,4 @@ func NewUser() *internalEntities.User {
 		PostsLimit:      fake.RandomNumber(30),
 		IsPRO:           fake.Bool(),
 	}
-
 }
