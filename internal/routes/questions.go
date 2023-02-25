@@ -14,16 +14,19 @@ import (
 func LoadQuestionsRoute(app *fiber.App, db *mongo.Database, cfg *configs.Conf, questionsRepository *repositories.Questions, blocksRepository *repositories.Blocks, usersRepository *repositories.Users) {
 	g := app.Group("/questions", middlewares.JWTMiddleware(app, cfg))
 
-	g.Post("", func(c *fiber.Ctx) error {
-		return handlers.CreateQuestionHandler(c, questionsRepository, blocksRepository, usersRepository)
-	})
 	g.Get("/:id", func(c *fiber.Ctx) error {
 		return handlers.FindQuestionByIDHandler(c, questionsRepository, usersRepository)
 	})
-	g.Delete("/:id", func(c *fiber.Ctx) error {
-		return handlers.DeleteQuestionHandler(c, questionsRepository)
-	})
 	g.Get("", func(c *fiber.Ctx) error {
 		return handlers.GetAllQuestionsHandler(c, questionsRepository, usersRepository)
+	})
+	g.Post("", func(c *fiber.Ctx) error {
+		return handlers.CreateQuestionHandler(c, questionsRepository, blocksRepository, usersRepository)
+	})
+	g.Patch("/hide/:id", func(c *fiber.Ctx) error {
+		return handlers.HideQuestionHandler(c, usersRepository, questionsRepository)
+	})
+	g.Delete("/:id", func(c *fiber.Ctx) error {
+		return handlers.DeleteQuestionHandler(c, questionsRepository)
 	})
 }

@@ -151,3 +151,26 @@ func DeleteQuestion(id pkg.ID, authenticatedUserId pkg.ID, questionsRepository *
 
 	return nil
 }
+
+// HideQuestion hides a question.
+func HideQuestion(id pkg.ID, authenticatedUserId pkg.ID, questionsRepository *repositories.Questions, usersRepository *repositories.Users) error {
+	q := questionsRepository.FindByID(id)
+
+	if err := validations.QuestionExists(q); err != nil {
+		return err
+	}
+
+	if err := validations.QuestionCanViewQuestion(q, authenticatedUserId); err != nil {
+		return err
+	}
+
+	if err := validations.IsHiddenByReceiver(q.IsHiddenByReceiver); err != nil {
+		return err
+	}
+
+	if err := questionsRepository.Hide(id); err != nil {
+		return err
+	}
+
+	return nil
+}
