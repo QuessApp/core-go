@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"core/cmd/app/entities"
+	"core/internal/configs"
 	"core/internal/handlers"
 	"core/internal/middlewares"
 
@@ -9,22 +9,22 @@ import (
 )
 
 // LoadQuestionsRoute loads all questions routes of app.
-func LoadQuestionsRoute(AppCtx *entities.AppCtx) {
+func LoadQuestionsRoute(AppCtx *configs.AppCtx) {
 	g := AppCtx.App.Group("/questions", middlewares.JWTMiddleware(AppCtx.App, AppCtx.Cfg))
 
 	g.Get("/:id", func(c *fiber.Ctx) error {
-		return handlers.FindQuestionByIDHandler(&entities.HandlersContext{C: c, AppCtx: *AppCtx})
+		return handlers.FindQuestionByIDHandler(&configs.HandlersContext{C: c, AppCtx: *AppCtx})
 	})
 	g.Get("", func(c *fiber.Ctx) error {
-		return handlers.GetAllQuestionsHandler(&entities.HandlersContext{C: c, AppCtx: *AppCtx})
+		return handlers.GetAllQuestionsHandler(&configs.HandlersContext{C: c, AppCtx: *AppCtx})
 	})
 	g.Post("", func(c *fiber.Ctx) error {
-		return handlers.CreateQuestionHandler(&entities.HandlersContext{C: c, AppCtx: *AppCtx})
+		return handlers.CreateQuestionHandler(&configs.HandlersContext{C: c, AppCtx: *AppCtx})
 	})
 	g.Patch("/hide/:id", func(c *fiber.Ctx) error {
-		return handlers.HideQuestionHandler(&entities.HandlersContext{C: c, AppCtx: *AppCtx})
+		return handlers.HideQuestionHandler(&configs.HandlersContext{C: c, AppCtx: *AppCtx})
 	})
 	g.Delete("/:id", func(c *fiber.Ctx) error {
-		return handlers.DeleteQuestionHandler(&entities.HandlersContext{C: c, AppCtx: *AppCtx})
+		return handlers.DeleteQuestionHandler(&configs.HandlersContext{C: c, AppCtx: *AppCtx})
 	})
 }

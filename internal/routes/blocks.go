@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"core/cmd/app/entities"
+	"core/internal/configs"
 	"core/internal/handlers"
 	"core/internal/middlewares"
 
@@ -9,13 +9,13 @@ import (
 )
 
 // LoadBlocksRoutes loads all blocks routes of app.
-func LoadBlocksRoutes(AppCtx *entities.AppCtx) {
+func LoadBlocksRoutes(AppCtx *configs.AppCtx) {
 	g := AppCtx.App.Group("/blocks", middlewares.JWTMiddleware(AppCtx.App, AppCtx.Cfg))
 
 	g.Post("/user/:id", func(c *fiber.Ctx) error {
-		return handlers.BlockUserHandler(&entities.HandlersContext{C: c, AppCtx: *AppCtx})
+		return handlers.BlockUserHandler(&configs.HandlersContext{C: c, AppCtx: *AppCtx})
 	})
 	g.Patch("/user/:id", func(c *fiber.Ctx) error {
-		return handlers.UnblockUserHandler(&entities.HandlersContext{C: c, AppCtx: *AppCtx})
+		return handlers.UnblockUserHandler(&configs.HandlersContext{C: c, AppCtx: *AppCtx})
 	})
 }

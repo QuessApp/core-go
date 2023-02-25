@@ -1,7 +1,6 @@
 package main
 
 import (
-	"core/cmd/app/entities"
 	"core/internal/configs"
 	"core/internal/database"
 	"core/internal/repositories"
@@ -35,7 +34,7 @@ func main() {
 	questionsRepository := repositories.NewQuestionsRepository(db)
 	blocksRepository := repositories.NewBlocksRepository(db)
 
-	AppCtx := &entities.AppCtx{
+	AppCtx := &configs.AppCtx{
 		App:                 fiber.New(),
 		DB:                  db,
 		Cfg:                 config,

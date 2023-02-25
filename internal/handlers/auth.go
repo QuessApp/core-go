@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"core/cmd/app/entities"
+	"core/internal/configs"
 	"core/internal/dtos"
 	"core/internal/services"
 	"net/http"
@@ -10,7 +10,7 @@ import (
 )
 
 // SignUpUserHandler is a handler to sign up an user.
-func SignUpUserHandler(handlerCtx *entities.HandlersContext) error {
+func SignUpUserHandler(handlerCtx *configs.HandlersContext) error {
 	payload := dtos.SignUpUserDTO{}
 
 	if err := handlerCtx.C.BodyParser(&payload); err != nil {
@@ -27,7 +27,7 @@ func SignUpUserHandler(handlerCtx *entities.HandlersContext) error {
 }
 
 // SignInUserHandler is a handler to sign in an user.
-func SignInUserHandler(handlerCtx *entities.HandlersContext) error {
+func SignInUserHandler(handlerCtx *configs.HandlersContext) error {
 	payload := dtos.SignInUserDTO{}
 
 	if err := handlerCtx.C.BodyParser(&payload); err != nil {

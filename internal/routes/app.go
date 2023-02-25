@@ -1,13 +1,13 @@
 package routes
 
 import (
-	"core/cmd/app/entities"
+	"core/internal/configs"
 	"core/internal/middlewares"
 	"log"
 )
 
 // LoadRoutes loads all routes of app.
-func LoadRoutes(AppCtx *entities.AppCtx) {
+func LoadRoutes(AppCtx *configs.AppCtx) {
 	middlewares.LoadMiddlewares(AppCtx.App, AppCtx.Cfg)
 
 	LoadAuthRoutes(AppCtx)
