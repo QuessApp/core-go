@@ -86,6 +86,53 @@ func FindQuestionByID(id pkg.ID, authenticatedUserId pkg.ID, questionsRepository
 	return foundQuestion.MapAnonymousFields(), nil
 }
 
+// GetAllQuestions gets all paginated questions from database.
+func GetAllQuestions(page *int64, sort, filter *string, authenticatedUserId pkg.ID, questionsRepository *repositories.Questions, usersRepository *repositories.Users) (*entities.PaginatedQuestions, error) {
+	if *page == 0 {
+		*page = 1
+	}
+
+	if *sort == "" {
+		*sort = "asc"
+	}
+
+	if *filter == "" {
+		*filter = "all"
+	}
+
+	questions, err := questionsRepository.GetAll(page, sort, filter, authenticatedUserId)
+
+	if err != nil {
+		return nil, err
+	}
+
+	var allQuestions []entities.Question
+
+	for _, q := range *questions.Questions {
+		if q.IsAnonymous {
+			q.SentBy = nil
+		} else {
+			u := usersRepository.FindUserByID(q.SentBy.(pkg.ID))
+
+			q.SentBy = entities.User{
+				ID:        u.ID,
+				Nick:      u.Nick,
+				Name:      u.Name,
+				AvatarURL: u.AvatarURL,
+			}
+		}
+
+		allQuestions = append(allQuestions, q)
+	}
+
+	result := entities.PaginatedQuestions{
+		Questions:  &allQuestions,
+		TotalCount: questions.TotalCount,
+	}
+
+	return &result, err
+}
+
 // DeleteQuestion deletes a question from database by id.
 func DeleteQuestion(id pkg.ID, authenticatedUserId pkg.ID, questionsRepository *repositories.Questions) error {
 	foundQuestion := questionsRepository.FindByID(id)

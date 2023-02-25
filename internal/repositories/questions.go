@@ -12,6 +12,7 @@ import (
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 // Questions represents questions repository.
@@ -57,6 +58,57 @@ func (q Questions) FindByID(id pkgEntities.ID) *internalEntities.Question {
 	coll.FindOne(context.Background(), filter).Decode(&question)
 
 	return &question
+}
+
+// GetAll gets all paginated questions from database.
+func (q Questions) GetAll(page *int64, sort, filter *string, authenticatedUserId pkgEntities.ID) (*internalEntities.PaginatedQuestions, error) {
+	var LIMIT int64 = 30
+
+	coll := q.db.Collection(collections.QUESTIONS)
+
+	findFilterOptions := bson.D{{Key: "sendTo", Value: authenticatedUserId}, {Key: "isReplied", Value: false}}
+
+	if *filter == "sent" {
+		findFilterOptions = bson.D{{Key: "sentBy", Value: authenticatedUserId}, {Key: "isReplied", Value: false}}
+	}
+
+	if *filter == "replied" {
+		findFilterOptions = bson.D{{Key: "isReplied", Value: false}}
+	}
+
+	findOptions := options.Find().SetSort(bson.D{{Key: "createdAt", Value: 1}})
+
+	if *sort == "desc" {
+		findOptions = options.Find().SetSort(bson.D{{Key: "createdAt", Value: -1}})
+	}
+
+	findOptions.SetSkip((*page - 1) * LIMIT)
+	findOptions.SetLimit(LIMIT)
+
+	questions := []internalEntities.Question{}
+
+	cursor, err := coll.Find(context.Background(), findFilterOptions, findOptions)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if err = cursor.All(context.TODO(), &questions); err != nil {
+		return nil, err
+	}
+
+	totalCount, err := coll.CountDocuments(context.Background(), findFilterOptions)
+
+	if err != nil {
+		return nil, err
+	}
+
+	result := internalEntities.PaginatedQuestions{
+		TotalCount: totalCount,
+		Questions:  &questions,
+	}
+
+	return &result, nil
 }
 
 // Delete deletes a question from database.

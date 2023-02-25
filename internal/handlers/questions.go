@@ -8,6 +8,7 @@ import (
 	"core/pkg/jwt"
 	"core/pkg/responses"
 	"net/http"
+	"strconv"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -29,6 +30,30 @@ func CreateQuestionHandler(c *fiber.Ctx, questionsRepository *repositories.Quest
 	}
 
 	return responses.ParseSuccessful(c, http.StatusCreated, nil)
+}
+
+// GetAllQuestionsHandler is a handler to find a question by its id.
+func GetAllQuestionsHandler(c *fiber.Ctx, questionsRepository *repositories.Questions, usersRepository *repositories.Users) error {
+	authenticatedUserId := jwt.GetUserByToken(c).ID
+
+	p, err := strconv.Atoi(c.Query("page"))
+
+	page := int64(p)
+
+	if err != nil {
+		return responses.ParseUnsuccesfull(c, http.StatusBadRequest, err.Error())
+	}
+
+	sort := c.Query("sort")
+	filter := c.Query("filter")
+
+	questions, err := services.GetAllQuestions(&page, &sort, &filter, authenticatedUserId, questionsRepository, usersRepository)
+
+	if err != nil {
+		return responses.ParseUnsuccesfull(c, http.StatusBadRequest, err.Error())
+	}
+
+	return responses.ParseSuccessful(c, http.StatusOK, questions)
 }
 
 // FindQuestionByIDHandler is a handler to find a question by its id.

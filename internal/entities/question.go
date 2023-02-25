@@ -24,6 +24,12 @@ type Question struct {
 	CreatedAt time.Time `json:"createdAt" bson:"createdAt,omitempty"`
 }
 
+// PaginatedQuestions is a model for paginated questions in app.
+type PaginatedQuestions struct {
+	Questions  *[]Question `json:"questions"`
+	TotalCount int64       `json:"totalCount"`
+}
+
 // MapAnonymousFields maps question in order to hide who sent the question, if the questions is anonymous.Otherwise, just returns the whole data.
 func (q Question) MapAnonymousFields() *Question {
 	if q.IsAnonymous {
