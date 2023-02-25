@@ -5,11 +5,13 @@ import (
 	"strings"
 	"time"
 
-	"core/pkg/errors"
-	"core/pkg/validations"
+	"core/internal/errors"
 
-	pkg "core/pkg/entities"
-	"core/pkg/regexes"
+	"github.com/kuriozapp/toolkit/validations"
+
+	regexes "github.com/kuriozapp/toolkit/regexes"
+
+	toolkitEntities "github.com/kuriozapp/toolkit/entities"
 
 	validation "github.com/go-ozzo/ozzo-validation"
 	"github.com/go-ozzo/ozzo-validation/v4/is"
@@ -17,17 +19,17 @@ import (
 
 // BlockedUser is a model for each blocked user in app.
 type BlockedUser struct {
-	ID          pkg.ID `json:"id" bson:"_id" `
-	UserToBlock pkg.ID `json:"userToBlock" bson:"userToBlock"`
-	BlockedBy   pkg.ID `json:"blockedBy" bson:"blockedBy"`
+	ID          toolkitEntities.ID `json:"id" bson:"_id" `
+	UserToBlock toolkitEntities.ID `json:"userToBlock" bson:"userToBlock"`
+	BlockedBy   toolkitEntities.ID `json:"blockedBy" bson:"blockedBy"`
 }
 
 // User is a model for each user in app.
 type User struct {
-	ID        pkg.ID `json:"id" bson:"_id"`
-	Nick      string `json:"nick,omitempty"`
-	Name      string `json:"name,omitempty"`
-	AvatarURL string `json:"avatarUrl" bson:"avatarUrl"`
+	ID        toolkitEntities.ID `json:"id" bson:"_id"`
+	Nick      string             `json:"nick,omitempty"`
+	Name      string             `json:"name,omitempty"`
+	AvatarURL string             `json:"avatarUrl" bson:"avatarUrl"`
 
 	Password string `json:"password,omitempty"`
 	Email    string `json:"email,omitempty"`

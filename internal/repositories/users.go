@@ -4,7 +4,8 @@ import (
 	"context"
 	collections "core/internal/constants"
 	internal "core/internal/entities"
-	pkg "core/pkg/entities"
+
+	toolkitEntities "github.com/kuriozapp/toolkit/entities"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -49,7 +50,7 @@ func (u Users) FindUserByNick(nick string) *internal.User {
 }
 
 // FindUserByID finds an user by id.
-func (u Users) FindUserByID(userId pkg.ID) *internal.User {
+func (u Users) FindUserByID(userId toolkitEntities.ID) *internal.User {
 	coll := u.db.Collection(collections.USERS)
 
 	var foundUser internal.User
@@ -71,7 +72,7 @@ func (u Users) IsNickInUse(nick string) bool {
 }
 
 // DecrementLimit decrements user's post limit if user is not a PRO member.
-func (u *Users) DecrementLimit(userId pkg.ID, newValue int) error {
+func (u *Users) DecrementLimit(userId toolkitEntities.ID, newValue int) error {
 	coll := u.db.Collection(collections.USERS)
 
 	filter := bson.D{{Key: "_id", Value: userId}}

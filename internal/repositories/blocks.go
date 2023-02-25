@@ -4,8 +4,9 @@ import (
 	"context"
 	collections "core/internal/constants"
 	"core/internal/dtos"
-	internal "core/internal/entities"
-	pkgEntities "core/pkg/entities"
+	internalEntities "core/internal/entities"
+
+	toolkitEntities "github.com/kuriozapp/toolkit/entities"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -26,7 +27,7 @@ func (b *Blocks) BlockUser(payload *dtos.BlockUserDTO) error {
 	coll := b.db.Collection(collections.BLOCKS)
 
 	block := dtos.BlockUserDTO{
-		ID:          pkgEntities.NewID(),
+		ID:          toolkitEntities.NewID(),
 		UserToBlock: payload.UserToBlock,
 		BlockedBy:   payload.BlockedBy,
 	}
@@ -37,7 +38,7 @@ func (b *Blocks) BlockUser(payload *dtos.BlockUserDTO) error {
 }
 
 // UnblockUser removes block from database.
-func (b *Blocks) UnblockUser(blockId pkgEntities.ID) error {
+func (b *Blocks) UnblockUser(blockId toolkitEntities.ID) error {
 	coll := b.db.Collection(collections.BLOCKS)
 
 	filter := bson.D{{Key: "userToBlock", Value: blockId}}
@@ -48,13 +49,13 @@ func (b *Blocks) UnblockUser(blockId pkgEntities.ID) error {
 }
 
 // IsBlocked returns if user is blocked by someone.
-func (b *Blocks) IsUserBlocked(userId pkgEntities.ID) bool {
+func (b *Blocks) IsUserBlocked(userId toolkitEntities.ID) bool {
 	coll := b.db.Collection(collections.BLOCKS)
 
 	filter := bson.D{{Key: "userToBlock", Value: userId}}
-	foundRegistry := internal.BlockedUser{}
+	foundRegistry := internalEntities.BlockedUser{}
 
 	coll.FindOne(context.Background(), filter).Decode(&foundRegistry)
 
-	return !pkgEntities.IsZeroID(foundRegistry.ID)
+	return !toolkitEntities.IsZeroID(foundRegistry.ID)
 }

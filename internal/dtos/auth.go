@@ -1,13 +1,15 @@
 package dtos
 
 import (
-	pkg "core/pkg/entities"
-	"core/pkg/errors"
-	"core/pkg/regexes"
-	"core/pkg/validations"
+	"core/internal/errors"
 	"regexp"
 	"strings"
 	"time"
+
+	"github.com/kuriozapp/toolkit/regexes"
+	"github.com/kuriozapp/toolkit/validations"
+
+	toolkitEntities "github.com/kuriozapp/toolkit/entities"
 
 	validation "github.com/go-ozzo/ozzo-validation"
 	"github.com/go-ozzo/ozzo-validation/is"
@@ -15,7 +17,7 @@ import (
 
 // SignUpUserDTO is DTO for payload for signup handler.
 type SignUpUserDTO struct {
-	ID        pkg.ID
+	ID        toolkitEntities.ID
 	Email     string
 	Password  string
 	Nick      string
@@ -25,7 +27,7 @@ type SignUpUserDTO struct {
 
 // SignInUserDTO is DTO for payload for signin handler.
 type SignInUserDTO struct {
-	ID       pkg.ID
+	ID       toolkitEntities.ID
 	Nick     string
 	Password string
 }

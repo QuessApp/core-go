@@ -1,23 +1,25 @@
 package dtos
 
 import (
-	pkg "core/pkg/entities"
-	"core/pkg/errors"
-	"core/pkg/validations"
+	"core/internal/errors"
+
+	toolkitEntities "github.com/kuriozapp/toolkit/entities"
+
+	"github.com/kuriozapp/toolkit/validations"
 
 	validation "github.com/go-ozzo/ozzo-validation"
 )
 
 // BlockUserDTO is a dto for payload to block an user.
 type BlockUserDTO struct {
-	ID          pkg.ID `json:"id" bson:"_id"`
-	UserToBlock pkg.ID `json:"userToBlock" bson:"userToBlock"`
-	BlockedBy   pkg.ID `json:"blockedBy" bson:"blockedBy"`
+	ID          toolkitEntities.ID `json:"id" bson:"_id"`
+	UserToBlock toolkitEntities.ID `json:"userToBlock" bson:"userToBlock"`
+	BlockedBy   toolkitEntities.ID `json:"blockedBy" bson:"blockedBy"`
 }
 
 // UnblockUserDTO is a dto for payload to unblock an user.
 type UnblockUserDTO struct {
-	BlockedUserID pkg.ID
+	BlockedUserID toolkitEntities.ID
 }
 
 // Validate validates passed struct then returns a string.

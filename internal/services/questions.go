@@ -5,11 +5,12 @@ import (
 	"core/internal/entities"
 	"core/internal/repositories"
 	validations "core/internal/validations/services"
-	pkg "core/pkg/entities"
+
+	toolkitEntities "github.com/kuriozapp/toolkit/entities"
 )
 
 // CreateQuestion reads payload from request body then try to create a new question in database.
-func CreateQuestion(payload *dtos.CreateQuestionDTO, authenticatedUserId pkg.ID, questionsRepository *repositories.Questions, blocksRepository *repositories.Blocks, usersRepository *repositories.Users) error {
+func CreateQuestion(payload *dtos.CreateQuestionDTO, authenticatedUserId toolkitEntities.ID, questionsRepository *repositories.Questions, blocksRepository *repositories.Blocks, usersRepository *repositories.Users) error {
 	if err := payload.Validate(); err != nil {
 		return err
 	}
@@ -61,7 +62,7 @@ func CreateQuestion(payload *dtos.CreateQuestionDTO, authenticatedUserId pkg.ID,
 }
 
 // FindQuestionByID finds for a question in database by question id.
-func FindQuestionByID(id pkg.ID, authenticatedUserId pkg.ID, questionsRepository *repositories.Questions, usersRepository *repositories.Users) (*entities.Question, error) {
+func FindQuestionByID(id toolkitEntities.ID, authenticatedUserId toolkitEntities.ID, questionsRepository *repositories.Questions, usersRepository *repositories.Users) (*entities.Question, error) {
 	foundQuestion := questionsRepository.FindByID(id)
 
 	if err := validations.QuestionExists(foundQuestion); err != nil {
@@ -72,7 +73,7 @@ func FindQuestionByID(id pkg.ID, authenticatedUserId pkg.ID, questionsRepository
 		return nil, err
 	}
 
-	questionOwner := usersRepository.FindUserByID(foundQuestion.SentBy.(pkg.ID))
+	questionOwner := usersRepository.FindUserByID(foundQuestion.SentBy.(toolkitEntities.ID))
 
 	u := entities.User{
 		ID:        questionOwner.ID,
@@ -87,7 +88,7 @@ func FindQuestionByID(id pkg.ID, authenticatedUserId pkg.ID, questionsRepository
 }
 
 // GetAllQuestions gets all paginated questions from database.
-func GetAllQuestions(page *int64, sort, filter *string, authenticatedUserId pkg.ID, questionsRepository *repositories.Questions, usersRepository *repositories.Users) (*entities.PaginatedQuestions, error) {
+func GetAllQuestions(page *int64, sort, filter *string, authenticatedUserId toolkitEntities.ID, questionsRepository *repositories.Questions, usersRepository *repositories.Users) (*entities.PaginatedQuestions, error) {
 	if *page == 0 {
 		*page = 1
 	}
@@ -112,7 +113,7 @@ func GetAllQuestions(page *int64, sort, filter *string, authenticatedUserId pkg.
 		if q.IsAnonymous {
 			q.SentBy = nil
 		} else {
-			u := usersRepository.FindUserByID(q.SentBy.(pkg.ID))
+			u := usersRepository.FindUserByID(q.SentBy.(toolkitEntities.ID))
 
 			q.SentBy = entities.User{
 				ID:        u.ID,
@@ -134,7 +135,7 @@ func GetAllQuestions(page *int64, sort, filter *string, authenticatedUserId pkg.
 }
 
 // DeleteQuestion deletes a question from database by id.
-func DeleteQuestion(id pkg.ID, authenticatedUserId pkg.ID, questionsRepository *repositories.Questions) error {
+func DeleteQuestion(id toolkitEntities.ID, authenticatedUserId toolkitEntities.ID, questionsRepository *repositories.Questions) error {
 	foundQuestion := questionsRepository.FindByID(id)
 
 	if err := validations.QuestionExists(foundQuestion); err != nil {
@@ -153,7 +154,7 @@ func DeleteQuestion(id pkg.ID, authenticatedUserId pkg.ID, questionsRepository *
 }
 
 // HideQuestion hides a question.
-func HideQuestion(id pkg.ID, authenticatedUserId pkg.ID, questionsRepository *repositories.Questions, usersRepository *repositories.Users) error {
+func HideQuestion(id toolkitEntities.ID, authenticatedUserId toolkitEntities.ID, questionsRepository *repositories.Questions, usersRepository *repositories.Users) error {
 	q := questionsRepository.FindByID(id)
 
 	if err := validations.QuestionExists(q); err != nil {

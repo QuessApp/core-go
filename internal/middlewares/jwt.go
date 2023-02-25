@@ -2,8 +2,9 @@ package middlewares
 
 import (
 	"core/internal/configs"
-	"core/pkg/responses"
 	"net/http"
+
+	"github.com/kuriozapp/toolkit/responses"
 
 	"github.com/gofiber/fiber/v2"
 	jwtware "github.com/gofiber/jwt/v3"

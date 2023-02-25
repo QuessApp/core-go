@@ -4,11 +4,13 @@ import (
 	"core/cmd/app/entities"
 	"core/internal/dtos"
 	"core/internal/services"
-	pkg "core/pkg/entities"
 	"core/pkg/jwt"
-	"core/pkg/responses"
 	"net/http"
 	"strconv"
+
+	toolkitEntities "github.com/kuriozapp/toolkit/entities"
+
+	"github.com/kuriozapp/toolkit/responses"
 )
 
 // CreateQuestionHandler is a handler to create a question.
@@ -56,7 +58,7 @@ func GetAllQuestionsHandler(handlerCtx *entities.HandlersContext) error {
 
 // FindQuestionByIDHandler is a handler to find a question by its id.
 func FindQuestionByIDHandler(handlerCtx *entities.HandlersContext) error {
-	id, err := pkg.ParseID(handlerCtx.C.Params("id"))
+	id, err := toolkitEntities.ParseID(handlerCtx.C.Params("id"))
 
 	if err != nil {
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
@@ -75,7 +77,7 @@ func FindQuestionByIDHandler(handlerCtx *entities.HandlersContext) error {
 
 // DeleteQuestionHandler is a handler to delete a question by its id.
 func DeleteQuestionHandler(handlerCtx *entities.HandlersContext) error {
-	id, err := pkg.ParseID(handlerCtx.C.Params("id"))
+	id, err := toolkitEntities.ParseID(handlerCtx.C.Params("id"))
 
 	if err != nil {
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
@@ -92,7 +94,7 @@ func DeleteQuestionHandler(handlerCtx *entities.HandlersContext) error {
 
 // HideQuestionHandler is a handler to hide question by its id.
 func HideQuestionHandler(handlerCtx *entities.HandlersContext) error {
-	id, err := pkg.ParseID(handlerCtx.C.Params("id"))
+	id, err := toolkitEntities.ParseID(handlerCtx.C.Params("id"))
 
 	if err != nil {
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())

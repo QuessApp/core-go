@@ -4,7 +4,8 @@ import (
 	"core/internal/dtos"
 	"core/internal/repositories"
 	validations "core/internal/validations/services"
-	pkg "core/pkg/entities"
+
+	toolkitEntities "github.com/kuriozapp/toolkit/entities"
 )
 
 // BlockUser blocks an user.
@@ -35,7 +36,7 @@ func BlockUser(payload *dtos.BlockUserDTO, usersRepository *repositories.Users, 
 }
 
 // UnblockUser unblocks an user.
-func UnblockUser(userId pkg.ID, usersRepository *repositories.Users, blocksRepository *repositories.Blocks) error {
+func UnblockUser(userId toolkitEntities.ID, usersRepository *repositories.Users, blocksRepository *repositories.Blocks) error {
 	if err := validations.IsReallyBlocked(blocksRepository.IsUserBlocked(userId)); err != nil {
 		return err
 	}
