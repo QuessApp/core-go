@@ -32,7 +32,7 @@ func CreateQuestionHandler(c *fiber.Ctx, questionsRepository *repositories.Quest
 	return responses.ParseSuccessful(c, http.StatusCreated, nil)
 }
 
-// GetAllQuestionsHandler is a handler to find a question by its id.
+// GetAllQuestionsHandler is a handler to find all paginated questions.
 func GetAllQuestionsHandler(c *fiber.Ctx, questionsRepository *repositories.Questions, usersRepository *repositories.Users) error {
 	authenticatedUserId := jwt.GetUserByToken(c).ID
 
