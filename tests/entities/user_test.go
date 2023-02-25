@@ -21,7 +21,6 @@ func TestFormat(t *testing.T) {
 	fakeUser.Nick = "-test.user@"
 	fakeUser.Format()
 	assert.Equal(t, fakeUser.Nick, "testuser")
-
 }
 
 func TestGetBasicInfos(t *testing.T) {
