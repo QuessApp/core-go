@@ -26,12 +26,12 @@ func TestFormat(t *testing.T) {
 
 func TestGetBasicInfos(t *testing.T) {
 	fakeUser := mocks.NewUser()
+
+	assert.Empty(t, fakeUser.GetBasicInfos().Password)
+	assert.Empty(t, fakeUser.GetBasicInfos().Email)
+	assert.Empty(t, fakeUser.GetBasicInfos().SubscriptionID)
+
 	newUser := fakeUser.GetBasicInfos()
-
-	assert.Empty(t, newUser.GetBasicInfos().Password)
-	assert.Empty(t, newUser.GetBasicInfos().Email)
-	assert.Empty(t, newUser.GetBasicInfos().SubscriptionID)
-
 	newUser.IsShadowBanned = true
 
 	assert.NotEmpty(t, newUser.IsShadowBanned)
