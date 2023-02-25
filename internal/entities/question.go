@@ -1,14 +1,15 @@
 package entities
 
 import (
-	pkg "core/pkg/entities"
 	"time"
+
+	toolkitEntities "github.com/kuriozapp/toolkit/entities"
 )
 
 // Questions is a model for each question in app.
 type Question struct {
-	ID      pkg.ID `json:"id" bson:"_id,omitempty"`
-	Content string `json:"content"`
+	ID      toolkitEntities.ID `json:"id" bson:"_id,omitempty"`
+	Content string             `json:"content"`
 
 	// SendTo represents the user that will receive the question. Type must bet Entities.ID, nill ou Entities.User
 	SendTo any `json:"sendTo,omitempty" bson:"sendTo"`

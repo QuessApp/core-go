@@ -6,7 +6,8 @@ import (
 	"core/internal/dtos"
 
 	internalEntities "core/internal/entities"
-	pkgEntities "core/pkg/entities"
+
+	toolkitEntities "github.com/kuriozapp/toolkit/entities"
 
 	"time"
 
@@ -29,7 +30,7 @@ func NewQuestionsRepository(db *mongo.Database) *Questions {
 func (q Questions) Create(payload *dtos.CreateQuestionDTO) error {
 	coll := q.db.Collection(collections.QUESTIONS)
 
-	payload.ID = pkgEntities.NewID()
+	payload.ID = toolkitEntities.NewID()
 	payload.CreatedAt = time.Now()
 
 	question := internalEntities.Question{
@@ -48,7 +49,7 @@ func (q Questions) Create(payload *dtos.CreateQuestionDTO) error {
 }
 
 // FindByID finds a question by id in database.
-func (q Questions) FindByID(id pkgEntities.ID) *internalEntities.Question {
+func (q Questions) FindByID(id toolkitEntities.ID) *internalEntities.Question {
 	coll := q.db.Collection(collections.QUESTIONS)
 
 	filter := bson.D{{Key: "_id", Value: id}}
@@ -61,7 +62,7 @@ func (q Questions) FindByID(id pkgEntities.ID) *internalEntities.Question {
 }
 
 // GetAll gets all paginated questions from database.
-func (q Questions) GetAll(page *int64, sort, filter *string, authenticatedUserId pkgEntities.ID) (*internalEntities.PaginatedQuestions, error) {
+func (q Questions) GetAll(page *int64, sort, filter *string, authenticatedUserId toolkitEntities.ID) (*internalEntities.PaginatedQuestions, error) {
 	var LIMIT int64 = 30
 
 	coll := q.db.Collection(collections.QUESTIONS)
@@ -123,7 +124,7 @@ func (q Questions) GetAll(page *int64, sort, filter *string, authenticatedUserId
 }
 
 // Delete deletes a question from database.
-func (q Questions) Delete(id pkgEntities.ID) error {
+func (q Questions) Delete(id toolkitEntities.ID) error {
 	coll := q.db.Collection(collections.QUESTIONS)
 
 	filter := bson.D{{Key: "_id", Value: id}}
@@ -134,7 +135,7 @@ func (q Questions) Delete(id pkgEntities.ID) error {
 }
 
 // Hide hides a question.
-func (q Questions) Hide(id pkgEntities.ID) error {
+func (q Questions) Hide(id toolkitEntities.ID) error {
 	coll := q.db.Collection(collections.QUESTIONS)
 	update := bson.D{{Key: "$set", Value: bson.D{{Key: "isHiddenByReceiver", Value: true}}}}
 

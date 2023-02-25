@@ -1,20 +1,22 @@
 package dtos
 
 import (
-	pkg "core/pkg/entities"
-	"core/pkg/errors"
-	"core/pkg/validations"
+	"core/internal/errors"
 	"time"
+
+	"github.com/kuriozapp/toolkit/validations"
+
+	toolkitEntities "github.com/kuriozapp/toolkit/entities"
 
 	validation "github.com/go-ozzo/ozzo-validation"
 )
 
 // CreateQuestionDTO is DTO for payload for create question handler.
 type CreateQuestionDTO struct {
-	ID          pkg.ID
+	ID          toolkitEntities.ID
 	Content     string
-	SendTo      pkg.ID
-	SentBy      pkg.ID
+	SendTo      toolkitEntities.ID
+	SentBy      toolkitEntities.ID
 	IsAnonymous bool
 	CreatedAt   time.Time
 }

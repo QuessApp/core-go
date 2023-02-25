@@ -2,12 +2,13 @@ package services
 
 import (
 	"core/internal/repositories"
-	pkg "core/pkg/entities"
 	"log"
+
+	toolkitEntities "github.com/kuriozapp/toolkit/entities"
 )
 
 // DecrementUserLimit decrements user posts limit.
-func DecrementUserLimit(userId pkg.ID, usersRepository *repositories.Users) error {
+func DecrementUserLimit(userId toolkitEntities.ID, usersRepository *repositories.Users) error {
 	foundUser := usersRepository.FindUserByID(userId)
 
 	if foundUser.IsPRO {

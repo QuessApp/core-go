@@ -4,8 +4,9 @@ import (
 	"core/cmd/app/entities"
 	"core/internal/dtos"
 	"core/internal/services"
-	"core/pkg/responses"
 	"net/http"
+
+	"github.com/kuriozapp/toolkit/responses"
 )
 
 // SignUpUserHandler is a handler to sign up an user.

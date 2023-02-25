@@ -2,22 +2,23 @@ package middlewares
 
 import (
 	"core/internal/configs"
-	pkgMiddlewares "core/pkg/middlewares"
-	"core/pkg/responses"
 	"log"
 	"net/http"
+
+	"github.com/kuriozapp/toolkit/middlewares"
+	"github.com/kuriozapp/toolkit/responses"
 
 	"github.com/gofiber/fiber/v2"
 )
 
 // LoadAPIKeyMiddleware applies API key middleware for all routes.
 func LoadAPIKeyMiddleware(app *fiber.App, cfg *configs.Conf) {
-	app.Use(pkgMiddlewares.New(pkgMiddlewares.Config{
+	app.Use(middlewares.New(middlewares.Config{
 		Next: func(c *fiber.Ctx) bool {
 			isDev := cfg.Env == "development"
 
 			if isDev {
-				log.Println("[DEV] For development purpouses like debugging the recover API key middleware is disabled.")
+				log.Println("[DEV] For development purpouses like debugging the API key middleware is disabled.")
 			}
 
 			return isDev

@@ -2,9 +2,10 @@ package jwt
 
 import (
 	"core/internal/configs"
-	"core/internal/entities"
-	pkg "core/pkg/entities"
+	internalEntities "core/internal/entities"
 	"time"
+
+	toolkitEntities "github.com/kuriozapp/toolkit/entities"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v4"
@@ -22,7 +23,7 @@ var (
 
 // CreateUserToken creates an user JWT token with followed fields:
 // id, name, email, exp. It returns string and error.
-func CreateUserToken(u *entities.User, expiresIn int64, secret string) (string, error) {
+func CreateUserToken(u *internalEntities.User, expiresIn int64, secret string) (string, error) {
 	claims := jwt.MapClaims{
 		"id":    u.ID,
 		"name":  u.Name,
@@ -37,25 +38,25 @@ func CreateUserToken(u *entities.User, expiresIn int64, secret string) (string, 
 
 // CreateAccessToken creates an user JWT token with followed fields:
 // id, name, email, exp. It returns string and error.
-func CreateAccessToken(u *entities.User, cfg *configs.Conf) (string, error) {
+func CreateAccessToken(u *internalEntities.User, cfg *configs.Conf) (string, error) {
 	return CreateUserToken(u, ACCESS_TOKEN_EXPIRES_IN, cfg.JWTSecret)
 }
 
 // CreateRefreshToken creates an user JWT token with followed fields:
 // id, name, email, exp. It returns string and error.
-func CreateRefreshToken(u *entities.User, cfg *configs.Conf) (string, error) {
+func CreateRefreshToken(u *internalEntities.User, cfg *configs.Conf) (string, error) {
 	return CreateUserToken(u, REFRESH_TOKEN_EXPIRES_IN, cfg.JWTSecret)
 }
 
 // DecodeUserToken decodes an user JWT token with followed fields:
 // id, name and email.
-func DecodeUserToken(c *fiber.Ctx) pkg.DecodeUserTokenResult {
+func DecodeUserToken(c *fiber.Ctx) toolkitEntities.DecodeUserTokenResult {
 	user := c.Locals("user").(*jwt.Token)
 	claims := user.Claims.(jwt.MapClaims)
 
-	parsedId, _ := pkg.ParseID(claims["id"].(string))
+	parsedId, _ := toolkitEntities.ParseID(claims["id"].(string))
 
-	u := pkg.DecodeUserTokenResult{
+	u := toolkitEntities.DecodeUserTokenResult{
 		ID:    parsedId,
 		Name:  claims["name"].(string),
 		Email: claims["email"].(string),
@@ -65,6 +66,6 @@ func DecodeUserToken(c *fiber.Ctx) pkg.DecodeUserTokenResult {
 }
 
 // GetUserByToken decodes a token and get user info from token.
-func GetUserByToken(c *fiber.Ctx) pkg.DecodeUserTokenResult {
+func GetUserByToken(c *fiber.Ctx) toolkitEntities.DecodeUserTokenResult {
 	return DecodeUserToken(c)
 }

@@ -8,6 +8,8 @@ import (
 	"core/internal/routes"
 	"fmt"
 
+	"github.com/kuriozapp/toolkit/queue"
+
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -26,6 +28,8 @@ func main() {
 		panic(err)
 	}
 
+	conn, ch := queue.Connect(config.MessageQueueURI)
+
 	authRepository := repositories.NewAuthRepository(db)
 	usersRepository := repositories.NewUsersRepository(db)
 	questionsRepository := repositories.NewQuestionsRepository(db)
@@ -35,6 +39,8 @@ func main() {
 		App:                 fiber.New(),
 		DB:                  db,
 		Cfg:                 config,
+		MessageQueueConn:    conn,
+		MessageQueueCh:      ch,
 		QuestionsRepository: questionsRepository,
 		BlocksRepository:    blocksRepository,
 		UsersRepository:     usersRepository,

@@ -4,8 +4,9 @@ import (
 	"context"
 	collections "core/internal/constants"
 	"core/internal/dtos"
-	internal "core/internal/entities"
-	pkg "core/pkg/entities"
+	internalEntities "core/internal/entities"
+
+	toolkitEntities "github.com/kuriozapp/toolkit/entities"
 
 	"time"
 
@@ -24,13 +25,13 @@ func NewAuthRepository(db *mongo.Database) *Auth {
 }
 
 // SignUp registers a new user in database.
-func (a Auth) SignUp(payload *dtos.SignUpUserDTO) (*internal.User, error) {
+func (a Auth) SignUp(payload *dtos.SignUpUserDTO) (*internalEntities.User, error) {
 	coll := a.db.Collection(collections.USERS)
 
-	payload.ID = pkg.NewID()
+	payload.ID = toolkitEntities.NewID()
 	payload.CreatedAt = time.Now()
 
-	user := internal.User{
+	user := internalEntities.User{
 		ID:              payload.ID,
 		Nick:            payload.Nick,
 		Name:            payload.Name,
@@ -57,7 +58,7 @@ func (a Auth) SignUp(payload *dtos.SignUpUserDTO) (*internal.User, error) {
 func (a Auth) IsEmailInUse(email string) bool {
 	coll := a.db.Collection(collections.USERS)
 
-	user := internal.User{}
+	user := internalEntities.User{}
 
 	coll.FindOne(context.Background(), bson.D{{Key: "email", Value: email}}).Decode(&user)
 
