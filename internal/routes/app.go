@@ -10,14 +10,25 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
+// AppCtx is a global model for app. It defines the router, db, config, repositories, etc.
+// Use AppCtx to avoid long function params.
+type AppCtx struct {
+	App                 *fiber.App
+	DB                  *mongo.Database
+	Cfg                 *configs.Conf
+	QuestionsRepository *repositories.Questions
+	BlocksRepository    *repositories.Blocks
+	UsersRepository     *repositories.Users
+	AuthRepository      *repositories.Auth
+}
+
 // LoadRoutes loads all routes of app.
-func LoadRoutes(db *mongo.Database, cfg *configs.Conf, questionsRepository *repositories.Questions, authRepository *repositories.Auth, usersRepository *repositories.Users, blocksRepository *repositories.Blocks) {
-	app := fiber.New()
-	middlewares.LoadMiddlewares(app, cfg)
+func LoadRoutes(AppCtx *AppCtx) {
+	middlewares.LoadMiddlewares(AppCtx.App, AppCtx.Cfg)
 
-	LoadAuthRoutes(app, db, cfg, authRepository, usersRepository)
-	LoadQuestionsRoute(app, db, cfg, questionsRepository, blocksRepository, usersRepository)
-	LoadBlocksRoutes(app, db, cfg, usersRepository, blocksRepository)
+	LoadAuthRoutes(AppCtx)
+	LoadQuestionsRoute(AppCtx)
+	LoadBlocksRoutes(AppCtx)
 
-	log.Fatal(app.Listen(cfg.ServerPort))
+	log.Fatal(AppCtx.App.Listen(AppCtx.Cfg.ServerPort))
 }

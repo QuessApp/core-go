@@ -1,32 +1,29 @@
 package routes
 
 import (
-	"core/internal/configs"
 	"core/internal/handlers"
 	"core/internal/middlewares"
-	"core/internal/repositories"
 
 	"github.com/gofiber/fiber/v2"
-	"go.mongodb.org/mongo-driver/mongo"
 )
 
 // LoadQuestionsRoute loads all questions routes of app.
-func LoadQuestionsRoute(app *fiber.App, db *mongo.Database, cfg *configs.Conf, questionsRepository *repositories.Questions, blocksRepository *repositories.Blocks, usersRepository *repositories.Users) {
-	g := app.Group("/questions", middlewares.JWTMiddleware(app, cfg))
+func LoadQuestionsRoute(ctx *AppCtx) {
+	g := ctx.App.Group("/questions", middlewares.JWTMiddleware(ctx.App, ctx.Cfg))
 
 	g.Get("/:id", func(c *fiber.Ctx) error {
-		return handlers.FindQuestionByIDHandler(c, questionsRepository, usersRepository)
+		return handlers.FindQuestionByIDHandler(c, ctx.QuestionsRepository, ctx.UsersRepository)
 	})
 	g.Get("", func(c *fiber.Ctx) error {
-		return handlers.GetAllQuestionsHandler(c, questionsRepository, usersRepository)
+		return handlers.GetAllQuestionsHandler(c, ctx.QuestionsRepository, ctx.UsersRepository)
 	})
 	g.Post("", func(c *fiber.Ctx) error {
-		return handlers.CreateQuestionHandler(c, questionsRepository, blocksRepository, usersRepository)
+		return handlers.CreateQuestionHandler(c, ctx.QuestionsRepository, ctx.BlocksRepository, ctx.UsersRepository)
 	})
 	g.Patch("/hide/:id", func(c *fiber.Ctx) error {
-		return handlers.HideQuestionHandler(c, usersRepository, questionsRepository)
+		return handlers.HideQuestionHandler(c, ctx.UsersRepository, ctx.QuestionsRepository)
 	})
 	g.Delete("/:id", func(c *fiber.Ctx) error {
-		return handlers.DeleteQuestionHandler(c, questionsRepository)
+		return handlers.DeleteQuestionHandler(c, ctx.QuestionsRepository)
 	})
 }

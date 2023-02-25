@@ -1,23 +1,20 @@
 package routes
 
 import (
-	"core/internal/configs"
 	"core/internal/handlers"
 	"core/internal/middlewares"
-	"core/internal/repositories"
 
 	"github.com/gofiber/fiber/v2"
-	"go.mongodb.org/mongo-driver/mongo"
 )
 
 // LoadBlocksRoutes loads all blocks routes of app.
-func LoadBlocksRoutes(app *fiber.App, db *mongo.Database, cfg *configs.Conf, usersRepository *repositories.Users, blocksRepository *repositories.Blocks) {
-	g := app.Group("/blocks", middlewares.JWTMiddleware(app, cfg))
+func LoadBlocksRoutes(AppCtx *AppCtx) {
+	g := AppCtx.App.Group("/blocks", middlewares.JWTMiddleware(AppCtx.App, AppCtx.Cfg))
 
 	g.Post("/user/:id", func(c *fiber.Ctx) error {
-		return handlers.BlockUserHandler(c, usersRepository, blocksRepository)
+		return handlers.BlockUserHandler(c, AppCtx.UsersRepository, AppCtx.BlocksRepository)
 	})
 	g.Patch("/user/:id", func(c *fiber.Ctx) error {
-		return handlers.UnblockUserHandler(c, usersRepository, blocksRepository)
+		return handlers.UnblockUserHandler(c, AppCtx.UsersRepository, AppCtx.BlocksRepository)
 	})
 }
