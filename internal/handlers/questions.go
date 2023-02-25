@@ -91,3 +91,20 @@ func DeleteQuestionHandler(c *fiber.Ctx, questionsRepository *repositories.Quest
 
 	return responses.ParseSuccessful(c, http.StatusOK, nil)
 }
+
+// HideQuestionHandler is a handler to hide question by its id.
+func HideQuestionHandler(c *fiber.Ctx, usersRepository *repositories.Users, questionsRepository *repositories.Questions) error {
+	id, err := pkg.ParseID(c.Params("id"))
+
+	if err != nil {
+		return responses.ParseUnsuccesfull(c, http.StatusBadRequest, err.Error())
+	}
+
+	authenticatedUserId := jwt.GetUserByToken(c).ID
+
+	if err := services.HideQuestion(id, authenticatedUserId, questionsRepository, usersRepository); err != nil {
+		return responses.ParseUnsuccesfull(c, http.StatusBadRequest, err.Error())
+	}
+
+	return responses.ParseSuccessful(c, http.StatusOK, nil)
+}

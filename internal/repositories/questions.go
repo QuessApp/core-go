@@ -66,14 +66,25 @@ func (q Questions) GetAll(page *int64, sort, filter *string, authenticatedUserId
 
 	coll := q.db.Collection(collections.QUESTIONS)
 
-	findFilterOptions := bson.D{{Key: "sendTo", Value: authenticatedUserId}, {Key: "isReplied", Value: false}}
+	findFilterOptions := bson.D{
+		{Key: "sendTo", Value: authenticatedUserId},
+		{Key: "isReplied", Value: false},
+		{Key: "isHiddenByReceiver", Value: false},
+	}
 
 	if *filter == "sent" {
-		findFilterOptions = bson.D{{Key: "sentBy", Value: authenticatedUserId}, {Key: "isReplied", Value: false}}
+		findFilterOptions = bson.D{
+			{Key: "sentBy", Value: authenticatedUserId},
+			{Key: "isReplied", Value: false},
+			{Key: "isHiddenByReceiver", Value: false},
+		}
 	}
 
 	if *filter == "replied" {
-		findFilterOptions = bson.D{{Key: "isReplied", Value: true}}
+		findFilterOptions = bson.D{
+			{Key: "isReplied", Value: true},
+			{Key: "isHiddenByReceiver", Value: false},
+		}
 	}
 
 	findOptions := options.Find().SetSort(bson.D{{Key: "createdAt", Value: 1}})
@@ -118,6 +129,16 @@ func (q Questions) Delete(id pkgEntities.ID) error {
 	filter := bson.D{{Key: "_id", Value: id}}
 
 	_, err := coll.DeleteOne(context.Background(), filter)
+
+	return err
+}
+
+// Hide hides a question.
+func (q Questions) Hide(id pkgEntities.ID) error {
+	coll := q.db.Collection(collections.QUESTIONS)
+	update := bson.D{{Key: "$set", Value: bson.D{{Key: "isHiddenByReceiver", Value: true}}}}
+
+	_, err := coll.UpdateByID(context.Background(), id, update)
 
 	return err
 }

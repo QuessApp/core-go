@@ -51,3 +51,12 @@ func CanUserDeleteQuestion(q *internalEntities.Question, authenticatedUserId pkg
 
 	return nil
 }
+
+// IsHiddenByReceiver returns error message if the question is already hidden by receiver.
+func IsHiddenByReceiver(isHiddenByReceiver bool) error {
+	if isHiddenByReceiver {
+		return errors.New(pkgErrors.CANT_HIDE_ALREADY_HIDDEN)
+	}
+
+	return nil
+}
