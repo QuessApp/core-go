@@ -5,16 +5,9 @@ import (
 	"strings"
 	"time"
 
-	"core/internal/errors"
-
-	"github.com/kuriozapp/toolkit/validations"
-
 	regexes "github.com/kuriozapp/toolkit/regexes"
 
 	toolkitEntities "github.com/kuriozapp/toolkit/entities"
-
-	validation "github.com/go-ozzo/ozzo-validation"
-	"github.com/go-ozzo/ozzo-validation/v4/is"
 )
 
 // BlockedUser is a model for each blocked user in app.
@@ -56,18 +49,6 @@ func (u *User) Format() {
 	u.Nick = regexp.MustCompile(regexes.SPECIAL_CHARS).ReplaceAllString(u.Nick, "")
 	u.Nick = strings.TrimSpace(strings.ToLower(u.Nick))
 	u.Email = strings.TrimSpace(u.Email)
-}
-
-// Validate validates passed struct then returns a string.
-func (u User) Validate() error {
-	validationResult := validation.ValidateStruct(&u,
-		validation.Field(&u.Nick, validation.Required.Error(errors.NICK_FIELD_REQUIRED), validation.Length(3, 50).Error(errors.NICK_FIELD_LENGTH)),
-		validation.Field(&u.Password, validation.Required.Error(errors.PASSWORD_FIELD_REQUIRED), validation.Length(6, 200).Error(errors.PASSWORD_FIELD_LENGTH)),
-		validation.Field(&u.Name, validation.Required.Error(errors.NAME_FIELD_REQUIRED), validation.Length(3, 50).Error(errors.NAME_FIELD_LENGTH)),
-		validation.Field(&u.Email, validation.Required.Error(errors.EMAIL_FIELD_REQUIRED), validation.Length(5, 200).Error(errors.EMAIL_FIELD_LENGTH), is.Email.Error(errors.EMAIL_FORMAT_INVALID)),
-	)
-
-	return validations.GetValidationError(validationResult)
 }
 
 // GetBasicInfos gets basic data of an user like id, name, nick, etc.
