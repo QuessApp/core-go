@@ -40,7 +40,7 @@ func (a Auth) SignUp(payload *dtos.SignUpUserDTO) (*internal.User, error) {
 		EnableAppEmails: true,
 		IsShadowBanned:  false,
 		IsPRO:           false,
-		CreatedAt:       payload.CreatedAt,
+		CreatedAt:       &payload.CreatedAt,
 		AvatarURL:       "",
 		CustomerID:      nil,
 		LastPublishAt:   nil,
