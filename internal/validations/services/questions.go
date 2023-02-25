@@ -53,6 +53,15 @@ func CanUserDeleteQuestion(q *internalEntities.Question, authenticatedUserId too
 	return nil
 }
 
+// CanHideQuestion returns error message if question is not sent to authenticated user.
+func CanHideQuestion(q *internalEntities.Question, authenticatedUserId toolkitEntities.ID) error {
+	if q.SendTo != authenticatedUserId {
+		return errors.New(internalErrors.QUESTION_NOT_SENT_FOR_ME)
+	}
+
+	return nil
+}
+
 // IsHiddenByReceiver returns error message if the question is already hidden by receiver.
 func IsHiddenByReceiver(isHiddenByReceiver bool) error {
 	if isHiddenByReceiver {

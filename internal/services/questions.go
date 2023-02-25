@@ -161,6 +161,10 @@ func HideQuestion(id toolkitEntities.ID, authenticatedUserId toolkitEntities.ID,
 		return err
 	}
 
+	if err := validations.CanHideQuestion(q, authenticatedUserId); err != nil {
+		return err
+	}
+
 	if err := validations.QuestionCanViewQuestion(q, authenticatedUserId); err != nil {
 		return err
 	}
