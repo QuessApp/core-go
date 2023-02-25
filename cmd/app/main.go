@@ -1,11 +1,14 @@
 package main
 
 import (
+	"core/cmd/app/entities"
 	"core/internal/configs"
 	"core/internal/database"
 	"core/internal/repositories"
 	"core/internal/routes"
 	"fmt"
+
+	"github.com/gofiber/fiber/v2"
 )
 
 func main() {
@@ -28,5 +31,15 @@ func main() {
 	questionsRepository := repositories.NewQuestionsRepository(db)
 	blocksRepository := repositories.NewBlocksRepository(db)
 
-	routes.LoadRoutes(db, config, questionsRepository, authRepository, usersRepository, blocksRepository)
+	AppCtx := &entities.AppCtx{
+		App:                 fiber.New(),
+		DB:                  db,
+		Cfg:                 config,
+		QuestionsRepository: questionsRepository,
+		BlocksRepository:    blocksRepository,
+		UsersRepository:     usersRepository,
+		AuthRepository:      authRepository,
+	}
+
+	routes.LoadRoutes(AppCtx)
 }

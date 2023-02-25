@@ -1,23 +1,20 @@
 package routes
 
 import (
-	"core/internal/configs"
+	"core/cmd/app/entities"
 	"core/internal/handlers"
-	"core/internal/repositories"
 
 	"github.com/gofiber/fiber/v2"
-	"go.mongodb.org/mongo-driver/mongo"
 )
 
 // LoadAuthRoutes loads all auth routes of app.
-func LoadAuthRoutes(app *fiber.App, db *mongo.Database, cfg *configs.Conf, authRepository *repositories.Auth, usersRepository *repositories.Users) {
-	g := app.Group("/auth")
+func LoadAuthRoutes(AppCtx *entities.AppCtx) {
+	g := AppCtx.App.Group("/auth")
 
 	g.Post("/signup", func(c *fiber.Ctx) error {
-		return handlers.SignUpUserHandler(c, cfg, usersRepository, authRepository)
+		return handlers.SignUpUserHandler(&entities.HandlersContext{C: c, AppCtx: *AppCtx})
 	})
-
 	g.Post("/signin", func(c *fiber.Ctx) error {
-		return handlers.SignInUserHandler(c, cfg, usersRepository)
+		return handlers.SignInUserHandler(&entities.HandlersContext{C: c, AppCtx: *AppCtx})
 	})
 }

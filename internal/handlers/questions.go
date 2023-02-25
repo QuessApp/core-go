@@ -1,110 +1,108 @@
 package handlers
 
 import (
+	"core/cmd/app/entities"
 	"core/internal/dtos"
-	"core/internal/repositories"
 	"core/internal/services"
 	pkg "core/pkg/entities"
 	"core/pkg/jwt"
 	"core/pkg/responses"
 	"net/http"
 	"strconv"
-
-	"github.com/gofiber/fiber/v2"
 )
 
 // CreateQuestionHandler is a handler to create a question.
-func CreateQuestionHandler(c *fiber.Ctx, questionsRepository *repositories.Questions, blocksRepository *repositories.Blocks, usersRepository *repositories.Users) error {
+func CreateQuestionHandler(handlerCtx *entities.HandlersContext) error {
 	payload := dtos.CreateQuestionDTO{}
 
-	if err := c.BodyParser(&payload); err != nil {
-		return responses.ParseUnsuccesfull(c, http.StatusBadRequest, err.Error())
+	if err := handlerCtx.C.BodyParser(&payload); err != nil {
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
-	authenticatedUserId := jwt.GetUserByToken(c).ID
+	authenticatedUserId := jwt.GetUserByToken(handlerCtx.C).ID
 
 	payload.SentBy = authenticatedUserId
 
-	if err := services.CreateQuestion(&payload, authenticatedUserId, questionsRepository, blocksRepository, usersRepository); err != nil {
-		return responses.ParseUnsuccesfull(c, http.StatusBadRequest, err.Error())
+	if err := services.CreateQuestion(&payload, authenticatedUserId, handlerCtx.QuestionsRepository, handlerCtx.BlocksRepository, handlerCtx.UsersRepository); err != nil {
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
-	return responses.ParseSuccessful(c, http.StatusCreated, nil)
+	return responses.ParseSuccessful(handlerCtx.C, http.StatusCreated, nil)
 }
 
 // GetAllQuestionsHandler is a handler to find all paginated questions.
-func GetAllQuestionsHandler(c *fiber.Ctx, questionsRepository *repositories.Questions, usersRepository *repositories.Users) error {
-	authenticatedUserId := jwt.GetUserByToken(c).ID
+func GetAllQuestionsHandler(handlerCtx *entities.HandlersContext) error {
+	authenticatedUserId := jwt.GetUserByToken(handlerCtx.C).ID
 
-	p, err := strconv.Atoi(c.Query("page"))
+	p, err := strconv.Atoi(handlerCtx.C.Query("page"))
 
 	page := int64(p)
 
 	if err != nil {
-		return responses.ParseUnsuccesfull(c, http.StatusBadRequest, err.Error())
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
-	sort := c.Query("sort")
-	filter := c.Query("filter")
+	sort := handlerCtx.C.Query("sort")
+	filter := handlerCtx.C.Query("filter")
 
-	questions, err := services.GetAllQuestions(&page, &sort, &filter, authenticatedUserId, questionsRepository, usersRepository)
+	questions, err := services.GetAllQuestions(&page, &sort, &filter, authenticatedUserId, handlerCtx.QuestionsRepository, handlerCtx.UsersRepository)
 
 	if err != nil {
-		return responses.ParseUnsuccesfull(c, http.StatusBadRequest, err.Error())
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
-	return responses.ParseSuccessful(c, http.StatusOK, questions)
+	return responses.ParseSuccessful(handlerCtx.C, http.StatusOK, questions)
 }
 
 // FindQuestionByIDHandler is a handler to find a question by its id.
-func FindQuestionByIDHandler(c *fiber.Ctx, questionsRepository *repositories.Questions, usersRepository *repositories.Users) error {
-	id, err := pkg.ParseID(c.Params("id"))
+func FindQuestionByIDHandler(handlerCtx *entities.HandlersContext) error {
+	id, err := pkg.ParseID(handlerCtx.C.Params("id"))
 
 	if err != nil {
-		return responses.ParseUnsuccesfull(c, http.StatusBadRequest, err.Error())
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
-	authenticatedUserId := jwt.GetUserByToken(c).ID
+	authenticatedUserId := jwt.GetUserByToken(handlerCtx.C).ID
 
-	question, err := services.FindQuestionByID(id, authenticatedUserId, questionsRepository, usersRepository)
+	question, err := services.FindQuestionByID(id, authenticatedUserId, handlerCtx.QuestionsRepository, handlerCtx.UsersRepository)
 
 	if err != nil {
-		return responses.ParseUnsuccesfull(c, http.StatusBadRequest, err.Error())
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
-	return responses.ParseSuccessful(c, http.StatusOK, question)
+	return responses.ParseSuccessful(handlerCtx.C, http.StatusOK, question)
 }
 
 // DeleteQuestionHandler is a handler to delete a question by its id.
-func DeleteQuestionHandler(c *fiber.Ctx, questionsRepository *repositories.Questions) error {
-	id, err := pkg.ParseID(c.Params("id"))
+func DeleteQuestionHandler(handlerCtx *entities.HandlersContext) error {
+	id, err := pkg.ParseID(handlerCtx.C.Params("id"))
 
 	if err != nil {
-		return responses.ParseUnsuccesfull(c, http.StatusBadRequest, err.Error())
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
-	authenticatedUserId := jwt.GetUserByToken(c).ID
+	authenticatedUserId := jwt.GetUserByToken(handlerCtx.C).ID
 
-	if err := services.DeleteQuestion(id, authenticatedUserId, questionsRepository); err != nil {
-		return responses.ParseUnsuccesfull(c, http.StatusBadRequest, err.Error())
+	if err := services.DeleteQuestion(id, authenticatedUserId, handlerCtx.QuestionsRepository); err != nil {
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
-	return responses.ParseSuccessful(c, http.StatusOK, nil)
+	return responses.ParseSuccessful(handlerCtx.C, http.StatusOK, nil)
 }
 
 // HideQuestionHandler is a handler to hide question by its id.
-func HideQuestionHandler(c *fiber.Ctx, usersRepository *repositories.Users, questionsRepository *repositories.Questions) error {
-	id, err := pkg.ParseID(c.Params("id"))
+func HideQuestionHandler(handlerCtx *entities.HandlersContext) error {
+	id, err := pkg.ParseID(handlerCtx.C.Params("id"))
 
 	if err != nil {
-		return responses.ParseUnsuccesfull(c, http.StatusBadRequest, err.Error())
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
-	authenticatedUserId := jwt.GetUserByToken(c).ID
+	authenticatedUserId := jwt.GetUserByToken(handlerCtx.C).ID
 
-	if err := services.HideQuestion(id, authenticatedUserId, questionsRepository, usersRepository); err != nil {
-		return responses.ParseUnsuccesfull(c, http.StatusBadRequest, err.Error())
+	if err := services.HideQuestion(id, authenticatedUserId, handlerCtx.QuestionsRepository, handlerCtx.UsersRepository); err != nil {
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
-	return responses.ParseSuccessful(c, http.StatusOK, nil)
+	return responses.ParseSuccessful(handlerCtx.C, http.StatusOK, nil)
 }

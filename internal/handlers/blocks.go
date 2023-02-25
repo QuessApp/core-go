@@ -1,47 +1,45 @@
 package handlers
 
 import (
+	"core/cmd/app/entities"
 	"core/internal/dtos"
-	"core/internal/repositories"
 	"core/internal/services"
 	pkg "core/pkg/entities"
 	"core/pkg/jwt"
 	"core/pkg/responses"
 	"net/http"
-
-	"github.com/gofiber/fiber/v2"
 )
 
 // BlockUserHandler is a handler to block an user.
-func BlockUserHandler(c *fiber.Ctx, usersRepository *repositories.Users, blocksRepository *repositories.Blocks) error {
+func BlockUserHandler(handlerCtx *entities.HandlersContext) error {
 	payload := dtos.BlockUserDTO{}
-	id, err := pkg.ParseID(c.Params("id"))
+	id, err := pkg.ParseID(handlerCtx.C.Params("id"))
 
 	if err != nil {
-		return responses.ParseUnsuccesfull(c, http.StatusBadRequest, err.Error())
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
-	payload.BlockedBy = jwt.GetUserByToken(c).ID
+	payload.BlockedBy = jwt.GetUserByToken(handlerCtx.C).ID
 	payload.UserToBlock = id
 
-	if err := services.BlockUser(&payload, usersRepository, blocksRepository); err != nil {
-		return responses.ParseUnsuccesfull(c, http.StatusBadRequest, err.Error())
+	if err := services.BlockUser(&payload, handlerCtx.UsersRepository, handlerCtx.BlocksRepository); err != nil {
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
-	return responses.ParseSuccessful(c, http.StatusCreated, nil)
+	return responses.ParseSuccessful(handlerCtx.C, http.StatusCreated, nil)
 }
 
 // UnblockUserHandler is a handler to unblock an user.
-func UnblockUserHandler(c *fiber.Ctx, usersRepository *repositories.Users, blocksRepository *repositories.Blocks) error {
-	id, err := pkg.ParseID(c.Params("id"))
+func UnblockUserHandler(handlerCtx *entities.HandlersContext) error {
+	id, err := pkg.ParseID(handlerCtx.C.Params("id"))
 
 	if err != nil {
-		return responses.ParseUnsuccesfull(c, http.StatusBadRequest, err.Error())
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
-	if err := services.UnblockUser(id, usersRepository, blocksRepository); err != nil {
-		return responses.ParseUnsuccesfull(c, http.StatusBadRequest, err.Error())
+	if err := services.UnblockUser(id, handlerCtx.UsersRepository, handlerCtx.BlocksRepository); err != nil {
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
-	return responses.ParseSuccessful(c, http.StatusCreated, nil)
+	return responses.ParseSuccessful(handlerCtx.C, http.StatusCreated, nil)
 }
