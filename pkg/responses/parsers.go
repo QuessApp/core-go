@@ -33,10 +33,7 @@ func ParseUnsuccesfull(c *fiber.Ctx, status int, err string) error {
 	return c.JSON(res)
 }
 
+// HasRecordsInMongo returns a bool value if message error is equal to the Mongo no result documents error.
 func HasRecordsInMongo(err error) bool {
-	if err.Error() == pkgErrors.MONGO_NO_DOCUMENTS {
-		return false
-	}
-
-	return true
+	return err.Error() == pkgErrors.MONGO_NO_DOCUMENTS
 }
