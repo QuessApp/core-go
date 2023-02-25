@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"core/cmd/app/entities"
+	"core/internal/configs"
 	"core/internal/dtos"
 	"core/internal/services"
 	"core/pkg/jwt"
@@ -13,7 +13,7 @@ import (
 )
 
 // BlockUserHandler is a handler to block an user.
-func BlockUserHandler(handlerCtx *entities.HandlersContext) error {
+func BlockUserHandler(handlerCtx *configs.HandlersContext) error {
 	payload := dtos.BlockUserDTO{}
 	id, err := toolkitEntities.ParseID(handlerCtx.C.Params("id"))
 
@@ -32,7 +32,7 @@ func BlockUserHandler(handlerCtx *entities.HandlersContext) error {
 }
 
 // UnblockUserHandler is a handler to unblock an user.
-func UnblockUserHandler(handlerCtx *entities.HandlersContext) error {
+func UnblockUserHandler(handlerCtx *configs.HandlersContext) error {
 	id, err := toolkitEntities.ParseID(handlerCtx.C.Params("id"))
 
 	if err != nil {

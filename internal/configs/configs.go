@@ -1,10 +1,14 @@
 package configs
 
 import (
+	"core/internal/repositories"
 	"log"
 
 	"github.com/go-chi/jwtauth"
+	"github.com/gofiber/fiber/v2"
 	"github.com/spf13/viper"
+	"github.com/streadway/amqp"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 // Conf is a model for app config. Like the app name, app port.
@@ -37,6 +41,29 @@ type Conf struct {
 }
 
 var cfg *Conf
+
+// AppCtx is a global model for app. It defines the router, db, config, repositories, etc.
+// Use AppCtx to avoid long function params.
+type AppCtx struct {
+	App                 *fiber.App
+	DB                  *mongo.Database
+	Cfg                 *Conf
+	MessageQueueConn    *amqp.Connection
+	MessageQueueCh      *amqp.Channel
+	QuestionsRepository *repositories.Questions
+	BlocksRepository    *repositories.Blocks
+	UsersRepository     *repositories.Users
+	AuthRepository      *repositories.Auth
+}
+
+// HandlersContext is a global model for handlers. It defines the fiber context, app context, etc..
+// Use HandlersContext to avoid long function params.
+type HandlersContext struct {
+	// Context from fiber.
+	C *fiber.Ctx
+	// App config.
+	AppCtx
+}
 
 // LoadConfig loads config from .env. It handles JWT config, db config, server config, etc.
 func LoadConfig(path string) (*Conf, error) {

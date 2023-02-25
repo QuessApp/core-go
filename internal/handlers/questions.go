@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"core/cmd/app/entities"
+	"core/internal/configs"
 	"core/internal/dtos"
 	"core/internal/services"
 	"core/pkg/jwt"
@@ -14,7 +14,7 @@ import (
 )
 
 // CreateQuestionHandler is a handler to create a question.
-func CreateQuestionHandler(handlerCtx *entities.HandlersContext) error {
+func CreateQuestionHandler(handlerCtx *configs.HandlersContext) error {
 	payload := dtos.CreateQuestionDTO{}
 
 	if err := handlerCtx.C.BodyParser(&payload); err != nil {
@@ -33,7 +33,7 @@ func CreateQuestionHandler(handlerCtx *entities.HandlersContext) error {
 }
 
 // GetAllQuestionsHandler is a handler to find all paginated questions.
-func GetAllQuestionsHandler(handlerCtx *entities.HandlersContext) error {
+func GetAllQuestionsHandler(handlerCtx *configs.HandlersContext) error {
 	authenticatedUserId := jwt.GetUserByToken(handlerCtx.C).ID
 
 	p, err := strconv.Atoi(handlerCtx.C.Query("page"))
@@ -57,7 +57,7 @@ func GetAllQuestionsHandler(handlerCtx *entities.HandlersContext) error {
 }
 
 // FindQuestionByIDHandler is a handler to find a question by its id.
-func FindQuestionByIDHandler(handlerCtx *entities.HandlersContext) error {
+func FindQuestionByIDHandler(handlerCtx *configs.HandlersContext) error {
 	id, err := toolkitEntities.ParseID(handlerCtx.C.Params("id"))
 
 	if err != nil {
@@ -76,7 +76,7 @@ func FindQuestionByIDHandler(handlerCtx *entities.HandlersContext) error {
 }
 
 // DeleteQuestionHandler is a handler to delete a question by its id.
-func DeleteQuestionHandler(handlerCtx *entities.HandlersContext) error {
+func DeleteQuestionHandler(handlerCtx *configs.HandlersContext) error {
 	id, err := toolkitEntities.ParseID(handlerCtx.C.Params("id"))
 
 	if err != nil {
@@ -93,7 +93,7 @@ func DeleteQuestionHandler(handlerCtx *entities.HandlersContext) error {
 }
 
 // HideQuestionHandler is a handler to hide question by its id.
-func HideQuestionHandler(handlerCtx *entities.HandlersContext) error {
+func HideQuestionHandler(handlerCtx *configs.HandlersContext) error {
 	id, err := toolkitEntities.ParseID(handlerCtx.C.Params("id"))
 
 	if err != nil {
