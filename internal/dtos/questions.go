@@ -21,6 +21,21 @@ type CreateQuestionDTO struct {
 	CreatedAt   time.Time
 }
 
+// ReplyQuestionDTO is DTO for payload for reply question handler.
+type ReplyQuestionDTO struct {
+	ID      toolkitEntities.ID
+	Content string
+}
+
+// Validate validates passed struct then returns a string
+func (d ReplyQuestionDTO) Validate() error {
+	validationResult := validation.ValidateStruct(&d,
+		validation.Field(&d.Content, validation.Required.Error(errors.CONTENT_REQUIRED), validation.Length(3, 250).Error(errors.CONTENT_LENGTH)),
+	)
+
+	return validations.GetValidationError(validationResult)
+}
+
 // Validate validates passed struct then returns a string.
 func (d CreateQuestionDTO) Validate() error {
 	validationResult := validation.ValidateStruct(&d,

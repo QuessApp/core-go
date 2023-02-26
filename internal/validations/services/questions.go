@@ -80,3 +80,21 @@ func IsInvalidSendToID(payload *dtos.CreateQuestionDTO) error {
 
 	return nil
 }
+
+// IsAlreadyReplied returns error message if the question is already replied.
+func IsAlreadyReplied(q *internalEntities.Question) error {
+	if q.IsReplied {
+		return errors.New(internalErrors.QUESTION_ALREADY_REPLIED)
+	}
+
+	return nil
+}
+
+// CanReply returns error message if the user can reply the question.
+func CanReply(q *internalEntities.Question, authenticatedUserId toolkitEntities.ID) error {
+	if q.SendTo != authenticatedUserId {
+		return errors.New(internalErrors.QUESTION_NOT_SENT_FOR_ME)
+	}
+
+	return nil
+}

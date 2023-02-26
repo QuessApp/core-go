@@ -143,3 +143,15 @@ func (q Questions) Hide(id toolkitEntities.ID) error {
 
 	return err
 }
+
+// Reply replies a question.
+func (q Questions) Reply(payload *dtos.ReplyQuestionDTO) error {
+	coll := q.db.Collection(collections.QUESTIONS)
+
+	filter := bson.D{{Key: "_id", Value: payload.ID}}
+	update := bson.D{{Key: "$set", Value: bson.D{{Key: "isReplied", Value: true}, {Key: "reply", Value: payload.Content}}}}
+
+	_, err := coll.UpdateOne(context.Background(), filter, update)
+
+	return err
+}

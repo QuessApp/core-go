@@ -187,3 +187,34 @@ func HideQuestion(handlerCtx *configs.HandlersCtx, id toolkitEntities.ID, authen
 
 	return nil
 }
+
+// ReplyQuestion replies a question.
+func ReplyQuestion(handlerCtx *configs.HandlersCtx, payload *dtos.ReplyQuestionDTO, authenticatedUserId toolkitEntities.ID) error {
+	if err := payload.Validate(); err != nil {
+		return err
+	}
+
+	q := handlerCtx.QuestionsRepository.FindByID(payload.ID)
+
+	if err := validations.QuestionExists(q); err != nil {
+		return err
+	}
+
+	if err := validations.QuestionCanViewQuestion(q, authenticatedUserId); err != nil {
+		return err
+	}
+
+	if err := validations.IsAlreadyReplied(q); err != nil {
+		return err
+	}
+
+	if err := validations.CanReply(q, authenticatedUserId); err != nil {
+		return err
+	}
+
+	if err := handlerCtx.QuestionsRepository.Reply(payload); err != nil {
+		return err
+	}
+
+	return nil
+}
