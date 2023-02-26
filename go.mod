@@ -9,7 +9,7 @@ require (
 	github.com/gofiber/jwt/v3 v3.3.6
 	github.com/golang-jwt/jwt/v4 v4.5.0
 	github.com/jaswdr/faker v1.16.0
-	github.com/kuriozapp/toolkit v0.0.0-20230225180350-41c647f3a960
+	github.com/kuriozapp/toolkit v0.0.0-20230225230305-9dd211f14c0c
 	github.com/spf13/viper v1.15.0
 	github.com/streadway/amqp v1.0.0
 	github.com/stretchr/testify v1.8.2
@@ -36,6 +36,7 @@ require (
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.17 // indirect
 	github.com/mattn/go-runewidth v0.0.14 // indirect
+	github.com/mergermarket/go-pkcs7 v0.0.0-20170926155232-153b18ea13c9 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/montanaflynn/stats v0.0.0-20171201202039-1bf9dbcd8cbe // indirect
 	github.com/pelletier/go-toml/v2 v2.0.6 // indirect
@@ -50,7 +51,6 @@ require (
 	github.com/spf13/cast v1.5.0 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	github.com/stretchr/objx v0.5.0 // indirect
 	github.com/subosito/gotenv v1.4.2 // indirect
 	github.com/tinylib/msgp v1.1.8 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect

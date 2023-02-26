@@ -37,7 +37,11 @@ type Conf struct {
 	JWTToken     *jwtauth.JWTAuth
 
 	// Queues
-	MessageQueueURI string `mapstructure:"MessageQueueURI"`
+	MessageQueueURI     string `mapstructure:"MessageQueueURI"`
+	SendEmailsQueueName string `mapstructure:"SEND_EMAILS_QUEUE_NAME"`
+
+	// Crypto
+	CipherKey string `mapstructure:"CIPHER_KEY"`
 }
 
 var cfg *Conf
@@ -54,6 +58,7 @@ type AppCtx struct {
 	BlocksRepository    *repositories.Blocks
 	UsersRepository     *repositories.Users
 	AuthRepository      *repositories.Auth
+	SendEmailsQueue     *amqp.Queue
 }
 
 // HandlersContext is a global model for handlers. It defines the fiber context, app context, etc..
