@@ -9,6 +9,8 @@ import (
 )
 
 // SignUpUserHandler is a handler to sign up an user.
+//
+// It reads data from payload and try to sign up the user.
 func SignUpUserHandler(handlerCtx *configs.HandlersCtx, authRepository *AuthRepository, usersRepository *users.UsersRepository) error {
 	payload := SignUpUserDTO{}
 
@@ -26,6 +28,8 @@ func SignUpUserHandler(handlerCtx *configs.HandlersCtx, authRepository *AuthRepo
 }
 
 // SignInUserHandler is a handler to sign in an user.
+//
+// It reads data from payload and try to sign in the user.
 func SignInUserHandler(handlerCtx *configs.HandlersCtx, authRepository *AuthRepository, usersRepository *users.UsersRepository) error {
 	payload := SignInUserDTO{}
 

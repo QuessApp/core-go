@@ -8,6 +8,8 @@ import (
 )
 
 // LoadRoutes loads all auth routes of app.
+//
+// It create routes and assign handlers to each route.
 func LoadRoutes(AppCtx *configs.AppCtx, authRepository *AuthRepository, usersRepository *users.UsersRepository) {
 	g := AppCtx.App.Group("/auth")
 

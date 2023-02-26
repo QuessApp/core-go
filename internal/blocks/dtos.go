@@ -21,6 +21,8 @@ type UnblockUserDTO struct {
 }
 
 // Validate validates passed struct then returns a string.
+//
+// It validates if user to block id is valid.
 func (d BlockUserDTO) Validate() error {
 	validationResult := validation.ValidateStruct(&d,
 		validation.Field(&d.UserToBlock, validation.Required.Error(USER_TO_BLOCK_REQUIRED)),

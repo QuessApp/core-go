@@ -7,6 +7,10 @@ import (
 )
 
 // BlockUser blocks an user.
+//
+// It formats the payload, checks if user to block exists, already blocked, checks if trying to block yourself.
+//
+// After validations, if there are not errors, the user will be blocked by other user.
 func BlockUser(payload *BlockUserDTO, usersRepository *users.UsersRepository, blocksRepository *BlocksRepository) error {
 	if err := payload.Validate(); err != nil {
 		return err
@@ -34,6 +38,10 @@ func BlockUser(payload *BlockUserDTO, usersRepository *users.UsersRepository, bl
 }
 
 // UnblockUser unblocks an user.
+//
+// It checks if user is really blocked.
+//
+// After validations, if there are not errors, the user will be unblocked by other user.
 func UnblockUser(userId toolkitEntities.ID, usersRepository *users.UsersRepository, blocksRepository *BlocksRepository) error {
 	if err := IsReallyBlocked(blocksRepository.IsUserBlocked(userId)); err != nil {
 		return err

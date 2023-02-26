@@ -12,6 +12,8 @@ import (
 )
 
 // BlockUserHandler is a handler to block an user.
+//
+// It reads data from payload, gets user id from url params, gets user from token and try to block the user.
 func BlockUserHandler(handlerCtx *configs.HandlersCtx, usersRepository *users.UsersRepository, blocksRepository *BlocksRepository) error {
 	payload := BlockUserDTO{}
 	id, err := toolkitEntities.ParseID(handlerCtx.C.Params("id"))
@@ -31,6 +33,8 @@ func BlockUserHandler(handlerCtx *configs.HandlersCtx, usersRepository *users.Us
 }
 
 // UnblockUserHandler is a handler to unblock an user.
+//
+// It gets user id from url params, get user from token and try to unblock the user.
 func UnblockUserHandler(handlerCtx *configs.HandlersCtx, usersRepository *users.UsersRepository, blocksRepository *BlocksRepository) error {
 	id, err := toolkitEntities.ParseID(handlerCtx.C.Params("id"))
 

@@ -31,7 +31,9 @@ type SignInUserDTO struct {
 	Password string
 }
 
-// Format formats DTO information. It removes special characters from nick, trim email, etc.
+// Format formats DTO information.
+//
+// It removes special characters from nick and trim email.
 func (d *SignUpUserDTO) Format() {
 	d.Nick = regexp.MustCompile(regexes.SPECIAL_CHARS).ReplaceAllString(d.Nick, "")
 	d.Nick = strings.TrimSpace(strings.ToLower(d.Nick))
@@ -39,6 +41,8 @@ func (d *SignUpUserDTO) Format() {
 }
 
 // Validate validates passed struct then returns a string.
+//
+// It validates if nick, password, name and email are valid.
 func (d SignUpUserDTO) Validate() error {
 	validationResult := validation.ValidateStruct(&d,
 		validation.Field(&d.Nick, validation.Required.Error(NICK_FIELD_REQUIRED), validation.Length(3, 50).Error(NICK_FIELD_LENGTH)),

@@ -11,6 +11,8 @@ import (
 )
 
 // LoadRoutes loads all questions routes of app.
+//
+// It create routes and assign handlers to each route.
 func LoadRoutes(AppCtx *configs.AppCtx, usersRepository *users.UsersRepository, questionsRepository *QuestionsRepository, blocksRepository *blocks.BlocksRepository) {
 	g := AppCtx.App.Group("/questions", middlewares.JWTMiddleware(AppCtx.App, AppCtx.Cfg))
 

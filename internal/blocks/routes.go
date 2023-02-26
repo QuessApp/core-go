@@ -9,6 +9,8 @@ import (
 )
 
 // LoadRoutes loads all blocks routes of app.
+//
+// It create routes and assign handlers to each route.
 func LoadRoutes(AppCtx *configs.AppCtx, usersRepository *users.UsersRepository, blocksRepository *BlocksRepository) {
 	g := AppCtx.App.Group("/blocks", middlewares.JWTMiddleware(AppCtx.App, AppCtx.Cfg))
 

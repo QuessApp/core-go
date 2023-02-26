@@ -27,6 +27,8 @@ type ReplyQuestionDTO struct {
 }
 
 // Validate validates passed struct then returns a string
+//
+// It validates if content is valid.
 func (d ReplyQuestionDTO) Validate() error {
 	validationResult := validation.ValidateStruct(&d,
 		validation.Field(&d.Content, validation.Required.Error(CONTENT_REQUIRED), validation.Length(3, 250).Error(CONTENT_LENGTH)),
@@ -36,6 +38,8 @@ func (d ReplyQuestionDTO) Validate() error {
 }
 
 // Validate validates passed struct then returns a string.
+//
+// It validates if content and send to fields are valids.
 func (d CreateQuestionDTO) Validate() error {
 	validationResult := validation.ValidateStruct(&d,
 		validation.Field(&d.Content, validation.Required.Error(CONTENT_REQUIRED), validation.Length(3, 250).Error(CONTENT_LENGTH)),

@@ -10,6 +10,10 @@ import (
 )
 
 // SignUp reads payload from request body then try to register a new user in database.
+//
+// It formats the payload, check if provided email and nick are already in use.
+//
+// After validations, the provided password will be hashed. If no error is returned, the user will be created in database.
 func SignUp(handlerCtx *configs.HandlersCtx, payload *SignUpUserDTO, authRepository *AuthRepository, usersRepository *users.UsersRepository) (*users.ResponseWithUser, error) {
 	payload.Format()
 
@@ -65,7 +69,11 @@ func SignUp(handlerCtx *configs.HandlersCtx, payload *SignUpUserDTO, authReposit
 	return data, nil
 }
 
-// SignIn reads nick and password from an user and try to return user's data.
+// SignIn reads nick and password from the request and will try to return user's data.
+//
+// It will verify if user already exists and after validations the provided password will be hashed and compared with password in database.
+//
+// If no error is returned, the user will be created in database and access & refresh token will be returned.
 func SignIn(handlerCtx *configs.HandlersCtx, payload *SignInUserDTO, usersRepository *users.UsersRepository) (*users.ResponseWithUser, error) {
 	u := usersRepository.FindUserByNick(payload.Nick)
 
