@@ -12,9 +12,9 @@ func LoadAuthRoutes(AppCtx *configs.AppCtx) {
 	g := AppCtx.App.Group("/auth")
 
 	g.Post("/signup", func(c *fiber.Ctx) error {
-		return handlers.SignUpUserHandler(&configs.HandlersContext{C: c, AppCtx: *AppCtx})
+		return handlers.SignUpUserHandler(&configs.HandlersCtx{C: c, AppCtx: *AppCtx})
 	})
 	g.Post("/signin", func(c *fiber.Ctx) error {
-		return handlers.SignInUserHandler(&configs.HandlersContext{C: c, AppCtx: *AppCtx})
+		return handlers.SignInUserHandler(&configs.HandlersCtx{C: c, AppCtx: *AppCtx})
 	})
 }

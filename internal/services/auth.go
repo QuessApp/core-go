@@ -4,7 +4,6 @@ import (
 	"core/internal/configs"
 	"core/internal/dtos"
 	"core/internal/entities"
-	"core/internal/repositories"
 	validations "core/internal/validations/services"
 	"core/pkg/jwt"
 
@@ -12,18 +11,18 @@ import (
 )
 
 // SignUp reads payload from request body then try to register a new user in database.
-func SignUp(cfg *configs.Conf, payload *dtos.SignUpUserDTO, usersRepository *repositories.Users, authRepository *repositories.Auth) (*entities.ResponseWithUser, error) {
+func SignUp(handlerCtx *configs.HandlersCtx, payload *dtos.SignUpUserDTO) (*entities.ResponseWithUser, error) {
 	payload.Format()
 
 	if err := payload.Validate(); err != nil {
 		return nil, err
 	}
 
-	if err := validations.IsEmailInUse(authRepository.IsEmailInUse(payload.Email)); err != nil {
+	if err := validations.IsEmailInUse(handlerCtx.AuthRepository.IsEmailInUse(payload.Email)); err != nil {
 		return nil, err
 	}
 
-	if err := validations.IsNickInUse(usersRepository.IsNickInUse(payload.Nick)); err != nil {
+	if err := validations.IsNickInUse(handlerCtx.UsersRepository.IsNickInUse(payload.Nick)); err != nil {
 		return nil, err
 	}
 
@@ -35,19 +34,19 @@ func SignUp(cfg *configs.Conf, payload *dtos.SignUpUserDTO, usersRepository *rep
 
 	payload.Password = string(hashedPassword)
 
-	u, err := authRepository.SignUp(payload)
+	u, err := handlerCtx.AuthRepository.SignUp(payload)
 
 	if err != nil {
 		return nil, err
 	}
 
-	accessToken, err := jwt.CreateAccessToken(u, cfg)
+	accessToken, err := jwt.CreateAccessToken(u, handlerCtx.Cfg)
 
 	if err != nil {
 		return nil, err
 	}
 
-	refreshToken, err := jwt.CreateRefreshToken(u, cfg)
+	refreshToken, err := jwt.CreateRefreshToken(u, handlerCtx.Cfg)
 
 	if err != nil {
 		return nil, err
@@ -68,8 +67,8 @@ func SignUp(cfg *configs.Conf, payload *dtos.SignUpUserDTO, usersRepository *rep
 }
 
 // SignIn reads nick and password from an user and try to return user's data.
-func SignIn(cfg *configs.Conf, payload *dtos.SignInUserDTO, usersRepository *repositories.Users) (*entities.ResponseWithUser, error) {
-	u := usersRepository.FindUserByNick(payload.Nick)
+func SignIn(handlerCtx *configs.HandlersCtx, payload *dtos.SignInUserDTO) (*entities.ResponseWithUser, error) {
+	u := handlerCtx.UsersRepository.FindUserByNick(payload.Nick)
 
 	if err := validations.UserExists(u); err != nil {
 		return nil, err
@@ -79,13 +78,13 @@ func SignIn(cfg *configs.Conf, payload *dtos.SignInUserDTO, usersRepository *rep
 		return nil, err
 	}
 
-	accessToken, err := jwt.CreateAccessToken(u, cfg)
+	accessToken, err := jwt.CreateAccessToken(u, handlerCtx.Cfg)
 
 	if err != nil {
 		return nil, err
 	}
 
-	refreshToken, err := jwt.CreateRefreshToken(u, cfg)
+	refreshToken, err := jwt.CreateRefreshToken(u, handlerCtx.Cfg)
 
 	if err != nil {
 		return nil, err

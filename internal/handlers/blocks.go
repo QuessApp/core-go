@@ -13,7 +13,7 @@ import (
 )
 
 // BlockUserHandler is a handler to block an user.
-func BlockUserHandler(handlerCtx *configs.HandlersContext) error {
+func BlockUserHandler(handlerCtx *configs.HandlersCtx) error {
 	payload := dtos.BlockUserDTO{}
 	id, err := toolkitEntities.ParseID(handlerCtx.C.Params("id"))
 
@@ -32,7 +32,7 @@ func BlockUserHandler(handlerCtx *configs.HandlersContext) error {
 }
 
 // UnblockUserHandler is a handler to unblock an user.
-func UnblockUserHandler(handlerCtx *configs.HandlersContext) error {
+func UnblockUserHandler(handlerCtx *configs.HandlersCtx) error {
 	id, err := toolkitEntities.ParseID(handlerCtx.C.Params("id"))
 
 	if err != nil {

@@ -14,7 +14,7 @@ import (
 )
 
 // CreateQuestionHandler is a handler to create a question.
-func CreateQuestionHandler(handlerCtx *configs.HandlersContext) error {
+func CreateQuestionHandler(handlerCtx *configs.HandlersCtx) error {
 	payload := dtos.CreateQuestionDTO{}
 
 	if err := handlerCtx.C.BodyParser(&payload); err != nil {
@@ -33,7 +33,7 @@ func CreateQuestionHandler(handlerCtx *configs.HandlersContext) error {
 }
 
 // GetAllQuestionsHandler is a handler to find all paginated questions.
-func GetAllQuestionsHandler(handlerCtx *configs.HandlersContext) error {
+func GetAllQuestionsHandler(handlerCtx *configs.HandlersCtx) error {
 	authenticatedUserId := jwt.GetUserByToken(handlerCtx.C).ID
 
 	p, err := strconv.Atoi(handlerCtx.C.Query("page"))
@@ -47,7 +47,7 @@ func GetAllQuestionsHandler(handlerCtx *configs.HandlersContext) error {
 	sort := handlerCtx.C.Query("sort")
 	filter := handlerCtx.C.Query("filter")
 
-	questions, err := services.GetAllQuestions(&page, &sort, &filter, authenticatedUserId, handlerCtx.QuestionsRepository, handlerCtx.UsersRepository)
+	questions, err := services.GetAllQuestions(handlerCtx, &page, &sort, &filter, authenticatedUserId)
 
 	if err != nil {
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
@@ -57,7 +57,7 @@ func GetAllQuestionsHandler(handlerCtx *configs.HandlersContext) error {
 }
 
 // FindQuestionByIDHandler is a handler to find a question by its id.
-func FindQuestionByIDHandler(handlerCtx *configs.HandlersContext) error {
+func FindQuestionByIDHandler(handlerCtx *configs.HandlersCtx) error {
 	id, err := toolkitEntities.ParseID(handlerCtx.C.Params("id"))
 
 	if err != nil {
@@ -66,7 +66,7 @@ func FindQuestionByIDHandler(handlerCtx *configs.HandlersContext) error {
 
 	authenticatedUserId := jwt.GetUserByToken(handlerCtx.C).ID
 
-	question, err := services.FindQuestionByID(id, authenticatedUserId, handlerCtx.QuestionsRepository, handlerCtx.UsersRepository)
+	question, err := services.FindQuestionByID(handlerCtx, id, authenticatedUserId)
 
 	if err != nil {
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
@@ -76,7 +76,7 @@ func FindQuestionByIDHandler(handlerCtx *configs.HandlersContext) error {
 }
 
 // DeleteQuestionHandler is a handler to delete a question by its id.
-func DeleteQuestionHandler(handlerCtx *configs.HandlersContext) error {
+func DeleteQuestionHandler(handlerCtx *configs.HandlersCtx) error {
 	id, err := toolkitEntities.ParseID(handlerCtx.C.Params("id"))
 
 	if err != nil {
@@ -85,7 +85,7 @@ func DeleteQuestionHandler(handlerCtx *configs.HandlersContext) error {
 
 	authenticatedUserId := jwt.GetUserByToken(handlerCtx.C).ID
 
-	if err := services.DeleteQuestion(id, authenticatedUserId, handlerCtx.QuestionsRepository); err != nil {
+	if err := services.DeleteQuestion(handlerCtx, id, authenticatedUserId); err != nil {
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
@@ -93,7 +93,7 @@ func DeleteQuestionHandler(handlerCtx *configs.HandlersContext) error {
 }
 
 // HideQuestionHandler is a handler to hide question by its id.
-func HideQuestionHandler(handlerCtx *configs.HandlersContext) error {
+func HideQuestionHandler(handlerCtx *configs.HandlersCtx) error {
 	id, err := toolkitEntities.ParseID(handlerCtx.C.Params("id"))
 
 	if err != nil {
@@ -102,7 +102,7 @@ func HideQuestionHandler(handlerCtx *configs.HandlersContext) error {
 
 	authenticatedUserId := jwt.GetUserByToken(handlerCtx.C).ID
 
-	if err := services.HideQuestion(id, authenticatedUserId, handlerCtx.QuestionsRepository, handlerCtx.UsersRepository); err != nil {
+	if err := services.HideQuestion(handlerCtx, id, authenticatedUserId); err != nil {
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
