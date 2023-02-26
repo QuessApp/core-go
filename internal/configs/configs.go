@@ -61,9 +61,9 @@ type AppCtx struct {
 	SendEmailsQueue     *amqp.Queue
 }
 
-// HandlersContext is a global model for handlers. It defines the fiber context, app context, etc..
-// Use HandlersContext to avoid long function params.
-type HandlersContext struct {
+// HandlersCtx is a global model for handlers. It defines the fiber context, app context, etc..
+// Use HandlersCtx to avoid long function params.
+type HandlersCtx struct {
 	// Context from fiber.
 	C *fiber.Ctx
 	// App config.

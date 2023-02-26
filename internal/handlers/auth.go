@@ -10,14 +10,14 @@ import (
 )
 
 // SignUpUserHandler is a handler to sign up an user.
-func SignUpUserHandler(handlerCtx *configs.HandlersContext) error {
+func SignUpUserHandler(handlerCtx *configs.HandlersCtx) error {
 	payload := dtos.SignUpUserDTO{}
 
 	if err := handlerCtx.C.BodyParser(&payload); err != nil {
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
-	u, err := services.SignUp(handlerCtx.Cfg, &payload, handlerCtx.UsersRepository, handlerCtx.AuthRepository)
+	u, err := services.SignUp(handlerCtx, &payload)
 
 	if err != nil {
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
@@ -27,14 +27,14 @@ func SignUpUserHandler(handlerCtx *configs.HandlersContext) error {
 }
 
 // SignInUserHandler is a handler to sign in an user.
-func SignInUserHandler(handlerCtx *configs.HandlersContext) error {
+func SignInUserHandler(handlerCtx *configs.HandlersCtx) error {
 	payload := dtos.SignInUserDTO{}
 
 	if err := handlerCtx.C.BodyParser(&payload); err != nil {
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
-	u, err := services.SignIn(handlerCtx.Cfg, &payload, handlerCtx.UsersRepository)
+	u, err := services.SignIn(handlerCtx, &payload)
 
 	if err != nil {
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
