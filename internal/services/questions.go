@@ -1,6 +1,7 @@
 package services
 
 import (
+	"core/internal/configs"
 	"core/internal/dtos"
 	"core/internal/entities"
 	"core/internal/repositories"
@@ -10,7 +11,7 @@ import (
 )
 
 // CreateQuestion reads payload from request body then try to create a new question in database.
-func CreateQuestion(payload *dtos.CreateQuestionDTO, authenticatedUserId toolkitEntities.ID, questionsRepository *repositories.Questions, blocksRepository *repositories.Blocks, usersRepository *repositories.Users) error {
+func CreateQuestion(handlerCtx *configs.HandlersContext, payload *dtos.CreateQuestionDTO, authenticatedUserId toolkitEntities.ID) error {
 	if err := validations.IsInvalidSendToID(payload); err != nil {
 		return err
 	}
@@ -23,30 +24,30 @@ func CreateQuestion(payload *dtos.CreateQuestionDTO, authenticatedUserId toolkit
 		return err
 	}
 
-	if err := validations.DidBlockedReceiver(blocksRepository.IsUserBlocked(payload.SendTo)); err != nil {
+	if err := validations.DidBlockedReceiver(handlerCtx.BlocksRepository.IsUserBlocked(payload.SendTo)); err != nil {
 		return err
 	}
 
 	payload.SentBy = authenticatedUserId
 
-	if err := validations.IsBlockedByReceiver(blocksRepository.IsUserBlocked(payload.SentBy)); err != nil {
+	if err := validations.IsBlockedByReceiver(handlerCtx.BlocksRepository.IsUserBlocked(payload.SentBy)); err != nil {
 		return err
 	}
 
-	userToSendQuestion := usersRepository.FindUserByID(payload.SendTo)
+	userToSendQuestion := handlerCtx.UsersRepository.FindUserByID(payload.SendTo)
 
 	if err := validations.UserExists(userToSendQuestion); err != nil {
 		return err
 	}
 
-	userThatIsSendingQuestion := usersRepository.FindUserByID(payload.SentBy)
+	userThatIsSendingQuestion := handlerCtx.UsersRepository.FindUserByID(payload.SentBy)
 
 	if err := validations.ReachedPostsLimitToCreateQuestion(userThatIsSendingQuestion); err != nil {
 		return err
 	}
 
 	// TODO: maybe use Go routines?
-	if err := DecrementUserLimit(userThatIsSendingQuestion.ID, usersRepository); err != nil {
+	if err := DecrementUserLimit(userThatIsSendingQuestion.ID, handlerCtx.UsersRepository); err != nil {
 		return err
 	}
 
@@ -56,11 +57,15 @@ func CreateQuestion(payload *dtos.CreateQuestionDTO, authenticatedUserId toolkit
 		return nil
 	}
 
-	if err := questionsRepository.Create(payload); err != nil {
+	if err := handlerCtx.QuestionsRepository.Create(payload); err != nil {
 		return err
 	}
 
-	// TODO: update user lastPublishAt field and send email to user.
+	// TODO: update user lastPublishAt field.
+
+	if userToSendQuestion.EnableAppEmails {
+		go SendNewQuestionReceivedEmail(handlerCtx.AppCtx.Cfg, handlerCtx.MessageQueueCh, handlerCtx.SendEmailsQueue, payload, userToSendQuestion, userThatIsSendingQuestion)
+	}
 
 	return nil
 }

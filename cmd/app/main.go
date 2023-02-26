@@ -3,9 +3,11 @@ package main
 import (
 	"core/internal/configs"
 	"core/internal/database"
+	"core/internal/queues"
 	"core/internal/repositories"
 	"core/internal/routes"
 	"fmt"
+	"log"
 
 	"github.com/kuriozapp/toolkit/queue"
 
@@ -28,6 +30,7 @@ func main() {
 	}
 
 	conn, ch := queue.Connect(config.MessageQueueURI)
+	defer conn.Close()
 
 	authRepository := repositories.NewAuthRepository(db)
 	usersRepository := repositories.NewUsersRepository(db)
@@ -45,6 +48,14 @@ func main() {
 		UsersRepository:     usersRepository,
 		AuthRepository:      authRepository,
 	}
+
+	q, err := queues.DeclareSendEmailsQueue(AppCtx)
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	AppCtx.SendEmailsQueue = q
 
 	routes.LoadRoutes(AppCtx)
 }

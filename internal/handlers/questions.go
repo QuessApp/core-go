@@ -25,7 +25,7 @@ func CreateQuestionHandler(handlerCtx *configs.HandlersContext) error {
 
 	payload.SentBy = authenticatedUserId
 
-	if err := services.CreateQuestion(&payload, authenticatedUserId, handlerCtx.QuestionsRepository, handlerCtx.BlocksRepository, handlerCtx.UsersRepository); err != nil {
+	if err := services.CreateQuestion(handlerCtx, &payload, authenticatedUserId); err != nil {
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
