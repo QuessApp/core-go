@@ -3,6 +3,8 @@ package api
 import (
 	"core/cmd/api/middlewares"
 	"core/configs"
+	"core/docs"
+
 	"core/internal/auth"
 	"core/internal/blocks"
 	"core/internal/questions"
@@ -16,6 +18,7 @@ func LoadRoutes(AppCtx *configs.AppCtx, authRepository *auth.AuthRepository, use
 	auth.LoadRoutes(AppCtx, authRepository, usersRepository)
 	questions.LoadRoutes(AppCtx, usersRepository, questionsRepository, blocksRepository)
 	blocks.LoadRoutes(AppCtx, usersRepository, blocksRepository)
+	docs.LoadRoutes(AppCtx)
 
 	log.Fatal(AppCtx.App.Listen(AppCtx.Cfg.ServerPort))
 }

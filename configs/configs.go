@@ -16,6 +16,7 @@ type Conf struct {
 	// App Config
 	APPName    string `mapstructure:"APP_NAME"`
 	ServerPort string `mapstructure:"SERVER_PORT"`
+	ServerHost string `mapstructure:"SERVER_HOST"`
 	Env        string `mapstructure:"ENV"`
 	APIKey     string `mapstructure:"API_KEY"`
 
