@@ -27,4 +27,7 @@ func LoadQuestionsRoute(AppCtx *configs.AppCtx) {
 	g.Delete("/:id", func(c *fiber.Ctx) error {
 		return handlers.DeleteQuestionHandler(&configs.HandlersCtx{C: c, AppCtx: *AppCtx})
 	})
+	g.Patch("/reply/:id", func(c *fiber.Ctx) error {
+		return handlers.ReplyQuestionHandler(&configs.HandlersCtx{C: c, AppCtx: *AppCtx})
+	})
 }

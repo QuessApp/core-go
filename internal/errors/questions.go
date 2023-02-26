@@ -19,4 +19,6 @@ const (
 
 	CANT_HIDE_ALREADY_HIDDEN = "você não pode ocultar esta pergunta porque ela já está oculta"
 	CANT_SEND_INVALID_ID     = "id do destinátário é invalido"
+
+	QUESTION_ALREADY_REPLIED = "pergunta já foi respondida"
 )

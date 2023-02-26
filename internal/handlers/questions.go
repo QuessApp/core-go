@@ -108,3 +108,28 @@ func HideQuestionHandler(handlerCtx *configs.HandlersCtx) error {
 
 	return responses.ParseSuccessful(handlerCtx.C, http.StatusOK, nil)
 }
+
+// ReplyQuestionHandler is a handler to reply question by its id.
+func ReplyQuestionHandler(handlerCtx *configs.HandlersCtx) error {
+	payload := dtos.ReplyQuestionDTO{}
+
+	if err := handlerCtx.C.BodyParser(&payload); err != nil {
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
+	}
+
+	id, err := toolkitEntities.ParseID(handlerCtx.C.Params("id"))
+
+	if err != nil {
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
+	}
+
+	authenticatedUserId := jwt.GetUserByToken(handlerCtx.C).ID
+
+	payload.ID = id
+
+	if err := services.ReplyQuestion(handlerCtx, &payload, authenticatedUserId); err != nil {
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
+	}
+
+	return responses.ParseSuccessful(handlerCtx.C, http.StatusOK, nil)
+}
