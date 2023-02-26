@@ -13,7 +13,6 @@ func LoadRoutes(AppCtx *configs.AppCtx) {
 
 	docsURI := fmt.Sprintf("%s%s/docs/doc.json", AppCtx.Cfg.ServerHost, AppCtx.Cfg.ServerPort)
 
-	fmt.Println(docsURI)
 	g.Get("/*", swagger.New(swagger.Config{
 		URL:          docsURI,
 		DeepLinking:  false,

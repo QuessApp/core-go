@@ -9,8 +9,6 @@ import (
 	date "github.com/kuriozapp/toolkit/constants"
 	toolkitEntities "github.com/kuriozapp/toolkit/entities"
 
-	"fmt"
-
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v4"
 )
@@ -23,8 +21,6 @@ var (
 // CreateUserToken creates an user JWT token with followed fields:
 // id, name, email, exp. It returns string and error.
 func CreateUserToken(u *users.User, expiresIn int64, secret string) (string, error) {
-	fmt.Println(time.Now())
-
 	claims := jwt.MapClaims{
 		"id":    u.ID,
 		"name":  u.Name,
