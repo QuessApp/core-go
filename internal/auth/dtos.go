@@ -53,3 +53,15 @@ func (d SignUpUserDTO) Validate() error {
 
 	return validations.GetValidationError(validationResult)
 }
+
+// Validate validates passed struct then returns a string.
+//
+// It validates if nick and password are valid.
+func (d SignInUserDTO) Validate() error {
+	validationResult := validation.ValidateStruct(&d,
+		validation.Field(&d.Nick, validation.Required.Error(NICK_FIELD_REQUIRED), validation.Length(3, 50).Error(NICK_FIELD_LENGTH)),
+		validation.Field(&d.Password, validation.Required.Error(PASSWORD_FIELD_REQUIRED), validation.Length(6, 200).Error(PASSWORD_FIELD_LENGTH)),
+	)
+
+	return validations.GetValidationError(validationResult)
+}

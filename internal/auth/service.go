@@ -75,6 +75,10 @@ func SignUp(handlerCtx *configs.HandlersCtx, payload *SignUpUserDTO, authReposit
 //
 // If no error is returned, the user will be created in database and access & refresh token will be returned.
 func SignIn(handlerCtx *configs.HandlersCtx, payload *SignInUserDTO, usersRepository *users.UsersRepository) (*users.ResponseWithUser, error) {
+	if err := payload.Validate(); err != nil {
+		return nil, err
+	}
+
 	u := usersRepository.FindUserByNick(payload.Nick)
 
 	if err := users.UserExists(u); err != nil {

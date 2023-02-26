@@ -61,7 +61,6 @@ func CreateQuestion(handlerCtx *configs.HandlersCtx, payload *CreateQuestionDTO,
 	}
 
 	// TODO: update user lastPublishAt field.
-
 	if userToSendQuestion.EnableAppEmails {
 		go SendEmailNewQuestionReceived(handlerCtx.AppCtx.Cfg, handlerCtx.MessageQueueCh, handlerCtx.SendEmailsQueue, payload, userToSendQuestion, userThatIsSendingQuestion)
 	}
