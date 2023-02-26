@@ -6,6 +6,7 @@ import (
 
 	"time"
 
+	date "github.com/kuriozapp/toolkit/constants"
 	toolkitEntities "github.com/kuriozapp/toolkit/entities"
 
 	"fmt"
@@ -14,14 +15,9 @@ import (
 	"github.com/golang-jwt/jwt/v4"
 )
 
-const (
-	THIRTY_DAYS_IN_HOURS = time.Hour * 720
-	ONE_DAY_IN_HOURS     = time.Hour + 24
-)
-
 var (
-	ACCESS_TOKEN_EXPIRES_IN  = time.Now().Add(ONE_DAY_IN_HOURS).Unix()
-	REFRESH_TOKEN_EXPIRES_IN = time.Now().Add(THIRTY_DAYS_IN_HOURS).Unix()
+	ACCESS_TOKEN_EXPIRES_IN  = time.Now().Add(date.ONE_DAY_IN_HOURS).Unix()
+	REFRESH_TOKEN_EXPIRES_IN = time.Now().Add(date.THIRTY_DAYS_IN_HOURS).Unix()
 )
 
 // CreateUserToken creates an user JWT token with followed fields:

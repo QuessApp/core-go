@@ -1,14 +1,14 @@
 package dtos
 
 import (
-	"core/internal/dtos"
+	"core/internal/auth"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
 func TestFormat(t *testing.T) {
-	data := &dtos.SignUpUserDTO{}
+	data := &auth.SignUpUserDTO{}
 
 	data.Nick = "@ adsa32321@0-9"
 	data.Format()

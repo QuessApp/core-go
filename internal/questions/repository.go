@@ -2,7 +2,8 @@ package questions
 
 import (
 	"context"
-	collections "core/pkg/constants"
+
+	collections "github.com/kuriozapp/toolkit/constants"
 
 	toolkitEntities "github.com/kuriozapp/toolkit/entities"
 

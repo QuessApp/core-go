@@ -3,7 +3,8 @@ package auth
 import (
 	"context"
 	"core/internal/users"
-	collections "core/pkg/constants"
+
+	collections "github.com/kuriozapp/toolkit/constants"
 
 	toolkitEntities "github.com/kuriozapp/toolkit/entities"
 

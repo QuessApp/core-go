@@ -9,7 +9,7 @@ require (
 	github.com/gofiber/jwt/v3 v3.3.6
 	github.com/golang-jwt/jwt/v4 v4.5.0
 	github.com/jaswdr/faker v1.16.0
-	github.com/kuriozapp/toolkit v0.0.0-20230225230305-9dd211f14c0c
+	github.com/kuriozapp/toolkit v0.0.0-20230226051642-a1b8d5ab3d31
 	github.com/spf13/viper v1.15.0
 	github.com/streadway/amqp v1.0.0
 	github.com/stretchr/testify v1.8.2
