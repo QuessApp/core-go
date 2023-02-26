@@ -26,5 +26,6 @@ func LoadAPIKeyMiddleware(app *fiber.App, cfg *configs.Conf) {
 		ErrorHandler: func(c *fiber.Ctx, err error) error {
 			return responses.ParseUnsuccesfull(c, http.StatusForbidden, err.Error())
 		},
+		Key: cfg.APIKey,
 	}))
 }
