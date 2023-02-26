@@ -1,11 +1,15 @@
 package main
 
 import (
-	"core/internal/configs"
+	"core/cmd/api"
+	"core/configs"
+	"core/internal/auth"
+	"core/internal/blocks"
 	"core/internal/database"
-	"core/internal/queues"
-	"core/internal/repositories"
-	"core/internal/routes"
+	"core/internal/questions"
+
+	"core/internal/users"
+
 	"fmt"
 	"log"
 
@@ -32,24 +36,22 @@ func main() {
 	conn, ch := queue.Connect(config.MessageQueueURI)
 	defer conn.Close()
 
-	authRepository := repositories.NewAuthRepository(db)
-	usersRepository := repositories.NewUsersRepository(db)
-	questionsRepository := repositories.NewQuestionsRepository(db)
-	blocksRepository := repositories.NewBlocksRepository(db)
+	app := fiber.New()
+
+	authRepository := auth.NewAuthRepository(db)
+	usersRepository := users.NewRepository(db)
+	questionsRepository := questions.NewRepository(db)
+	blocksRepository := blocks.NewRepository(db)
 
 	AppCtx := &configs.AppCtx{
-		App:                 fiber.New(),
-		DB:                  db,
-		Cfg:                 config,
-		MessageQueueConn:    conn,
-		MessageQueueCh:      ch,
-		QuestionsRepository: questionsRepository,
-		BlocksRepository:    blocksRepository,
-		UsersRepository:     usersRepository,
-		AuthRepository:      authRepository,
+		App:              app,
+		DB:               db,
+		Cfg:              config,
+		MessageQueueConn: conn,
+		MessageQueueCh:   ch,
 	}
 
-	q, err := queues.DeclareSendEmailsQueue(AppCtx)
+	q, err := questions.DeclareEmailsQueue(AppCtx)
 
 	if err != nil {
 		log.Fatalln(err)
@@ -57,5 +59,5 @@ func main() {
 
 	AppCtx.SendEmailsQueue = q
 
-	routes.LoadRoutes(AppCtx)
+	api.LoadRoutes(AppCtx, authRepository, usersRepository, blocksRepository, questionsRepository)
 }

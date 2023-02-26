@@ -1,8 +1,9 @@
 package jwt
 
 import (
-	"core/internal/configs"
-	internalEntities "core/internal/entities"
+	"core/configs"
+	"core/internal/users"
+
 	"time"
 
 	toolkitEntities "github.com/kuriozapp/toolkit/entities"
@@ -25,7 +26,7 @@ var (
 
 // CreateUserToken creates an user JWT token with followed fields:
 // id, name, email, exp. It returns string and error.
-func CreateUserToken(u *internalEntities.User, expiresIn int64, secret string) (string, error) {
+func CreateUserToken(u *users.User, expiresIn int64, secret string) (string, error) {
 	fmt.Println(time.Now())
 
 	claims := jwt.MapClaims{
@@ -42,13 +43,13 @@ func CreateUserToken(u *internalEntities.User, expiresIn int64, secret string) (
 
 // CreateAccessToken creates an user JWT token with followed fields:
 // id, name, email, exp. It returns string and error.
-func CreateAccessToken(u *internalEntities.User, cfg *configs.Conf) (string, error) {
+func CreateAccessToken(u *users.User, cfg *configs.Conf) (string, error) {
 	return CreateUserToken(u, ACCESS_TOKEN_EXPIRES_IN, cfg.JWTSecret)
 }
 
 // CreateRefreshToken creates an user JWT token with followed fields:
 // id, name, email, exp. It returns string and error.
-func CreateRefreshToken(u *internalEntities.User, cfg *configs.Conf) (string, error) {
+func CreateRefreshToken(u *users.User, cfg *configs.Conf) (string, error) {
 	return CreateUserToken(u, REFRESH_TOKEN_EXPIRES_IN, cfg.JWTSecret)
 }
 
