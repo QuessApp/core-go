@@ -1,20 +1,20 @@
-package api
+package router
 
 import (
-	"core/cmd/api/middlewares"
 	"core/configs"
 	"core/docs"
-
 	"core/internal/auth"
 	"core/internal/blocks"
+	"core/internal/middlewares"
 	"core/internal/questions"
 	"core/internal/users"
 	"log"
 )
 
-// LoadRoutes loads all app routes.
-func LoadRoutes(AppCtx *configs.AppCtx, authRepository *auth.AuthRepository, usersRepository *users.UsersRepository, blocksRepository *blocks.BlocksRepository, questionsRepository *questions.QuestionsRepository) {
-	middlewares.LoadMiddlewares(AppCtx.App, AppCtx.Cfg)
+// Setup setups middlewares, initializes routes, etc.
+func Setup(AppCtx *configs.AppCtx, authRepository *auth.AuthRepository, usersRepository *users.UsersRepository, blocksRepository *blocks.BlocksRepository, questionsRepository *questions.QuestionsRepository) {
+	middlewares.ApplyMiddlewares(AppCtx.App, AppCtx.Cfg)
+
 	auth.LoadRoutes(AppCtx, authRepository, usersRepository)
 	questions.LoadRoutes(AppCtx, usersRepository, questionsRepository, blocksRepository)
 	blocks.LoadRoutes(AppCtx, usersRepository, blocksRepository)

@@ -1,8 +1,8 @@
 package blocks
 
 import (
-	"core/cmd/api/middlewares"
 	"core/configs"
+	"core/internal/middlewares"
 	"core/internal/users"
 
 	"github.com/gofiber/fiber/v2"

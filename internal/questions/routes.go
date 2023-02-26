@@ -1,9 +1,9 @@
 package questions
 
 import (
-	"core/cmd/api/middlewares"
 	"core/configs"
 	"core/internal/blocks"
+	"core/internal/middlewares"
 
 	"core/internal/users"
 
