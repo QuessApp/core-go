@@ -15,10 +15,10 @@ func LoadQuestionsRoute(AppCtx *configs.AppCtx) {
 	g.Get("/:id", func(c *fiber.Ctx) error {
 		return handlers.FindQuestionByIDHandler(&configs.HandlersCtx{C: c, AppCtx: *AppCtx})
 	})
-	g.Get("", func(c *fiber.Ctx) error {
+	g.Get("/", func(c *fiber.Ctx) error {
 		return handlers.GetAllQuestionsHandler(&configs.HandlersCtx{C: c, AppCtx: *AppCtx})
 	})
-	g.Post("", func(c *fiber.Ctx) error {
+	g.Post("/", func(c *fiber.Ctx) error {
 		return handlers.CreateQuestionHandler(&configs.HandlersCtx{C: c, AppCtx: *AppCtx})
 	})
 	g.Patch("/hide/:id", func(c *fiber.Ctx) error {
