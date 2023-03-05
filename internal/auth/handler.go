@@ -3,6 +3,7 @@ package auth
 import (
 	"core/configs"
 	"core/internal/users"
+	"core/pkg/jwt"
 	"net/http"
 
 	"github.com/kuriozapp/toolkit/responses"
@@ -44,4 +45,19 @@ func SignInUserHandler(handlerCtx *configs.HandlersCtx, authRepository *AuthRepo
 	}
 
 	return responses.ParseSuccessful(handlerCtx.C, http.StatusCreated, u)
+}
+
+// GetAuthenticatedUserHandler is a handler retrieve authenticated user data.
+//
+// It reads user's token, decode it and return the user data.
+func GetAuthenticatedUserHandler(handlerCtx *configs.HandlersCtx, usersRepository *users.UsersRepository) error {
+	authenticatedUserId := jwt.GetUserByToken(handlerCtx.C).ID
+
+	user, err := GetUserByID(handlerCtx, authenticatedUserId, usersRepository)
+
+	if err != nil {
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
+	}
+
+	return responses.ParseSuccessful(handlerCtx.C, http.StatusOK, user)
 }

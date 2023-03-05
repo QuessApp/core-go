@@ -6,6 +6,7 @@ import (
 	"core/internal/users"
 	"core/pkg/jwt"
 
+	toolkitEntities "github.com/kuriozapp/toolkit/entities"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -116,4 +117,41 @@ func SignIn(handlerCtx *configs.HandlersCtx, payload *SignInUserDTO, usersReposi
 	}
 
 	return data, nil
+}
+
+// GetUserByID gets an user from their token.
+func GetUserByID(handlerCtx *configs.HandlersCtx, userId toolkitEntities.ID, usersRepository *users.UsersRepository) (*users.ResponseWithUser, error) {
+	u := usersRepository.FindUserByID(userId)
+
+	if err := users.UserExists(u); err != nil {
+		return nil, err
+	}
+
+	accessToken, err := jwt.CreateAccessToken(u, handlerCtx.Cfg)
+
+	if err != nil {
+		return nil, err
+	}
+
+	refreshToken, err := jwt.CreateRefreshToken(u, handlerCtx.Cfg)
+
+	if err != nil {
+		return nil, err
+	}
+
+	user := &users.ResponseWithUser{
+		User: &users.User{
+			ID:         u.ID,
+			Nick:       u.Nick,
+			Name:       u.Name,
+			AvatarURL:  u.AvatarURL,
+			Email:      u.Email,
+			IsPRO:      u.IsPRO,
+			PostsLimit: u.PostsLimit,
+		},
+		AccessToken:  accessToken,
+		RefreshToken: refreshToken,
+	}
+
+	return user, nil
 }
