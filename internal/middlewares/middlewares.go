@@ -12,4 +12,5 @@ func ApplyMiddlewares(app *fiber.App, cfg *configs.Conf) {
 	ApplyCORSMiddleware(app, cfg)
 	ApplyLoggerMiddleware(app)
 	ApplyRecoverMiddleware(app, cfg)
+	ApplyRateLimitMiddleware(app)
 }
