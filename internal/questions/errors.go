@@ -2,7 +2,7 @@ package questions
 
 const (
 	CONTENT_REQUIRED = "campo de conteúdo é obrigatório"
-	CONTENT_LENGTH   = "campo de conteúdo deve conter entre 3 a 250 caracteres"
+	CONTENT_LENGTH   = "campo de conteúdo deve conter entre 1 a 250 caracteres"
 
 	SEND_TO_REQUIRED = "campo de destinatário é obrigatório"
 	SEND_TO_LENGTH   = "campo de destinatário deve conter entre 3 a 50 caracteres"
@@ -20,5 +20,5 @@ const (
 	CANT_HIDE_ALREADY_HIDDEN = "você não pode ocultar esta pergunta porque ela já está oculta"
 	CANT_SEND_INVALID_ID     = "id do destinátário é invalido"
 
-	QUESTION_ALREADY_REPLIED = "pergunta já foi respondida"
+	QUESTION_ALREADY_REPLIED = "esta pergunta já foi respondida anteriormente"
 )

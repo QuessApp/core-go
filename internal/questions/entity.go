@@ -23,6 +23,7 @@ type Question struct {
 	IsReplied          bool `json:"isReplied,omitempty" bson:"isReplied"`
 
 	CreatedAt time.Time `json:"createdAt" bson:"createdAt,omitempty"`
+	RepliedAt time.Time `json:"repliedAt" bson:"repliedAt,omitempty"`
 }
 
 // PaginatedQuestions is a model for paginated questions in app.
@@ -39,6 +40,9 @@ func (q Question) MapAnonymousFields() *Question {
 			Content:     q.Content,
 			IsAnonymous: q.IsAnonymous,
 			CreatedAt:   q.CreatedAt,
+			Reply:       q.Reply,
+			IsReplied:   q.IsReplied,
+			RepliedAt:   q.RepliedAt,
 		}
 	}
 	return &q

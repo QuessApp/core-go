@@ -31,7 +31,7 @@ type ReplyQuestionDTO struct {
 // It validates if content is valid.
 func (d ReplyQuestionDTO) Validate() error {
 	validationResult := validation.ValidateStruct(&d,
-		validation.Field(&d.Content, validation.Required.Error(CONTENT_REQUIRED), validation.Length(3, 250).Error(CONTENT_LENGTH)),
+		validation.Field(&d.Content, validation.Required.Error(CONTENT_REQUIRED), validation.Length(1, 250).Error(CONTENT_LENGTH)),
 	)
 
 	return validations.GetValidationError(validationResult)
@@ -42,7 +42,7 @@ func (d ReplyQuestionDTO) Validate() error {
 // It validates if content and send to fields are valids.
 func (d CreateQuestionDTO) Validate() error {
 	validationResult := validation.ValidateStruct(&d,
-		validation.Field(&d.Content, validation.Required.Error(CONTENT_REQUIRED), validation.Length(3, 250).Error(CONTENT_LENGTH)),
+		validation.Field(&d.Content, validation.Required.Error(CONTENT_REQUIRED), validation.Length(1, 250).Error(CONTENT_LENGTH)),
 		validation.Field(&d.SendTo, validation.Required.Error(SEND_TO_REQUIRED), validation.Length(3, 50).Error(SEND_TO_LENGTH)),
 	)
 

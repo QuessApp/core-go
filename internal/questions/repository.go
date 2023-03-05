@@ -95,6 +95,11 @@ func (q QuestionsRepository) GetAll(page *int64, sort, filter *string, authentic
 	findOptions.SetSkip((*page - 1) * LIMIT)
 	findOptions.SetLimit(LIMIT)
 
+	countOptions := options.Count()
+
+	countOptions.SetSkip((*page - 1) * LIMIT)
+	countOptions.SetLimit(LIMIT)
+
 	questions := []Question{}
 
 	cursor, err := coll.Find(context.Background(), findFilterOptions, findOptions)
@@ -107,7 +112,7 @@ func (q QuestionsRepository) GetAll(page *int64, sort, filter *string, authentic
 		return nil, err
 	}
 
-	totalCount, err := coll.CountDocuments(context.Background(), findFilterOptions)
+	totalCount, err := coll.CountDocuments(context.Background(), findFilterOptions, countOptions)
 
 	if err != nil {
 		return nil, err
@@ -147,7 +152,15 @@ func (q QuestionsRepository) Reply(payload *ReplyQuestionDTO) error {
 	coll := q.db.Collection(collections.QUESTIONS)
 
 	filter := bson.D{{Key: "_id", Value: payload.ID}}
-	update := bson.D{{Key: "$set", Value: bson.D{{Key: "isReplied", Value: true}, {Key: "reply", Value: payload.Content}}}}
+	update := bson.D{
+		{
+			Key: "$set", Value: bson.D{
+				{Key: "isReplied", Value: true},
+				{Key: "reply", Value: payload.Content},
+				{Key: "repliedAt", Value: time.Now()},
+			},
+		},
+	}
 
 	_, err := coll.UpdateOne(context.Background(), filter, update)
 
