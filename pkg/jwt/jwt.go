@@ -13,11 +13,6 @@ import (
 	"github.com/golang-jwt/jwt/v4"
 )
 
-var (
-	ACCESS_TOKEN_EXPIRES_IN  = time.Now().Add(date.ONE_DAY_IN_HOURS).Unix()
-	REFRESH_TOKEN_EXPIRES_IN = time.Now().Add(date.THIRTY_DAYS_IN_HOURS).Unix()
-)
-
 // CreateUserToken creates an user JWT token with followed fields:
 // id, name, email, exp. It returns string and error.
 func CreateUserToken(u *users.User, expiresIn int64, secret string) (string, error) {
@@ -36,13 +31,13 @@ func CreateUserToken(u *users.User, expiresIn int64, secret string) (string, err
 // CreateAccessToken creates an user JWT token with followed fields:
 // id, name, email, exp. It returns string and error.
 func CreateAccessToken(u *users.User, cfg *configs.Conf) (string, error) {
-	return CreateUserToken(u, ACCESS_TOKEN_EXPIRES_IN, cfg.JWTSecret)
+	return CreateUserToken(u, time.Now().Add(date.ONE_DAY_IN_HOURS).Unix(), cfg.JWTSecret)
 }
 
 // CreateRefreshToken creates an user JWT token with followed fields:
 // id, name, email, exp. It returns string and error.
 func CreateRefreshToken(u *users.User, cfg *configs.Conf) (string, error) {
-	return CreateUserToken(u, REFRESH_TOKEN_EXPIRES_IN, cfg.JWTSecret)
+	return CreateUserToken(u, time.Now().Add(date.THIRTY_DAYS_IN_HOURS).Unix(), cfg.JWTSecret)
 }
 
 // DecodeUserToken decodes an user JWT token with followed fields:
