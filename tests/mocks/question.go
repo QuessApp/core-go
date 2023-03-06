@@ -1,7 +1,7 @@
 package mocks
 
 import (
-	internalEntities "core/internal/entities"
+	"core/internal/questions"
 	"time"
 
 	"github.com/jaswdr/faker"
@@ -9,10 +9,10 @@ import (
 )
 
 // NewQuestion generates a fake question with generated fake fields values.
-func NewQuestion() *internalEntities.Question {
+func NewQuestion() *questions.Question {
 	fake := faker.New()
 
-	return &internalEntities.Question{
+	return &questions.Question{
 		ID:                 toolkitEntities.NewID(),
 		Content:            fake.Lorem().Text(100),
 		SendTo:             toolkitEntities.NewID(),

@@ -1,7 +1,7 @@
 package middlewares
 
 import (
-	"core/internal/configs"
+	"core/configs"
 	"net/http"
 
 	"github.com/kuriozapp/toolkit/responses"

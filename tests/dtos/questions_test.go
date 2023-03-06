@@ -1,7 +1,7 @@
 package dtos
 
 import (
-	"core/internal/dtos"
+	"core/internal/questions"
 	"strings"
 	"testing"
 
@@ -9,7 +9,7 @@ import (
 )
 
 func TestValidate(t *testing.T) {
-	data := &dtos.CreateQuestionDTO{}
+	data := &questions.CreateQuestionDTO{}
 
 	data.Content = ""
 	assert.EqualError(t, data.Validate(), "campo de conteúdo é obrigatório.")

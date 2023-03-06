@@ -1,7 +1,7 @@
 package middlewares
 
 import (
-	"core/internal/configs"
+	"core/configs"
 	"log"
 	"net/http"
 
@@ -11,8 +11,8 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-// LoadAPIKeyMiddleware applies API key middleware for all routes.
-func LoadAPIKeyMiddleware(app *fiber.App, cfg *configs.Conf) {
+// ApplyAPIKeyMiddleware applies API key middleware for all routes.
+func ApplyAPIKeyMiddleware(app *fiber.App, cfg *configs.Conf) {
 	app.Use(middlewares.New(middlewares.Config{
 		Next: func(c *fiber.Ctx) bool {
 			isDev := cfg.Env == "development"

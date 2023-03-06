@@ -1,33 +1,21 @@
 package jwt
 
 import (
-	"core/internal/configs"
-	internalEntities "core/internal/entities"
+	"core/configs"
+	"core/internal/users"
+
 	"time"
 
+	date "github.com/kuriozapp/toolkit/constants"
 	toolkitEntities "github.com/kuriozapp/toolkit/entities"
-
-	"fmt"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v4"
 )
 
-const (
-	THIRTY_DAYS_IN_HOURS = time.Hour * 720
-	ONE_DAY_IN_HOURS     = time.Hour + 24
-)
-
-var (
-	ACCESS_TOKEN_EXPIRES_IN  = time.Now().Add(ONE_DAY_IN_HOURS).Unix()
-	REFRESH_TOKEN_EXPIRES_IN = time.Now().Add(THIRTY_DAYS_IN_HOURS).Unix()
-)
-
 // CreateUserToken creates an user JWT token with followed fields:
 // id, name, email, exp. It returns string and error.
-func CreateUserToken(u *internalEntities.User, expiresIn int64, secret string) (string, error) {
-	fmt.Println(time.Now())
-
+func CreateUserToken(u *users.User, expiresIn int64, secret string) (string, error) {
 	claims := jwt.MapClaims{
 		"id":    u.ID,
 		"name":  u.Name,
@@ -42,14 +30,14 @@ func CreateUserToken(u *internalEntities.User, expiresIn int64, secret string) (
 
 // CreateAccessToken creates an user JWT token with followed fields:
 // id, name, email, exp. It returns string and error.
-func CreateAccessToken(u *internalEntities.User, cfg *configs.Conf) (string, error) {
-	return CreateUserToken(u, ACCESS_TOKEN_EXPIRES_IN, cfg.JWTSecret)
+func CreateAccessToken(u *users.User, cfg *configs.Conf) (string, error) {
+	return CreateUserToken(u, time.Now().Add(date.ONE_DAY_IN_HOURS).Unix(), cfg.JWTSecret)
 }
 
 // CreateRefreshToken creates an user JWT token with followed fields:
 // id, name, email, exp. It returns string and error.
-func CreateRefreshToken(u *internalEntities.User, cfg *configs.Conf) (string, error) {
-	return CreateUserToken(u, REFRESH_TOKEN_EXPIRES_IN, cfg.JWTSecret)
+func CreateRefreshToken(u *users.User, cfg *configs.Conf) (string, error) {
+	return CreateUserToken(u, time.Now().Add(date.THIRTY_DAYS_IN_HOURS).Unix(), cfg.JWTSecret)
 }
 
 // DecodeUserToken decodes an user JWT token with followed fields:

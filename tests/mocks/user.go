@@ -1,7 +1,7 @@
 package mocks
 
 import (
-	internalEntities "core/internal/entities"
+	"core/internal/users"
 
 	toolkitEntities "github.com/kuriozapp/toolkit/entities"
 
@@ -9,10 +9,10 @@ import (
 )
 
 // NewUser generates a fake user with generated fake fields values.
-func NewUser() *internalEntities.User {
+func NewUser() *users.User {
 	fake := faker.New()
 
-	return &internalEntities.User{
+	return &users.User{
 		ID:              toolkitEntities.NewID(),
 		Nick:            fake.Internet().User(),
 		Name:            fake.Person().Name(),
