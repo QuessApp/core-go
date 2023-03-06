@@ -47,7 +47,7 @@ func (q QuestionsRepository) Create(payload *CreateQuestionDTO) error {
 }
 
 // FindByID finds a question by id in database.
-func (q QuestionsRepository) FindByID(id toolkitEntities.ID) *Question {
+func (q QuestionsRepository) FindQuestionByID(id toolkitEntities.ID) *Question {
 	coll := q.db.Collection(collections.QUESTIONS)
 
 	filter := bson.D{{Key: "_id", Value: id}}
