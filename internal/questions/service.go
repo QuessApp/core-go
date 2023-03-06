@@ -70,7 +70,7 @@ func CreateQuestion(handlerCtx *configs.HandlersCtx, payload *CreateQuestionDTO,
 
 // FindQuestionByID finds for a question in database by question id.
 func FindQuestionByID(handlerCtx *configs.HandlersCtx, id toolkitEntities.ID, authenticatedUserId toolkitEntities.ID, questionsRepository *QuestionsRepository, usersRepository *users.UsersRepository) (*Question, error) {
-	foundQuestion := questionsRepository.FindByID(id)
+	foundQuestion := questionsRepository.FindQuestionByID(id)
 
 	if err := QuestionExists(foundQuestion); err != nil {
 		return nil, err
@@ -143,7 +143,7 @@ func GetAllQuestions(handlerCtx *configs.HandlersCtx, page *int64, sort, filter 
 
 // DeleteQuestion deletes a question from database by id.
 func DeleteQuestion(handlerCtx *configs.HandlersCtx, id toolkitEntities.ID, authenticatedUserId toolkitEntities.ID, questionsRepository *QuestionsRepository) error {
-	foundQuestion := questionsRepository.FindByID(id)
+	foundQuestion := questionsRepository.FindQuestionByID(id)
 
 	if err := QuestionExists(foundQuestion); err != nil {
 		return err
@@ -162,7 +162,7 @@ func DeleteQuestion(handlerCtx *configs.HandlersCtx, id toolkitEntities.ID, auth
 
 // HideQuestion hides a question.
 func HideQuestion(handlerCtx *configs.HandlersCtx, id toolkitEntities.ID, authenticatedUserId toolkitEntities.ID, questionsRepository *QuestionsRepository) error {
-	q := questionsRepository.FindByID(id)
+	q := questionsRepository.FindQuestionByID(id)
 
 	if err := QuestionExists(q); err != nil {
 		return err
@@ -193,7 +193,7 @@ func ReplyQuestion(handlerCtx *configs.HandlersCtx, payload *ReplyQuestionDTO, a
 		return err
 	}
 
-	q := questionsRepository.FindByID(payload.ID)
+	q := questionsRepository.FindQuestionByID(payload.ID)
 
 	if err := QuestionExists(q); err != nil {
 		return err
