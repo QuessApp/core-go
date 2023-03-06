@@ -119,8 +119,8 @@ func SignIn(handlerCtx *configs.HandlersCtx, payload *SignInUserDTO, usersReposi
 	return data, nil
 }
 
-// GetUserByID gets an user from their token.
-func GetUserByID(handlerCtx *configs.HandlersCtx, userId toolkitEntities.ID, usersRepository *users.UsersRepository) (*users.ResponseWithUser, error) {
+// GetAuthenticatedUser gets an user from their token.
+func GetAuthenticatedUser(handlerCtx *configs.HandlersCtx, userId toolkitEntities.ID, usersRepository *users.UsersRepository) (*users.ResponseWithUser, error) {
 	u := usersRepository.FindUserByID(userId)
 
 	if err := users.UserExists(u); err != nil {
