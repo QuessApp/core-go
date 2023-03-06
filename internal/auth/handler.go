@@ -53,7 +53,7 @@ func SignInUserHandler(handlerCtx *configs.HandlersCtx, authRepository *AuthRepo
 func GetAuthenticatedUserHandler(handlerCtx *configs.HandlersCtx, usersRepository *users.UsersRepository) error {
 	authenticatedUserId := jwt.GetUserByToken(handlerCtx.C).ID
 
-	user, err := GetUserByID(handlerCtx, authenticatedUserId, usersRepository)
+	user, err := GetAuthenticatedUser(handlerCtx, authenticatedUserId, usersRepository)
 
 	if err != nil {
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
