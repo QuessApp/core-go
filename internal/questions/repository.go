@@ -166,3 +166,42 @@ func (q QuestionsRepository) Reply(payload *ReplyQuestionDTO) error {
 
 	return err
 }
+
+// EditReply edit reply from a question. It pushes an array with each edit, creating a history.
+func (q QuestionsRepository) EditReply(payload *EditQuestionReplyDTO) error {
+	coll := q.db.Collection(collections.QUESTIONS)
+
+	addHistory := []ReplyHistory{
+		// create history for old content
+		{
+			ID:        toolkitEntities.NewID(),
+			CreatedAt: payload.OldContentCreatedAt,
+			Content:   payload.OldContent,
+		},
+		{
+			ID:        toolkitEntities.NewID(),
+			CreatedAt: time.Now(),
+			Content:   payload.Content,
+		},
+	}
+
+	filter := bson.D{{Key: "_id", Value: payload.ID}}
+	update := bson.D{
+		{
+			Key: "$set", Value: bson.D{
+				{Key: "reply", Value: payload.Content},
+			},
+		},
+		{
+			Key: "$push", Value: bson.D{
+				{Key: "repliesHistory", Value: bson.D{
+					{Key: "$each", Value: addHistory},
+				}},
+			},
+		},
+	}
+
+	_, err := coll.UpdateOne(context.Background(), filter, update)
+
+	return err
+}

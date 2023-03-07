@@ -217,3 +217,37 @@ func ReplyQuestion(handlerCtx *configs.HandlersCtx, payload *ReplyQuestionDTO, a
 
 	return nil
 }
+
+// EditQuestionReply edits a question reply.
+func EditQuestionReply(handlerCtx *configs.HandlersCtx, payload *EditQuestionReplyDTO, authenticatedUserId toolkitEntities.ID, questionsRepository *QuestionsRepository) error {
+	if err := payload.Validate(); err != nil {
+		return err
+	}
+
+	q := questionsRepository.FindQuestionByID(payload.ID)
+
+	if err := QuestionExists(q); err != nil {
+		return err
+	}
+
+	if err := QuestionCanViewQuestion(q, authenticatedUserId); err != nil {
+		return err
+	}
+
+	if err := CanReply(q, authenticatedUserId); err != nil {
+		return err
+	}
+
+	if err := IsQuestionNotRepliedYet(q); err != nil {
+		return err
+	}
+
+	payload.OldContent = q.Content
+	payload.OldContentCreatedAt = q.RepliedAt
+
+	if err := questionsRepository.EditReply(payload); err != nil {
+		return err
+	}
+
+	return nil
+}

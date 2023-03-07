@@ -26,10 +26,29 @@ type ReplyQuestionDTO struct {
 	Content string
 }
 
+// EditQuestionReplyDTO is DTO for payload for edit reply question handler.
+type EditQuestionReplyDTO struct {
+	ID                  toolkitEntities.ID
+	Content             string
+	OldContent          string
+	OldContentCreatedAt time.Time
+}
+
 // Validate validates passed struct then returns a string
 //
 // It validates if content is valid.
 func (d ReplyQuestionDTO) Validate() error {
+	validationResult := validation.ValidateStruct(&d,
+		validation.Field(&d.Content, validation.Required.Error(CONTENT_REQUIRED), validation.Length(1, 250).Error(CONTENT_LENGTH)),
+	)
+
+	return validations.GetValidationError(validationResult)
+}
+
+// Validate validates passed struct then returns a string
+//
+// It validates if content is valid.
+func (d EditQuestionReplyDTO) Validate() error {
 	validationResult := validation.ValidateStruct(&d,
 		validation.Field(&d.Content, validation.Required.Error(CONTENT_REQUIRED), validation.Length(1, 250).Error(CONTENT_LENGTH)),
 	)

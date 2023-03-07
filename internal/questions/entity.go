@@ -6,6 +6,13 @@ import (
 	toolkitEntities "github.com/kuriozapp/toolkit/entities"
 )
 
+// ReplyHistory is a model for each reply in app.
+type ReplyHistory struct {
+	ID        toolkitEntities.ID `json:"id" bson:"_id,omitempty"`
+	CreatedAt time.Time          `json:"createdAt" bson:"createdAt,omitempty"`
+	Content   string             `json:"content"`
+}
+
 // Questions is a model for each question in app.
 type Question struct {
 	ID      toolkitEntities.ID `json:"id" bson:"_id,omitempty"`
@@ -21,6 +28,9 @@ type Question struct {
 	IsAnonymous        bool `json:"isAnonymous" bson:"IsAnonymous"`
 	IsHiddenByReceiver bool `json:"isHiddenByReceiver,omitempty" bson:"isHiddenByReceiver"`
 	IsReplied          bool `json:"isReplied,omitempty" bson:"isReplied"`
+
+	// RepliesHistory is the historic of how many times an user updated the question reply.
+	RepliesHistory []ReplyHistory `json:"repliedHistory,omitempty" bson:"repliedHistory"`
 
 	CreatedAt time.Time `json:"createdAt" bson:"createdAt,omitempty"`
 	RepliedAt time.Time `json:"repliedAt" bson:"repliedAt,omitempty"`
