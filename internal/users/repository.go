@@ -157,6 +157,9 @@ func (u *UsersRepository) UpdatePreferences(userId toolkitEntities.ID, payload *
 		{
 			Key: "enableAppEmails", Value: payload.EnableAPPEmails,
 		},
+		{
+			Key: "enableAppPushNotifications", Value: payload.EnanbleAPPPushNotifications,
+		},
 	}}}
 
 	_, err := coll.UpdateOne(context.Background(), filter, update)

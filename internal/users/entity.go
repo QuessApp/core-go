@@ -19,7 +19,8 @@ type BlockedUser struct {
 
 // UpdatePreferencesDTO is DTO for payload for update preferences handler.
 type UpdatePreferencesDTO struct {
-	EnableAPPEmails bool `json:"enableAppEmails" bson:"enableAppEmails"`
+	EnanbleAPPPushNotifications bool `json:"enableAppPushNotifications" bson:"enableAppPushNotifications"`
+	EnableAPPEmails             bool `json:"enableAppEmails" bson:"enableAppEmails"`
 }
 
 // User is a model for each user in app.
@@ -32,6 +33,8 @@ type User struct {
 	Password string `json:"password,omitempty"`
 	Email    string `json:"email,omitempty"`
 
+	// EnanbleAPPPushNotifications is a bool value to verify if user can push notifications (received questions, etc.)
+	EnanbleAPPPushNotifications bool `json:"enableAppPushNotifications" bson:"enableAppPushNotifications"`
 	// EnableAPPEmails is a bool value to verify if user can receive emails (received questions, etc.)
 	EnableAPPEmails bool `json:"enableAppEmails,omitempty" bson:"enableAppEmails"`
 	IsShadowBanned  bool `json:"isShadowBanned,omitempty" bson:"isShadowBanned"`
