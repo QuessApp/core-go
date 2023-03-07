@@ -22,5 +22,5 @@ func UpdatePreferencesHandler(handlerCtx *configs.HandlersCtx, usersRepository *
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
-	return responses.ParseSuccessful(handlerCtx.C, http.StatusCreated, nil)
+	return responses.ParseSuccessful(handlerCtx.C, http.StatusOK, nil)
 }
