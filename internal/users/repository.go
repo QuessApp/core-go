@@ -147,3 +147,19 @@ func (u *UsersRepository) DecrementLimit(userId toolkitEntities.ID, newValue int
 
 	return err
 }
+
+// UpdatePreferences updates user preferences such as emails, etc.
+func (u *UsersRepository) UpdatePreferences(userId toolkitEntities.ID, payload *UpdatePreferencesDTO) error {
+	coll := u.db.Collection(collections.USERS)
+
+	filter := bson.D{{Key: "_id", Value: userId}}
+	update := bson.D{{Key: "$set", Value: bson.D{
+		{
+			Key: "enableAppEmails", Value: payload.EnableAPPEmails,
+		},
+	}}}
+
+	_, err := coll.UpdateOne(context.Background(), filter, update)
+
+	return err
+}

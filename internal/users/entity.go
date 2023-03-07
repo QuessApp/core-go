@@ -17,6 +17,11 @@ type BlockedUser struct {
 	BlockedBy   toolkitEntities.ID `json:"blockedBy" bson:"blockedBy"`
 }
 
+// UpdatePreferencesDTO is DTO for payload for update preferences handler.
+type UpdatePreferencesDTO struct {
+	EnableAPPEmails bool `json:"enableAppEmails" bson:"enableAppEmails"`
+}
+
 // User is a model for each user in app.
 type User struct {
 	ID        toolkitEntities.ID `json:"id" bson:"_id"`
@@ -27,8 +32,8 @@ type User struct {
 	Password string `json:"password,omitempty"`
 	Email    string `json:"email,omitempty"`
 
-	// EnableAppEmails is a bool value to verify if user can receive emails (received questions, etc.)
-	EnableAppEmails bool `json:"enableAppEmails,omitempty" bson:"enableAppEmails"`
+	// EnableAPPEmails is a bool value to verify if user can receive emails (received questions, etc.)
+	EnableAPPEmails bool `json:"enableAppEmails,omitempty" bson:"enableAppEmails"`
 	IsShadowBanned  bool `json:"isShadowBanned,omitempty" bson:"isShadowBanned"`
 	PostsLimit      int  `json:"postsLimit,omitempty" bson:"postsLimit"`
 	// CustomerId of Stripe. Type must be String or nil.

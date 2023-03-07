@@ -109,7 +109,7 @@ func SignIn(handlerCtx *configs.HandlersCtx, payload *SignInUserDTO, usersReposi
 			Email:           u.Email,
 			PostsLimit:      u.PostsLimit,
 			IsPRO:           u.IsPRO,
-			EnableAppEmails: u.EnableAppEmails,
+			EnableAPPEmails: u.EnableAPPEmails,
 		},
 		AccessToken:  accessToken,
 		RefreshToken: refreshToken,

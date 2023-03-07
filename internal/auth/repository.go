@@ -38,7 +38,7 @@ func (a AuthRepository) SignUp(payload *SignUpUserDTO) (*users.User, error) {
 		Email:           payload.Email,
 		Password:        payload.Password,
 		PostsLimit:      30,
-		EnableAppEmails: true,
+		EnableAPPEmails: true,
 		IsShadowBanned:  false,
 		IsPRO:           false,
 		CreatedAt:       &payload.CreatedAt,
