@@ -3,7 +3,7 @@ package auth
 import (
 	"core/configs"
 	"core/internal/users"
-	"core/pkg/jwt"
+
 	"net/http"
 
 	"github.com/kuriozapp/toolkit/responses"
@@ -51,7 +51,7 @@ func SignInUserHandler(handlerCtx *configs.HandlersCtx, authRepository *AuthRepo
 //
 // It reads user's token, decode it and return the user data.
 func GetAuthenticatedUserHandler(handlerCtx *configs.HandlersCtx, usersRepository *users.UsersRepository) error {
-	authenticatedUserId := jwt.GetUserByToken(handlerCtx.C).ID
+	authenticatedUserId := users.GetUserByToken(handlerCtx.C).ID
 
 	user, err := GetAuthenticatedUser(handlerCtx, authenticatedUserId, usersRepository)
 

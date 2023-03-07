@@ -4,7 +4,6 @@ import (
 	"core/configs"
 
 	"core/internal/users"
-	"core/pkg/jwt"
 
 	toolkitEntities "github.com/kuriozapp/toolkit/entities"
 	"golang.org/x/crypto/bcrypt"
@@ -44,13 +43,13 @@ func SignUp(handlerCtx *configs.HandlersCtx, payload *SignUpUserDTO, authReposit
 		return nil, err
 	}
 
-	accessToken, err := jwt.CreateAccessToken(u, handlerCtx.Cfg)
+	accessToken, err := users.CreateAccessToken(u, handlerCtx.Cfg)
 
 	if err != nil {
 		return nil, err
 	}
 
-	refreshToken, err := jwt.CreateRefreshToken(u, handlerCtx.Cfg)
+	refreshToken, err := users.CreateRefreshToken(u, handlerCtx.Cfg)
 
 	if err != nil {
 		return nil, err
@@ -90,13 +89,13 @@ func SignIn(handlerCtx *configs.HandlersCtx, payload *SignInUserDTO, usersReposi
 		return nil, err
 	}
 
-	accessToken, err := jwt.CreateAccessToken(u, handlerCtx.Cfg)
+	accessToken, err := users.CreateAccessToken(u, handlerCtx.Cfg)
 
 	if err != nil {
 		return nil, err
 	}
 
-	refreshToken, err := jwt.CreateRefreshToken(u, handlerCtx.Cfg)
+	refreshToken, err := users.CreateRefreshToken(u, handlerCtx.Cfg)
 
 	if err != nil {
 		return nil, err
@@ -127,13 +126,13 @@ func GetAuthenticatedUser(handlerCtx *configs.HandlersCtx, userId toolkitEntitie
 		return nil, err
 	}
 
-	accessToken, err := jwt.CreateAccessToken(u, handlerCtx.Cfg)
+	accessToken, err := users.CreateAccessToken(u, handlerCtx.Cfg)
 
 	if err != nil {
 		return nil, err
 	}
 
-	refreshToken, err := jwt.CreateRefreshToken(u, handlerCtx.Cfg)
+	refreshToken, err := users.CreateRefreshToken(u, handlerCtx.Cfg)
 
 	if err != nil {
 		return nil, err
