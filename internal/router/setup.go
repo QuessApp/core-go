@@ -7,6 +7,7 @@ import (
 	"core/internal/blocks"
 	"core/internal/middlewares"
 	"core/internal/questions"
+	"core/internal/settings"
 	"core/internal/users"
 	"log"
 )
@@ -20,6 +21,7 @@ func Setup(AppCtx *configs.AppCtx, authRepository *auth.AuthRepository, usersRep
 	blocks.LoadRoutes(AppCtx, usersRepository, blocksRepository)
 	docs.LoadRoutes(AppCtx)
 	users.LoadRoutes(AppCtx, usersRepository)
+	settings.LoadRoutes(AppCtx, usersRepository)
 
 	log.Fatal(AppCtx.App.Listen(AppCtx.Cfg.ServerPort))
 }
