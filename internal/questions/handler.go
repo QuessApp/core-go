@@ -4,7 +4,7 @@ import (
 	"core/configs"
 	"core/internal/blocks"
 	"core/internal/users"
-	"core/pkg/jwt"
+
 	"net/http"
 	"strconv"
 
@@ -21,7 +21,7 @@ func CreateQuestionHandler(handlerCtx *configs.HandlersCtx, questionsRepository 
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
-	authenticatedUserId := jwt.GetUserByToken(handlerCtx.C).ID
+	authenticatedUserId := users.GetUserByToken(handlerCtx.C).ID
 
 	payload.SentBy = authenticatedUserId
 
@@ -34,7 +34,7 @@ func CreateQuestionHandler(handlerCtx *configs.HandlersCtx, questionsRepository 
 
 // GetAllQuestionsHandler is a handler to find all paginated questions.
 func GetAllQuestionsHandler(handlerCtx *configs.HandlersCtx, usersRepository *users.UsersRepository, questionsRepository *QuestionsRepository) error {
-	authenticatedUserId := jwt.GetUserByToken(handlerCtx.C).ID
+	authenticatedUserId := users.GetUserByToken(handlerCtx.C).ID
 
 	p, err := strconv.Atoi(handlerCtx.C.Query("page"))
 
@@ -64,7 +64,7 @@ func FindQuestionByIDHandler(handlerCtx *configs.HandlersCtx, usersRepository *u
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
-	authenticatedUserId := jwt.GetUserByToken(handlerCtx.C).ID
+	authenticatedUserId := users.GetUserByToken(handlerCtx.C).ID
 
 	question, err := FindQuestionByID(handlerCtx, id, authenticatedUserId, questionsRepository, usersRepository)
 
@@ -83,7 +83,7 @@ func DeleteQuestionHandler(handlerCtx *configs.HandlersCtx, questionsRepository 
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
-	authenticatedUserId := jwt.GetUserByToken(handlerCtx.C).ID
+	authenticatedUserId := users.GetUserByToken(handlerCtx.C).ID
 
 	if err := DeleteQuestion(handlerCtx, id, authenticatedUserId, questionsRepository); err != nil {
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
@@ -100,7 +100,7 @@ func HideQuestionHandler(handlerCtx *configs.HandlersCtx, questionsRepository *Q
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
-	authenticatedUserId := jwt.GetUserByToken(handlerCtx.C).ID
+	authenticatedUserId := users.GetUserByToken(handlerCtx.C).ID
 
 	if err := HideQuestion(handlerCtx, id, authenticatedUserId, questionsRepository); err != nil {
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
@@ -123,7 +123,7 @@ func ReplyQuestionHandler(handlerCtx *configs.HandlersCtx, questionsRepository *
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
-	authenticatedUserId := jwt.GetUserByToken(handlerCtx.C).ID
+	authenticatedUserId := users.GetUserByToken(handlerCtx.C).ID
 
 	payload.ID = id
 

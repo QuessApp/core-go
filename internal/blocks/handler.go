@@ -3,7 +3,7 @@ package blocks
 import (
 	"core/configs"
 	"core/internal/users"
-	"core/pkg/jwt"
+
 	"net/http"
 
 	toolkitEntities "github.com/kuriozapp/toolkit/entities"
@@ -22,7 +22,7 @@ func BlockUserHandler(handlerCtx *configs.HandlersCtx, usersRepository *users.Us
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
-	payload.BlockedBy = jwt.GetUserByToken(handlerCtx.C).ID
+	payload.BlockedBy = users.GetUserByToken(handlerCtx.C).ID
 	payload.UserToBlock = id
 
 	if err := BlockUser(&payload, usersRepository, blocksRepository); err != nil {

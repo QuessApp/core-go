@@ -33,7 +33,7 @@ type User struct {
 	PostsLimit      int  `json:"postsLimit,omitempty" bson:"postsLimit"`
 	// CustomerId of Stripe. Type must be String or nil.
 	CustomerID *string `json:"customerId,omitempty" bson:"customerId"`
-	IsPRO      bool    `json:"isPro" bson:"isPro"`
+	IsPRO      bool    `json:"isPro,omitempty" bson:"isPro"`
 	// SubscriptionID of Stripe. Type must be String or nil.
 	SubscriptionID *string `json:"subscriptionId,omitempty" bson:"subscriptionId"`
 	// ProExpiresAt of Stripe. Type must be Time.time or nil.
@@ -50,6 +50,12 @@ type ResponseWithUser struct {
 	User         *User  `json:"user"`
 	AccessToken  string `json:"accessToken"`
 	RefreshToken string `json:"refreshToken"`
+}
+
+// PaginatedUsers is a model for paginated users in app.
+type PaginatedUsers struct {
+	Users      *[]User `json:"users"`
+	TotalCount int64   `json:"totalCount"`
 }
 
 // Format formats user information. It removes special characters from nick, trim email, etc.
