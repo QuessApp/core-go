@@ -19,7 +19,7 @@ func NewUser() *users.User {
 		AvatarURL:       fake.Internet().URL(),
 		Password:        fake.Internet().Password(),
 		Email:           fake.Internet().CompanyEmail(),
-		EnableAppEmails: fake.Bool(),
+		EnableAPPEmails: fake.Bool(),
 		IsShadowBanned:  fake.Bool(),
 		PostsLimit:      fake.RandomNumber(30),
 		IsPRO:           fake.Bool(),
