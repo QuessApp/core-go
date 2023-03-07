@@ -30,7 +30,7 @@ type Question struct {
 	IsReplied          bool `json:"isReplied,omitempty" bson:"isReplied"`
 
 	// RepliesHistory is the historic of how many times an user updated the question reply.
-	RepliesHistory []ReplyHistory `json:"repliedHistory,omitempty" bson:"repliedHistory"`
+	RepliesHistory []ReplyHistory `json:"repliesHistory,omitempty" bson:"repliesHistory"`
 
 	CreatedAt time.Time `json:"createdAt" bson:"createdAt,omitempty"`
 	RepliedAt time.Time `json:"repliedAt" bson:"repliedAt,omitempty"`
@@ -46,13 +46,14 @@ type PaginatedQuestions struct {
 func (q Question) MapAnonymousFields() *Question {
 	if q.IsAnonymous {
 		return &Question{
-			ID:          q.ID,
-			Content:     q.Content,
-			IsAnonymous: q.IsAnonymous,
-			CreatedAt:   q.CreatedAt,
-			Reply:       q.Reply,
-			IsReplied:   q.IsReplied,
-			RepliedAt:   q.RepliedAt,
+			ID:             q.ID,
+			Content:        q.Content,
+			IsAnonymous:    q.IsAnonymous,
+			CreatedAt:      q.CreatedAt,
+			Reply:          q.Reply,
+			IsReplied:      q.IsReplied,
+			RepliedAt:      q.RepliedAt,
+			RepliesHistory: q.RepliesHistory,
 		}
 	}
 	return &q
