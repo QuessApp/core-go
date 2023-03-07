@@ -94,6 +94,7 @@ func (q QuestionsRepository) GetAll(page *int64, sort, filter *string, authentic
 
 	findOptions.SetSkip((*page - 1) * LIMIT)
 	findOptions.SetLimit(LIMIT)
+	findOptions.SetProjection(bson.D{{Key: "repliesHistory", Value: 0}})
 
 	countOptions := options.Count()
 
