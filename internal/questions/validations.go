@@ -96,3 +96,12 @@ func CanReply(q *Question, authenticatedUserId toolkitEntities.ID) error {
 
 	return nil
 }
+
+// IsQuestionNotRepliedYet returns error message if user try to edit a reply that does not exists.
+func IsQuestionNotRepliedYet(q *Question) error {
+	if !q.IsReplied {
+		return errors.New(CANT_EDIT_REPLY_NOT_REPLIED_YET)
+	}
+
+	return nil
+}
