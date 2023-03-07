@@ -22,8 +22,8 @@ type Question struct {
 	SendTo any `json:"sendTo,omitempty" bson:"sendTo"`
 	// SentBy represents the user who sent the question. Type must bet Entities.ID, nill ou Entities.User
 	SentBy any `json:"sentBy,omitempty" bson:"sentBy"`
-	// Reply is replied data content. Type must be Entities.Reply or nil.
-	Reply any `json:"reply,omitempty"`
+	// Reply is replied content. Type must be Entities.Reply or nil.
+	Reply any `json:"repliedContent,omitempty"`
 
 	IsAnonymous        bool `json:"isAnonymous" bson:"IsAnonymous"`
 	IsHiddenByReceiver bool `json:"isHiddenByReceiver,omitempty" bson:"isHiddenByReceiver"`
