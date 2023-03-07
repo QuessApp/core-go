@@ -238,6 +238,10 @@ func EditQuestionReply(handlerCtx *configs.HandlersCtx, payload *EditQuestionRep
 		return err
 	}
 
+	if err := ReachedLimitToEditReply(q); err != nil {
+		return err
+	}
+
 	if err := IsQuestionNotRepliedYet(q); err != nil {
 		return err
 	}

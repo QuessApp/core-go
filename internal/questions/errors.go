@@ -22,5 +22,6 @@ const (
 	CANT_SEND_INVALID_ID     = "id do destinátário é invalido"
 
 	QUESTION_ALREADY_REPLIED        = "esta pergunta já foi respondida anteriormente"
-	CANT_EDIT_REPLY_NOT_REPLIED_YET = "você não pode editar a resposta desta pergunta, pois ela ainda não foi respondida"
+	CANT_EDIT_REPLY_NOT_REPLIED_YET = "não foi é possível editar resposta desta pergunta, pois ela ainda não foi respondida"
+	CANT_EDIT_REPLY_REACHED_LIMIT   = "não foi é possível editar resposta desta pergunta, pois a mesma já foi editada cinco vezes"
 )
