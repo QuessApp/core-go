@@ -1,0 +1,489 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2023-03-07T16:54:52.262Z",
+  "__export_source": "insomnia.desktop.app:v2022.7.5",
+  "resources": [
+    {
+      "_id": "req_7ddabe361f784c4591459cbed6d2ec71",
+      "parentId": "fld_f404ee292856492997b6456988cc8c83",
+      "modified": 1678151727130,
+      "created": 1678147588722,
+      "url": "{{ _.URL }}/users",
+      "name": "Search",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [
+        {
+          "id": "pair_8676b2514388471c91bc1ab9856883d8",
+          "name": "search",
+          "value": "fa",
+          "description": ""
+        },
+        {
+          "id": "pair_c778e45f21d84b8a98ad0b1da2b7f41b",
+          "name": "page",
+          "value": "1",
+          "description": ""
+        }
+      ],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1hc3RlcmdhbWVyY0BnbWFpbC5jb20iLCJleHAiOjE2NzgxNTQ4MjksImlkIjoiNjNmN2VlMmMyNTQ0YzgwOWQxOWQzZDJjIiwibmFtZSI6ImNhaW9hbWZyIn0.DxOHrxeMSbyHrYlfwPnqPhBqseDxtq1OC6QO0DH0Xlo"
+      },
+      "metaSortKey": -1678147588722,
+      "isPrivate": false,
+      "settingStoreCookies": false,
+      "settingSendCookies": false,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "fld_f404ee292856492997b6456988cc8c83",
+      "parentId": "wrk_5cb4aa41b9b24464924ad9bd1fbde86d",
+      "modified": 1678147586978,
+      "created": 1678147586978,
+      "name": "Users",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1678147586978,
+      "_type": "request_group"
+    },
+    {
+      "_id": "wrk_5cb4aa41b9b24464924ad9bd1fbde86d",
+      "parentId": null,
+      "modified": 1677618731777,
+      "created": 1677618731777,
+      "name": "Questions App",
+      "description": "",
+      "scope": "collection",
+      "_type": "workspace"
+    },
+    {
+      "_id": "req_5538701d54844e2380ceefccdc72ea77",
+      "parentId": "fld_456a851ea2b94f1c9f6276463efc09ad",
+      "modified": 1678145981446,
+      "created": 1678144719171,
+      "url": "{{ _.URL }}/blocks/user/63f7f9a969f24b3e170a5292",
+      "name": "Unblock",
+      "description": "",
+      "method": "PATCH",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1hc3RlcmdhbWVyY0BnbWFpbC5jb20iLCJleHAiOjE2NzgxNDkyNDMsImlkIjoiNjNmN2VlMmMyNTQ0YzgwOWQxOWQzZDJjIiwibmFtZSI6ImNhaW9hbWZyIn0.ST3lT6UFARJuOUha_T7Hyqgm5ydJ-msgnK3ynnd6jlg"
+      },
+      "metaSortKey": -1678144719171,
+      "isPrivate": false,
+      "settingStoreCookies": false,
+      "settingSendCookies": false,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "fld_456a851ea2b94f1c9f6276463efc09ad",
+      "parentId": "wrk_5cb4aa41b9b24464924ad9bd1fbde86d",
+      "modified": 1678144655414,
+      "created": 1678144655414,
+      "name": "Blocks",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1678144655414,
+      "_type": "request_group"
+    },
+    {
+      "_id": "req_f90203068dee495196749f293f7951f1",
+      "parentId": "fld_456a851ea2b94f1c9f6276463efc09ad",
+      "modified": 1678145953083,
+      "created": 1678144667407,
+      "url": "{{ _.URL }}/blocks/user/63f7f9a969f24b3e170a5292",
+      "name": "Block",
+      "description": "",
+      "method": "POST",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1hc3RlcmdhbWVyY0BnbWFpbC5jb20iLCJleHAiOjE2NzgxNDkyNDMsImlkIjoiNjNmN2VlMmMyNTQ0YzgwOWQxOWQzZDJjIiwibmFtZSI6ImNhaW9hbWZyIn0.ST3lT6UFARJuOUha_T7Hyqgm5ydJ-msgnK3ynnd6jlg"
+      },
+      "metaSortKey": -1678144667407,
+      "isPrivate": false,
+      "settingStoreCookies": false,
+      "settingSendCookies": false,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_019b9ab0b752413d9a5d23ab73a9ddea",
+      "parentId": "fld_3ac9e1c0d3bb4e7495e93f35557278e3",
+      "modified": 1678205953009,
+      "created": 1678204893505,
+      "url": "{{ _.URL }}/questions/reply/edit/64053cbf63e362ffd5e6ef19",
+      "name": "Edit reply",
+      "description": "",
+      "method": "PATCH",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"content\":\"2\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1hc3RlcmdhbWVyY0BnbWFpbC5jb20iLCJleHAiOjE2NzgyMDg1NjIsImlkIjoiNjNmN2VlMmMyNTQ0YzgwOWQxOWQzZDJjIiwibmFtZSI6ImNhaW9hbWZyIn0.Ej42jGOOsyzFKeT19iLuFXHn2YgCIzrt_Y1vqiPDR2o"
+      },
+      "metaSortKey": -1678204893505,
+      "isPrivate": false,
+      "settingStoreCookies": false,
+      "settingSendCookies": false,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "fld_3ac9e1c0d3bb4e7495e93f35557278e3",
+      "parentId": "wrk_5cb4aa41b9b24464924ad9bd1fbde86d",
+      "modified": 1677800908591,
+      "created": 1677800908591,
+      "name": "Questions",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1677800908591,
+      "_type": "request_group"
+    },
+    {
+      "_id": "req_2c6c998d2d5146248d596adb6eca41e4",
+      "parentId": "fld_3ac9e1c0d3bb4e7495e93f35557278e3",
+      "modified": 1678206387802,
+      "created": 1678204833817,
+      "url": "{{ _.URL }}/questions/reply/64053cbf63e362ffd5e6ef19z",
+      "name": "Reply",
+      "description": "",
+      "method": "PATCH",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"content\": \"editei 1\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1hc3RlcmdhbWVyY0BnbWFpbC5jb20iLCJleHAiOjE2NzgyMDg0NzksImlkIjoiNjNmN2VlMmMyNTQ0YzgwOWQxOWQzZDJjIiwibmFtZSI6ImNhaW9hbWZyIn0.yWbOAP8VdqErNe2QCyxzIFGLLMm16cKpLZ6_SZ11F-k"
+      },
+      "metaSortKey": -1678204833817,
+      "isPrivate": false,
+      "settingStoreCookies": false,
+      "settingSendCookies": false,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_4249a61488544c119a4330075b5d40d9",
+      "parentId": "fld_3ac9e1c0d3bb4e7495e93f35557278e3",
+      "modified": 1678207167555,
+      "created": 1677875708184,
+      "url": "{{ _.URL }}/questions/64053cbf63e362ffd5e6ef19",
+      "name": "Find By ID",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im51dHR5MTIzQGdtYWlsLmNvbSIsImV4cCI6MTY3ODIxMDUyMSwiaWQiOiI2M2Y3ZjlhOTY5ZjI0YjNlMTcwYTUyOTIiLCJuYW1lIjoiQ2FpbyBBdWd1c3RvIn0.vSX8DHdZtY0rEouUdVQCtjJaSVDKoKEseepcO6MsVLU"
+      },
+      "metaSortKey": -1677875708184,
+      "isPrivate": false,
+      "settingStoreCookies": false,
+      "settingSendCookies": false,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_e24810265c6249f988b7ddd5ca7fe80a",
+      "parentId": "fld_3ac9e1c0d3bb4e7495e93f35557278e3",
+      "modified": 1678207195647,
+      "created": 1677866168728,
+      "url": "{{ _.URL }}/questions",
+      "name": "Get all",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [
+        {
+          "id": "pair_b4934bd25d1c44d1922f1947f8deb4ea",
+          "name": "page",
+          "value": "1",
+          "description": ""
+        },
+        {
+          "id": "pair_4e0e4f4e034e4069ba0187659bb4a4d5",
+          "name": "filter",
+          "value": "sent",
+          "description": ""
+        },
+        {
+          "id": "pair_3a0a2bd74d6b4900b479edaec03f8bae",
+          "name": "sort",
+          "value": "desc",
+          "description": ""
+        }
+      ],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im51dHR5MTIzQGdtYWlsLmNvbSIsImV4cCI6MTY3ODIxMDUyMSwiaWQiOiI2M2Y3ZjlhOTY5ZjI0YjNlMTcwYTUyOTIiLCJuYW1lIjoiQ2FpbyBBdWd1c3RvIn0.vSX8DHdZtY0rEouUdVQCtjJaSVDKoKEseepcO6MsVLU"
+      },
+      "metaSortKey": -1677866168728,
+      "isPrivate": false,
+      "settingStoreCookies": false,
+      "settingSendCookies": false,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_60bb13e30e114ef6bcc1171256e8fd1a",
+      "parentId": "fld_3ac9e1c0d3bb4e7495e93f35557278e3",
+      "modified": 1678072204190,
+      "created": 1677800909933,
+      "url": "{{ _.URL }}/questions",
+      "name": "Send",
+      "description": "",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"content\": \"bdsadsa\",\n\t\"sendTo\": \"63f7ee2c2544c809d19d3d2c\",\n\t\"isAnonymous\": true\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json",
+          "id": "pair_6fbf75e500cc4b24bb076a2cf4afcce9"
+        },
+        {
+          "id": "pair_c08951e909684e98acba912d272de858",
+          "name": "api-key",
+          "value": "fo",
+          "description": ""
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im51dHR5MTIzQGdtYWlsLmNvbSIsImV4cCI6MTY3ODA3NTgwMCwiaWQiOiI2M2Y3ZjlhOTY5ZjI0YjNlMTcwYTUyOTIiLCJuYW1lIjoiQ2FpbyBBdWd1c3RvIn0.9HnixMIS2wVPMPHSf_yzwzF73iP0kaDVlpoThTwHobE"
+      },
+      "metaSortKey": -1677800909933,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_f35e744e9393409183816b52eb4bbe33",
+      "parentId": "fld_69d07efde75f42f7b9c341feaf715263",
+      "modified": 1677806550109,
+      "created": 1677805644956,
+      "url": "{{ _.URL }}/auth/me",
+      "name": "Get authenticated",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_f8ab49986f204df3a8a9697ef2fa0e9f",
+          "name": "Content-Type",
+          "value": "application/json",
+          "description": ""
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1hc3RlcmdhbWVyY0BnbWFpbC5jb20iLCJleHAiOjE2Nzc4MDkyNjUsImlkIjoiNjNmN2VlMmMyNTQ0YzgwOWQxOWQzZDJjIiwibmFtZSI6ImNhaW9hbWZyIn0.s2mnymzdOUS-BntyZ-Zsw1KceG2r44GwDsIZNafCCfo"
+      },
+      "metaSortKey": -1677805644956,
+      "isPrivate": false,
+      "settingStoreCookies": false,
+      "settingSendCookies": false,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "fld_69d07efde75f42f7b9c341feaf715263",
+      "parentId": "wrk_5cb4aa41b9b24464924ad9bd1fbde86d",
+      "modified": 1677618746029,
+      "created": 1677618746029,
+      "name": "Auth",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1677618746030,
+      "_type": "request_group"
+    },
+    {
+      "_id": "req_30a329187ea645dfacca846cd70a53a2",
+      "parentId": "fld_69d07efde75f42f7b9c341feaf715263",
+      "modified": 1678204119645,
+      "created": 1678203915600,
+      "url": "{{ _.URL }}/auth/signup",
+      "name": "Sign Up",
+      "description": "",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"nick\": \"caioamfr\",\n\t\"name\": \"caião\",\n\t\"password\": \"caioamfr\",\n\t\"email\": \"caioamfr@gmail.com\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1677712196329,
+      "isPrivate": false,
+      "settingStoreCookies": false,
+      "settingSendCookies": false,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_d331a162d4f743bc9c7939f46e3f42c5",
+      "parentId": "fld_69d07efde75f42f7b9c341feaf715263",
+      "modified": 1678205105175,
+      "created": 1677618747702,
+      "url": "{{ _.URL }}/auth/signin",
+      "name": "Sign In",
+      "description": "",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"nick\": \"nutty123\",\n\t\"password\": \"nutty123\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1677618747702,
+      "isPrivate": false,
+      "settingStoreCookies": false,
+      "settingSendCookies": false,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "env_2fa14e2979e18bec5f59dcc296aa47c603e9ff7c",
+      "parentId": "wrk_5cb4aa41b9b24464924ad9bd1fbde86d",
+      "modified": 1677618770440,
+      "created": 1677618731780,
+      "name": "Base Environment",
+      "data": {
+        "URL": "http://localhost:8080"
+      },
+      "dataPropertyOrder": {
+        "&": [
+          "URL"
+        ]
+      },
+      "color": null,
+      "isPrivate": false,
+      "metaSortKey": 1677618731780,
+      "_type": "environment"
+    },
+    {
+      "_id": "jar_2fa14e2979e18bec5f59dcc296aa47c603e9ff7c",
+      "parentId": "wrk_5cb4aa41b9b24464924ad9bd1fbde86d",
+      "modified": 1677618731781,
+      "created": 1677618731781,
+      "name": "Default Jar",
+      "cookies": [],
+      "_type": "cookie_jar"
+    },
+    {
+      "_id": "spc_6647db593aab42de96120be67669916c",
+      "parentId": "wrk_5cb4aa41b9b24464924ad9bd1fbde86d",
+      "modified": 1677618731778,
+      "created": 1677618731778,
+      "fileName": "Questions App",
+      "contents": "",
+      "contentType": "yaml",
+      "_type": "api_spec"
+    },
+    {
+      "_id": "env_baee203b6784455eab8dab84d4eee8ac",
+      "parentId": "env_2fa14e2979e18bec5f59dcc296aa47c603e9ff7c",
+      "modified": 1677618784220,
+      "created": 1677618772728,
+      "name": "Dev",
+      "data": {
+        "URL": "http://localhost:8080"
+      },
+      "dataPropertyOrder": {
+        "&": [
+          "URL"
+        ]
+      },
+      "color": null,
+      "isPrivate": false,
+      "metaSortKey": 1677618772728,
+      "_type": "environment"
+    }
+  ]
+}
