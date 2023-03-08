@@ -158,3 +158,20 @@ func EditReplyQuestionHandler(handlerCtx *configs.HandlersCtx, questionsReposito
 
 	return responses.ParseSuccessful(handlerCtx.C, http.StatusOK, nil)
 }
+
+// RemoveQuestionReplyHandler is a handler to remove reply from question.
+func RemoveQuestionReplyHandler(handlerCtx *configs.HandlersCtx, questionsRepository *QuestionsRepository) error {
+	id, err := toolkitEntities.ParseID(handlerCtx.C.Params("id"))
+
+	if err != nil {
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
+	}
+
+	authenticatedUserId := users.GetUserByToken(handlerCtx.C).ID
+
+	if err := RemoveQuestionReply(handlerCtx, authenticatedUserId, id, questionsRepository); err != nil {
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
+	}
+
+	return responses.ParseSuccessful(handlerCtx.C, http.StatusOK, nil)
+}

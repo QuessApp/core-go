@@ -70,17 +70,17 @@ func CreateQuestion(handlerCtx *configs.HandlersCtx, payload *CreateQuestionDTO,
 
 // FindQuestionByID finds for a question in database by question id.
 func FindQuestionByID(handlerCtx *configs.HandlersCtx, id toolkitEntities.ID, authenticatedUserId toolkitEntities.ID, questionsRepository *QuestionsRepository, usersRepository *users.UsersRepository) (*Question, error) {
-	foundQuestion := questionsRepository.FindQuestionByID(id)
+	q := questionsRepository.FindQuestionByID(id)
 
-	if err := QuestionExists(foundQuestion); err != nil {
+	if err := QuestionExists(q); err != nil {
 		return nil, err
 	}
 
-	if err := QuestionCanViewQuestion(foundQuestion, authenticatedUserId); err != nil {
+	if err := QuestionCanViewQuestion(q, authenticatedUserId); err != nil {
 		return nil, err
 	}
 
-	questionOwner := usersRepository.FindUserByID(foundQuestion.SentBy.(toolkitEntities.ID))
+	questionOwner := usersRepository.FindUserByID(q.SentBy.(toolkitEntities.ID))
 
 	u := users.User{
 		ID:        questionOwner.ID,
@@ -89,9 +89,9 @@ func FindQuestionByID(handlerCtx *configs.HandlersCtx, id toolkitEntities.ID, au
 		AvatarURL: questionOwner.AvatarURL,
 	}
 
-	foundQuestion.SentBy = u
+	q.SentBy = u
 
-	return foundQuestion.MapAnonymousFields(), nil
+	return q.MapAnonymousFields(), nil
 }
 
 // GetAllQuestions gets all paginated questions from database.
@@ -112,6 +112,13 @@ func GetAllQuestions(handlerCtx *configs.HandlersCtx, page *int64, sort, filter 
 
 	if err != nil {
 		return nil, err
+	}
+
+	if len(*questions.Questions) == 0 {
+		return &PaginatedQuestions{
+			Questions:  &[]Question{},
+			TotalCount: 0,
+		}, nil
 	}
 
 	var allQuestions []Question
@@ -250,6 +257,29 @@ func EditQuestionReply(handlerCtx *configs.HandlersCtx, payload *EditQuestionRep
 	payload.OldContentCreatedAt = q.RepliedAt
 
 	if err := questionsRepository.EditReply(payload); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// RemoveQuestionReply removes a question reply.
+func RemoveQuestionReply(handlerCtx *configs.HandlersCtx, id toolkitEntities.ID, authenticatedUserId toolkitEntities.ID, questionsRepository *QuestionsRepository) error {
+	q := questionsRepository.FindQuestionByID(id)
+
+	if err := QuestionExists(q); err != nil {
+		return err
+	}
+
+	if err := QuestionCanViewQuestion(q, authenticatedUserId); err != nil {
+		return err
+	}
+
+	if err := IsQuestionNotRepliedYet(q); err != nil {
+		return err
+	}
+
+	if err := questionsRepository.RemoveReply(id); err != nil {
 		return err
 	}
 

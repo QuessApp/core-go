@@ -34,6 +34,9 @@ func LoadRoutes(AppCtx *configs.AppCtx, usersRepository *users.UsersRepository, 
 	g.Patch("/reply/:id", func(c *fiber.Ctx) error {
 		return ReplyQuestionHandler(&configs.HandlersCtx{C: c, AppCtx: *AppCtx}, questionsRepository)
 	})
+	g.Delete("/reply/:id", func(c *fiber.Ctx) error {
+		return RemoveQuestionReplyHandler(&configs.HandlersCtx{C: c, AppCtx: *AppCtx}, questionsRepository)
+	})
 	g.Patch("/reply/edit/:id", func(c *fiber.Ctx) error {
 		return EditReplyQuestionHandler(&configs.HandlersCtx{C: c, AppCtx: *AppCtx}, questionsRepository)
 	})

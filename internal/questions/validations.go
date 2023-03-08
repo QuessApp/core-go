@@ -108,7 +108,8 @@ func IsQuestionNotRepliedYet(q *Question) error {
 
 // ReachedLimitToEditReply returns error message if user reached limit to edit question reply.
 func ReachedLimitToEditReply(q *Question) error {
-	if len(q.RepliesHistory) >= 5 {
+	// max is 5 but we add one more because when we edit a reply we add the prev content
+	if len(q.RepliesHistory) >= 6 {
 		return errors.New(CANT_EDIT_REPLY_REACHED_LIMIT)
 	}
 
