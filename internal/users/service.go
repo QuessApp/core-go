@@ -11,6 +11,12 @@ import (
 	toolkitEntities "github.com/kuriozapp/toolkit/entities"
 )
 
+var (
+	// 30 posts/questions by week
+	USER_DEFAULT_POST_MONTHLY_LIMIT             = 30
+	USER_POST_MONTHLY_LIMIT_DAYS_TO_RESET int64 = 7
+)
+
 // SearchUser searchs an user by nickname or name.
 func SearchUser(handlerCtx *configs.HandlersCtx, value string, page *int64, authenticatedUserId toolkitEntities.ID, usersRepository *UsersRepository) (*PaginatedUsers, error) {
 	if *page == 0 {
@@ -39,6 +45,11 @@ func DecrementUserLimit(userId toolkitEntities.ID, usersRepository *UsersReposit
 	}
 
 	return nil
+}
+
+// UpdateLastPublishedAt updates last publish at fields in database.
+func UpdateLastPublishedAt(user *User, usersRepository *UsersRepository) error {
+	return usersRepository.UpdateLastPublishedAt(user.ID)
 }
 
 // CreateUserToken creates an user JWT token with followed fields:
@@ -88,4 +99,40 @@ func DecodeUserToken(c *fiber.Ctx) toolkitEntities.DecodeUserTokenResult {
 // GetUserByToken decodes a token and get user info from token.
 func GetUserByToken(c *fiber.Ctx) toolkitEntities.DecodeUserTokenResult {
 	return DecodeUserToken(c)
+}
+
+// ResetLimit resets user limit
+func ResetLimit(u *User, usersRepository *UsersRepository) error {
+	currentDate := time.Date(
+		time.Now().Year(),
+		time.Now().Month(),
+		time.Now().Day(),
+		time.Now().Hour(),
+		time.Now().Minute(),
+		time.Now().Second(),
+		time.Now().Nanosecond(),
+		time.UTC,
+	)
+
+	lastPublish := time.Date(
+		u.LastPublishAt.Year(),
+		u.LastPublishAt.Month(),
+		u.LastPublishAt.Day(),
+		u.LastPublishAt.Hour(),
+		u.LastPublishAt.Minute(),
+		u.LastPublishAt.Second(),
+		u.LastPublishAt.Nanosecond(),
+		time.UTC,
+	)
+
+	diffBetweenLastPublishedAndCurrentDate := currentDate.Sub(lastPublish)
+	diffInDays := int64(diffBetweenLastPublishedAndCurrentDate.Hours() / 24)
+	canReset := diffInDays >= USER_POST_MONTHLY_LIMIT_DAYS_TO_RESET
+
+	if !canReset {
+		log.Printf("It's not necessary to reset limit for user %s because it has not passed %d days since their last publish. Their current limit is %d", u.Nick, USER_POST_MONTHLY_LIMIT_DAYS_TO_RESET, u.PostsLimit)
+		return nil
+	}
+
+	return usersRepository.DecrementLimit(u.ID, USER_DEFAULT_POST_MONTHLY_LIMIT)
 }
