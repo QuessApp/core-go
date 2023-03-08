@@ -45,11 +45,11 @@ func CreateQuestion(handlerCtx *configs.HandlersCtx, payload *CreateQuestionDTO,
 		return err
 	}
 
-	// TODO: maybe use Go routines?
 	if err := users.DecrementUserLimit(userThatIsSendingQuestion.ID, usersRepository); err != nil {
 		return err
 	}
 
+	// TODO: add flag in database
 	if userThatIsSendingQuestion.IsShadowBanned {
 		// fake question, dont create
 		// record in database
@@ -60,9 +60,16 @@ func CreateQuestion(handlerCtx *configs.HandlersCtx, payload *CreateQuestionDTO,
 		return err
 	}
 
-	// TODO: update user lastPublishAt field.
 	if userToSendQuestion.EnableAPPEmails {
-		go SendEmailNewQuestionReceived(handlerCtx.AppCtx.Cfg, handlerCtx.MessageQueueCh, handlerCtx.SendEmailsQueue, payload, userToSendQuestion, userThatIsSendingQuestion)
+		SendEmailNewQuestionReceived(handlerCtx.AppCtx.Cfg, handlerCtx.MessageQueueCh, handlerCtx.SendEmailsQueue, payload, userToSendQuestion, userThatIsSendingQuestion)
+	}
+
+	if err := users.UpdateLastPublishedAt(userThatIsSendingQuestion, usersRepository); err != nil {
+		return err
+	}
+
+	if err := users.ResetLimit(userThatIsSendingQuestion, usersRepository); err != nil {
+		return err
 	}
 
 	return nil

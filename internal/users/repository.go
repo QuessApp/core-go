@@ -2,6 +2,7 @@ package users
 
 import (
 	"context"
+	"time"
 
 	collections "github.com/kuriozapp/toolkit/constants"
 
@@ -159,6 +160,22 @@ func (u *UsersRepository) UpdatePreferences(userId toolkitEntities.ID, payload *
 		},
 		{
 			Key: "enableAppPushNotifications", Value: payload.EnanbleAPPPushNotifications,
+		},
+	}}}
+
+	_, err := coll.UpdateOne(context.Background(), filter, update)
+
+	return err
+}
+
+// UpdateLastPublishedAt updates last publish at field in database.
+func (u *UsersRepository) UpdateLastPublishedAt(userId toolkitEntities.ID) error {
+	coll := u.db.Collection(collections.USERS)
+
+	filter := bson.D{{Key: "_id", Value: userId}}
+	update := bson.D{{Key: "$set", Value: bson.D{
+		{
+			Key: "lastPublishAt", Value: time.Now(),
 		},
 	}}}
 

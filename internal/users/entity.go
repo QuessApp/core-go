@@ -34,7 +34,7 @@ type User struct {
 	Email    string `json:"email,omitempty"`
 
 	// EnanbleAPPPushNotifications is a bool value to verify if user can push notifications (received questions, etc.)
-	EnanbleAPPPushNotifications bool `json:"enableAppPushNotifications" bson:"enableAppPushNotifications"`
+	EnanbleAPPPushNotifications bool `json:"enableAppPushNotifications,omitempty" bson:"enableAppPushNotifications"`
 	// EnableAPPEmails is a bool value to verify if user can receive emails (received questions, etc.)
 	EnableAPPEmails bool `json:"enableAppEmails,omitempty" bson:"enableAppEmails"`
 	IsShadowBanned  bool `json:"isShadowBanned,omitempty" bson:"isShadowBanned"`
