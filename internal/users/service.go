@@ -26,6 +26,43 @@ func SearchUser(handlerCtx *configs.HandlersCtx, value string, page *int64, auth
 	return usersRepository.Search(value, page)
 }
 
+// GetAuthenticatedUser gets an user from their token.
+func GetAuthenticatedUser(handlerCtx *configs.HandlersCtx, userId toolkitEntities.ID, usersRepository *UsersRepository) (*ResponseWithUser, error) {
+	u := usersRepository.FindUserByID(userId)
+
+	if err := UserExists(u); err != nil {
+		return nil, err
+	}
+
+	accessToken, err := CreateAccessToken(u, handlerCtx.Cfg)
+
+	if err != nil {
+		return nil, err
+	}
+
+	refreshToken, err := CreateRefreshToken(u, handlerCtx.Cfg)
+
+	if err != nil {
+		return nil, err
+	}
+
+	user := &ResponseWithUser{
+		User: &User{
+			ID:         u.ID,
+			Nick:       u.Nick,
+			Name:       u.Name,
+			AvatarURL:  u.AvatarURL,
+			Email:      u.Email,
+			IsPRO:      u.IsPRO,
+			PostsLimit: u.PostsLimit,
+		},
+		AccessToken:  accessToken,
+		RefreshToken: refreshToken,
+	}
+
+	return user, nil
+}
+
 // DecrementUserLimit decrements user posts limit.
 func DecrementUserLimit(userId toolkitEntities.ID, usersRepository *UsersRepository) error {
 	foundUser := usersRepository.FindUserByID(userId)

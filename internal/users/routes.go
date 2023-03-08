@@ -17,4 +17,7 @@ func LoadRoutes(AppCtx *configs.AppCtx, usersRepository *UsersRepository) {
 	g.Get("/", func(c *fiber.Ctx) error {
 		return SearchUserHandler(&configs.HandlersCtx{C: c, AppCtx: *AppCtx}, usersRepository)
 	})
+	g.Get("/me", func(c *fiber.Ctx) error {
+		return GetAuthenticatedUserHandler(&configs.HandlersCtx{C: c, AppCtx: *AppCtx}, usersRepository)
+	})
 }
