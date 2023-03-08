@@ -169,7 +169,7 @@ func RemoveQuestionReplyHandler(handlerCtx *configs.HandlersCtx, questionsReposi
 
 	authenticatedUserId := users.GetUserByToken(handlerCtx.C).ID
 
-	if err := RemoveQuestionReply(handlerCtx, authenticatedUserId, id, questionsRepository); err != nil {
+	if err := RemoveQuestionReply(handlerCtx, id, authenticatedUserId, questionsRepository); err != nil {
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
