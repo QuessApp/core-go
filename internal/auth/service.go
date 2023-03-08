@@ -5,7 +5,6 @@ import (
 
 	"core/internal/users"
 
-	toolkitEntities "github.com/kuriozapp/toolkit/entities"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -116,41 +115,4 @@ func SignIn(handlerCtx *configs.HandlersCtx, payload *SignInUserDTO, usersReposi
 	}
 
 	return data, nil
-}
-
-// GetAuthenticatedUser gets an user from their token.
-func GetAuthenticatedUser(handlerCtx *configs.HandlersCtx, userId toolkitEntities.ID, usersRepository *users.UsersRepository) (*users.ResponseWithUser, error) {
-	u := usersRepository.FindUserByID(userId)
-
-	if err := users.UserExists(u); err != nil {
-		return nil, err
-	}
-
-	accessToken, err := users.CreateAccessToken(u, handlerCtx.Cfg)
-
-	if err != nil {
-		return nil, err
-	}
-
-	refreshToken, err := users.CreateRefreshToken(u, handlerCtx.Cfg)
-
-	if err != nil {
-		return nil, err
-	}
-
-	user := &users.ResponseWithUser{
-		User: &users.User{
-			ID:         u.ID,
-			Nick:       u.Nick,
-			Name:       u.Name,
-			AvatarURL:  u.AvatarURL,
-			Email:      u.Email,
-			IsPRO:      u.IsPRO,
-			PostsLimit: u.PostsLimit,
-		},
-		AccessToken:  accessToken,
-		RefreshToken: refreshToken,
-	}
-
-	return user, nil
 }

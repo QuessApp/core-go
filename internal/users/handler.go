@@ -31,3 +31,18 @@ func SearchUserHandler(handlerCtx *configs.HandlersCtx, usersRepository *UsersRe
 
 	return responses.ParseSuccessful(handlerCtx.C, http.StatusOK, users)
 }
+
+// GetAuthenticatedUserHandler is a handler retrieve authenticated user data.
+//
+// It reads user's token, decode it and return the user data.
+func GetAuthenticatedUserHandler(handlerCtx *configs.HandlersCtx, usersRepository *UsersRepository) error {
+	authenticatedUserId := GetUserByToken(handlerCtx.C).ID
+
+	user, err := GetAuthenticatedUser(handlerCtx, authenticatedUserId, usersRepository)
+
+	if err != nil {
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
+	}
+
+	return responses.ParseSuccessful(handlerCtx.C, http.StatusOK, user)
+}
