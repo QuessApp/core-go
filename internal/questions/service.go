@@ -69,7 +69,7 @@ func CreateQuestion(handlerCtx *configs.HandlersCtx, payload *CreateQuestionDTO,
 }
 
 // FindQuestionByID finds for a question in database by question id.
-func FindQuestionByID(handlerCtx *configs.HandlersCtx, id toolkitEntities.ID, authenticatedUserId toolkitEntities.ID, questionsRepository *QuestionsRepository, usersRepository *users.UsersRepository) (*Question, error) {
+func FindQuestionByID(handlerCtx *configs.HandlersCtx, id, authenticatedUserId toolkitEntities.ID, questionsRepository *QuestionsRepository, usersRepository *users.UsersRepository) (*Question, error) {
 	q := questionsRepository.FindQuestionByID(id)
 
 	if err := QuestionExists(q); err != nil {
@@ -149,7 +149,7 @@ func GetAllQuestions(handlerCtx *configs.HandlersCtx, page *int64, sort, filter 
 }
 
 // DeleteQuestion deletes a question from database by id.
-func DeleteQuestion(handlerCtx *configs.HandlersCtx, id toolkitEntities.ID, authenticatedUserId toolkitEntities.ID, questionsRepository *QuestionsRepository) error {
+func DeleteQuestion(handlerCtx *configs.HandlersCtx, id, authenticatedUserId toolkitEntities.ID, questionsRepository *QuestionsRepository) error {
 	foundQuestion := questionsRepository.FindQuestionByID(id)
 
 	if err := QuestionExists(foundQuestion); err != nil {
@@ -168,7 +168,7 @@ func DeleteQuestion(handlerCtx *configs.HandlersCtx, id toolkitEntities.ID, auth
 }
 
 // HideQuestion hides a question.
-func HideQuestion(handlerCtx *configs.HandlersCtx, id toolkitEntities.ID, authenticatedUserId toolkitEntities.ID, questionsRepository *QuestionsRepository) error {
+func HideQuestion(handlerCtx *configs.HandlersCtx, id, authenticatedUserId toolkitEntities.ID, questionsRepository *QuestionsRepository) error {
 	q := questionsRepository.FindQuestionByID(id)
 
 	if err := QuestionExists(q); err != nil {
@@ -264,7 +264,7 @@ func EditQuestionReply(handlerCtx *configs.HandlersCtx, payload *EditQuestionRep
 }
 
 // RemoveQuestionReply removes a question reply.
-func RemoveQuestionReply(handlerCtx *configs.HandlersCtx, id toolkitEntities.ID, authenticatedUserId toolkitEntities.ID, questionsRepository *QuestionsRepository) error {
+func RemoveQuestionReply(handlerCtx *configs.HandlersCtx, id, authenticatedUserId toolkitEntities.ID, questionsRepository *QuestionsRepository) error {
 	q := questionsRepository.FindQuestionByID(id)
 
 	if err := QuestionExists(q); err != nil {

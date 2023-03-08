@@ -2,7 +2,6 @@ package questions
 
 import (
 	"context"
-	"fmt"
 
 	collections "github.com/kuriozapp/toolkit/constants"
 
@@ -56,9 +55,7 @@ func (q QuestionsRepository) FindQuestionByID(id toolkitEntities.ID) *Question {
 
 	question := Question{}
 
-	err := coll.FindOne(context.Background(), filter).Decode(&question)
-
-	fmt.Println(id, err)
+	coll.FindOne(context.Background(), filter).Decode(&question)
 
 	return &question
 }
@@ -223,13 +220,7 @@ func (q QuestionsRepository) RemoveReply(id toolkitEntities.ID) error {
 				{Key: "reply", Value: nil},
 				{Key: "isReplied", Value: false},
 				{Key: "repliedAt", Value: nil},
-			},
-		},
-		{
-			Key: "$push", Value: bson.D{
-				{Key: "repliesHistory", Value: bson.D{
-					{Key: "$each", Value: []ReplyHistory{}},
-				}},
+				{Key: "repliesHistory", Value: []ReplyHistory{}},
 			},
 		},
 	}
