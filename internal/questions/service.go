@@ -114,6 +114,13 @@ func GetAllQuestions(handlerCtx *configs.HandlersCtx, page *int64, sort, filter 
 		return nil, err
 	}
 
+	if len(*questions.Questions) == 0 {
+		return &PaginatedQuestions{
+			Questions:  &[]Question{},
+			TotalCount: 0,
+		}, nil
+	}
+
 	var allQuestions []Question
 
 	for _, q := range *questions.Questions {
