@@ -2,6 +2,7 @@ package questions
 
 import (
 	"context"
+	"fmt"
 
 	collections "github.com/kuriozapp/toolkit/constants"
 
@@ -32,13 +33,14 @@ func (q QuestionsRepository) Create(payload *CreateQuestionDTO) error {
 	payload.CreatedAt = time.Now()
 
 	question := Question{
-		ID:          payload.ID,
-		Content:     payload.Content,
-		IsAnonymous: payload.IsAnonymous,
-		SendTo:      payload.SendTo,
-		CreatedAt:   payload.CreatedAt,
-		SentBy:      payload.SentBy,
-		Reply:       nil,
+		ID:             payload.ID,
+		Content:        payload.Content,
+		IsAnonymous:    payload.IsAnonymous,
+		SendTo:         payload.SendTo,
+		CreatedAt:      payload.CreatedAt,
+		SentBy:         payload.SentBy,
+		Reply:          nil,
+		RepliesHistory: []ReplyHistory{},
 	}
 
 	_, err := coll.InsertOne(context.TODO(), question)
@@ -54,7 +56,9 @@ func (q QuestionsRepository) FindQuestionByID(id toolkitEntities.ID) *Question {
 
 	question := Question{}
 
-	coll.FindOne(context.Background(), filter).Decode(&question)
+	err := coll.FindOne(context.Background(), filter).Decode(&question)
+
+	fmt.Println(id, err)
 
 	return &question
 }
@@ -197,6 +201,34 @@ func (q QuestionsRepository) EditReply(payload *EditQuestionReplyDTO) error {
 			Key: "$push", Value: bson.D{
 				{Key: "repliesHistory", Value: bson.D{
 					{Key: "$each", Value: addHistory},
+				}},
+			},
+		},
+	}
+
+	_, err := coll.UpdateOne(context.Background(), filter, update)
+
+	return err
+}
+
+// RemoveReply removes question reply
+func (q QuestionsRepository) RemoveReply(id toolkitEntities.ID) error {
+	coll := q.db.Collection(collections.QUESTIONS)
+
+	filter := bson.D{{Key: "_id", Value: id}}
+
+	update := bson.D{
+		{
+			Key: "$set", Value: bson.D{
+				{Key: "reply", Value: nil},
+				{Key: "isReplied", Value: false},
+				{Key: "repliedAt", Value: nil},
+			},
+		},
+		{
+			Key: "$push", Value: bson.D{
+				{Key: "repliesHistory", Value: bson.D{
+					{Key: "$each", Value: []ReplyHistory{}},
 				}},
 			},
 		},
