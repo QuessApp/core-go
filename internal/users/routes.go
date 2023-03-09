@@ -9,8 +9,7 @@ import (
 )
 
 // LoadRoutes loads all users routes of app.
-//
-// It create routes and assign handlers to each route.
+// It create a group of routes called "users" and assign it the handlers and paths.
 func LoadRoutes(AppCtx *configs.AppCtx, usersRepository *UsersRepository) {
 	g := AppCtx.App.Group("/users", middlewares.JWTMiddleware(AppCtx.App, AppCtx.Cfg))
 
