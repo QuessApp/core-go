@@ -19,12 +19,15 @@ type UsersRepository struct {
 	db *mongo.Database
 }
 
-// NewRepository returns users repository.
+// NewRepository creates a new instance of the UsersRepository struct and returns a pointer to it.
+// The function takes a pointer to a mongo.Database as an argument, which is used to initialize the UsersRepository's db field.
 func NewRepository(db *mongo.Database) *UsersRepository {
 	return &UsersRepository{db}
 }
 
-// FindUserByEmail finds an user by their email.
+// FindUserByEmail retrieves a user from the database based on their email and returns a pointer to the User object.
+// It takes the user's email as a parameter and performs a database lookup to find the matching user.
+// If the user is found, a pointer to the User object is returned. Otherwise, a nil pointer is returned.
 func (u UsersRepository) FindUserByEmail(email string) *User {
 	coll := u.db.Collection(collections.USERS)
 
@@ -38,7 +41,9 @@ func (u UsersRepository) FindUserByEmail(email string) *User {
 	return &foundUser
 }
 
-// FindUserByNick finds an user by their nick.
+// FindUserByNick retrieves a user from the database based on their nickname and returns a pointer to the User object.
+// It takes the user's nickname as a parameter and performs a database lookup to find the matching user.
+// If the user is found, a pointer to the User object is returned. Otherwise, a nil pointer is returned.
 func (u UsersRepository) FindUserByNick(nick string) *User {
 	coll := u.db.Collection(collections.USERS)
 
@@ -52,7 +57,9 @@ func (u UsersRepository) FindUserByNick(nick string) *User {
 	return &foundUser
 }
 
-// FindUserByID finds an user by id.
+// FindUserByID retrieves a user from the database based on their id and returns a pointer to the User object.
+// It takes the user's id as a parameter and performs a database lookup to find the matching user.
+// If the user is found, a pointer to the User object is returned. Otherwise, a nil pointer is returned.
 func (u UsersRepository) FindUserByID(userId toolkitEntities.ID) *User {
 	coll := u.db.Collection(collections.USERS)
 
@@ -63,7 +70,9 @@ func (u UsersRepository) FindUserByID(userId toolkitEntities.ID) *User {
 	return &foundUser
 }
 
-// IsNickInUse checks is an user already take a nick.
+// IsNickInUse checks if a user with the given nickname exists in the database.
+// It takes the user's nickname as a parameter and performs a database lookup to find the matching user.
+// If a user with the given nickname is found, it returns true. Otherwise, it returns false.
 func (u UsersRepository) IsNickInUse(nick string) bool {
 	coll := u.db.Collection(collections.USERS)
 
@@ -74,7 +83,10 @@ func (u UsersRepository) IsNickInUse(nick string) bool {
 	return user.Nick != ""
 }
 
-// Search searchs for an user by their nick or name.
+// Search searches for users whose names or nicks match the given value, and returns a paginated list of results.
+// The page parameter is used to determine which page of the results to return.
+// If the value parameter is an empty string, an empty list is returned.
+// The function returns a pointer to a PaginatedUsers struct and an error.
 func (u UsersRepository) Search(value string, page *int64) (*PaginatedUsers, error) {
 	if value == "" {
 		return &PaginatedUsers{
@@ -137,7 +149,8 @@ func (u UsersRepository) Search(value string, page *int64) (*PaginatedUsers, err
 	return &result, nil
 }
 
-// DecrementLimit decrements user's post limit if user is not a PRO member.
+// DecrementLimit updates the "postsLimit" field of the user document with the given ID to the provided value.
+// It returns an error if the update operation fails.
 func (u *UsersRepository) DecrementLimit(userId toolkitEntities.ID, newValue int) error {
 	coll := u.db.Collection(collections.USERS)
 
@@ -149,7 +162,9 @@ func (u *UsersRepository) DecrementLimit(userId toolkitEntities.ID, newValue int
 	return err
 }
 
-// UpdatePreferences updates user preferences such as emails, etc.
+// UpdateLastPublishedAt takes a user ID and a payload containing updated preferences for the user.
+// It updates the corresponding user document in the database with the new preference values for "enableAppEmails" and "enableAppPushNotifications".
+// It returns an error if the update operation fails.
 func (u *UsersRepository) UpdatePreferences(userId toolkitEntities.ID, payload *UpdatePreferencesDTO) error {
 	coll := u.db.Collection(collections.USERS)
 
@@ -168,7 +183,8 @@ func (u *UsersRepository) UpdatePreferences(userId toolkitEntities.ID, payload *
 	return err
 }
 
-// UpdateLastPublishedAt updates last publish at field in database.
+// UpdateLastPublishedAt takes a user ID and updates the corresponding user document in the database with the new value for field "lastPublishAt".
+// It returns an error if the update operation fails.
 func (u *UsersRepository) UpdateLastPublishedAt(userId toolkitEntities.ID) error {
 	coll := u.db.Collection(collections.USERS)
 

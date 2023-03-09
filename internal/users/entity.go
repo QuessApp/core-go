@@ -73,7 +73,8 @@ func (u *User) Format() {
 	u.Email = strings.TrimSpace(u.Email)
 }
 
-// GetBasicInfos gets basic data of an user like id, name, nick, etc.
+// GetBasicInfos gets user basic infos. It hide the sensible data like password, email, etc.
+// It is a method for the "user" struct. It returns an pointer to user.
 func (u User) GetBasicInfos() *User {
 	return &User{
 		ID:        u.ID,

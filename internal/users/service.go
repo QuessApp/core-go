@@ -17,7 +17,9 @@ var (
 	USER_POST_MONTHLY_LIMIT_DAYS_TO_RESET int64 = 7
 )
 
-// SearchUser searchs an user by nickname or name.
+// SearchUser searches for users based on a search value and returns a paginated list of matching users.
+// If the page argument is 0, it sets it to 1 (default). The authenticatedUserId argument is used to filter out the authenticated user from the search results.
+// The function returns a pointer to a PaginatedUsers struct representing the paginated list of matching users, and an error, if any occurred during the search process.
 func SearchUser(handlerCtx *configs.HandlersCtx, value string, page *int64, authenticatedUserId toolkitEntities.ID, usersRepository *UsersRepository) (*PaginatedUsers, error) {
 	if *page == 0 {
 		*page = 1
@@ -26,9 +28,11 @@ func SearchUser(handlerCtx *configs.HandlersCtx, value string, page *int64, auth
 	return usersRepository.Search(value, page)
 }
 
-// GetAuthenticatedUser gets an user from their token.
-func GetAuthenticatedUser(handlerCtx *configs.HandlersCtx, userId toolkitEntities.ID, usersRepository *UsersRepository) (*ResponseWithUser, error) {
-	u := usersRepository.FindUserByID(userId)
+// GetAuthenticatedUser retrieves the authenticated user's data, generates access and refresh tokens for them, and returns a ResponseWithUser struct containing the user's data and tokens.
+// The authenticatedUserId argument is used to retrieve the user's data from the usersRepository argument.
+// The function returns a pointer to a ResponseWithUser struct representing the user's data and tokens, and an error, if any occurred during the process.
+func GetAuthenticatedUser(handlerCtx *configs.HandlersCtx, authenticatedUserId toolkitEntities.ID, usersRepository *UsersRepository) (*ResponseWithUser, error) {
+	u := usersRepository.FindUserByID(authenticatedUserId)
 
 	if err := UserExists(u); err != nil {
 		return nil, err
@@ -58,6 +62,24 @@ func GetAuthenticatedUser(handlerCtx *configs.HandlersCtx, userId toolkitEntitie
 		},
 		AccessToken:  accessToken,
 		RefreshToken: refreshToken,
+	}
+
+	return user, nil
+}
+
+// FindUserByNick searches for a user in the repository by their nickname and returns a pointer to a User struct containing their information.
+func FindUserByNick(handlerCtx *configs.HandlersCtx, nick string, usersRepository *UsersRepository) (*User, error) {
+	u := usersRepository.FindUserByNick(nick)
+
+	if err := UserExists(u); err != nil {
+		return nil, err
+	}
+
+	user := &User{
+		ID:        u.ID,
+		Nick:      u.Nick,
+		Name:      u.Name,
+		AvatarURL: u.AvatarURL,
 	}
 
 	return user, nil
