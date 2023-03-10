@@ -50,6 +50,7 @@ type User struct {
 	LastPublishAt *time.Time `json:"lastPublishAt,omitempty" bson:"lastPublishAt"`
 	// CreatedAt is the date that user is created. Type must be Time.time or nil.
 	CreatedAt *time.Time `json:"createdAt,omitempty" bson:"createdAt"`
+	Locale    string     `json:"locale,omitempty" bson:"locale"`
 }
 
 // ResponseWithUser is a model to use with Response model.

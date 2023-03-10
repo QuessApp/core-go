@@ -21,4 +21,6 @@ const (
 	NICK_IN_USE  = "nome de usuário já em uso"
 
 	INCORRECT_SIGNIN_DATA = "credenciais informadas estão incorretas"
+	LOCALE_FIELD_REQUIRED = "campo de localidade é obrigatório"
+	LOCALE_FIELD_INVALID  = "campo de localidade contém valor inesperado"
 )
