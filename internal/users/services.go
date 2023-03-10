@@ -12,7 +12,7 @@ import (
 )
 
 var (
-	// 30 posts/questions by week
+	// 30 posts/questions per week
 	USER_DEFAULT_POST_MONTHLY_LIMIT             = 30
 	USER_POST_MONTHLY_LIMIT_DAYS_TO_RESET int64 = 7
 )
@@ -67,7 +67,10 @@ func GetAuthenticatedUser(handlerCtx *configs.HandlersCtx, authenticatedUserId t
 	return user, nil
 }
 
-// FindUserByNick searches for a user in the repository by their nickname and returns a pointer to a User struct containing their information.
+// FindUserByNick searches for a user with the given nickname in the given users repository,
+// and returns the corresponding User object, if it exists.
+// If the user with the given nickname is not found, an error is returned.
+// If an error occurs while checking if the user exists, that error is returned as well.
 func FindUserByNick(handlerCtx *configs.HandlersCtx, nick string, usersRepository *UsersRepository) (*User, error) {
 	u := usersRepository.FindUserByNick(nick)
 
@@ -85,7 +88,9 @@ func FindUserByNick(handlerCtx *configs.HandlersCtx, nick string, usersRepositor
 	return user, nil
 }
 
-// DecrementUserLimit decrements user posts limit.
+// DecrementUserLimit decrements the posts limit of the user with the given ID by one.
+// If the user is a PRO member, their limit will not be decremented and no error will be returned.
+// If an error occurs while decrementing the limit, that error will be returned.
 func DecrementUserLimit(userId toolkitEntities.ID, usersRepository *UsersRepository) error {
 	foundUser := usersRepository.FindUserByID(userId)
 
@@ -106,7 +111,9 @@ func DecrementUserLimit(userId toolkitEntities.ID, usersRepository *UsersReposit
 	return nil
 }
 
-// UpdateLastPublishedAt updates last publish at fields in database.
+// UpdateLastPublishedAt updates the last published at timestamp for the given user.
+// This function takes a pointer to a User object and a UsersRepository object as parameters.
+// It updates the last published at timestamp for the user in the repository, and returns any error that may occur.
 func UpdateLastPublishedAt(user *User, usersRepository *UsersRepository) error {
 	return usersRepository.UpdateLastPublishedAt(user.ID)
 }
@@ -160,7 +167,11 @@ func GetUserByToken(c *fiber.Ctx) toolkitEntities.DecodeUserTokenResult {
 	return DecodeUserToken(c)
 }
 
-// ResetLimit resets user limit
+// ResetLimit checks if the user's posts limit can be reset based on the USER_POST_MONTHLY_LIMIT_DAYS_TO_RESET constant.
+// If the user's last publish date is greater than or equal to USER_POST_MONTHLY_LIMIT_DAYS_TO_RESET days in the past,
+// their posts limit will be reset to the default value specified in the USER_DEFAULT_POST_MONTHLY_LIMIT constant.
+// Otherwise, their posts limit will not be reset and no error will be returned.
+// This function takes a pointer to a User object and a UsersRepository object as parameters, and returns any error that may occur.
 func ResetLimit(u *User, usersRepository *UsersRepository) error {
 	currentDate := time.Date(
 		time.Now().Year(),

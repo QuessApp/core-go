@@ -7,7 +7,7 @@ import (
 	toolkitEntities "github.com/quessapp/toolkit/entities"
 )
 
-// QuestionExists returns error message if question does not exisits in bd.
+// QuestionExists validates whether a question exists or not based on its ID.
 func QuestionExists(q *Question) error {
 	if toolkitEntities.IsZeroID(q.ID) {
 		return errors.New(QUESTION_NOT_FOUND)
@@ -16,7 +16,7 @@ func QuestionExists(q *Question) error {
 	return nil
 }
 
-// QuestionCanViewQuestion returns error message if user is not authorized to view the question.
+// QuestionCanViewQuestion validates whether the authenticated user is authorized to view the question.
 func QuestionCanViewQuestion(q *Question, authenticatedUserId toolkitEntities.ID) error {
 	if q.SendTo != authenticatedUserId && q.SentBy != authenticatedUserId {
 		return errors.New(QUESTION_NOT_AUTHORIZED)
@@ -25,7 +25,7 @@ func QuestionCanViewQuestion(q *Question, authenticatedUserId toolkitEntities.ID
 	return nil
 }
 
-// IsSendingQuestionToYourself returns error message if users is sending questions to yourself.
+// IsSendingQuestionToYourself validates whether the user is trying to send a question to themselves.
 func IsSendingQuestionToYourself(sendTo toolkitEntities.ID, authenticatedUserId toolkitEntities.ID) error {
 	if sendTo == authenticatedUserId {
 		return errors.New(SENDING_QUESTION_TO_YOURSELF)
@@ -34,7 +34,7 @@ func IsSendingQuestionToYourself(sendTo toolkitEntities.ID, authenticatedUserId 
 	return nil
 }
 
-// ReachedPostsLimitToCreateQuestion returns error message if user is not a pro member and reached posts limit.
+// ReachedPostsLimitToCreateQuestion validates whether the user has reached their monthly post limit and is not a PRO member
 func ReachedPostsLimitToCreateQuestion(u *users.User) error {
 	if !u.IsPRO && u.PostsLimit <= 0 {
 		return errors.New(REACHED_QUESTIONS_LIMIT)
@@ -43,7 +43,7 @@ func ReachedPostsLimitToCreateQuestion(u *users.User) error {
 	return nil
 }
 
-// CanUserDeleteQuestion returns error message if the user who is trying to delete the question is not the question owner.
+// CanUserDeleteQuestion validates whether the user who is trying to delete the question is the question owner.
 func CanUserDeleteQuestion(q *Question, authenticatedUserId toolkitEntities.ID) error {
 	if q.SentBy != authenticatedUserId {
 		return errors.New(CANT_DELETE_QUESTION_NOT_SENT_BY_YOU)
@@ -52,7 +52,7 @@ func CanUserDeleteQuestion(q *Question, authenticatedUserId toolkitEntities.ID) 
 	return nil
 }
 
-// CanHideQuestion returns error message if question is not sent to authenticated user.
+// CanHideQuestion validates whether the question is sent to the authenticated user.
 func CanHideQuestion(q *Question, authenticatedUserId toolkitEntities.ID) error {
 	if q.SendTo != authenticatedUserId {
 		return errors.New(QUESTION_NOT_SENT_FOR_ME)
@@ -61,7 +61,7 @@ func CanHideQuestion(q *Question, authenticatedUserId toolkitEntities.ID) error 
 	return nil
 }
 
-// IsHiddenByReceiver returns error message if the question is already hidden by receiver.
+// IsHiddenByReceiver validates whether the question is already hidden by the receiver.
 func IsHiddenByReceiver(isHiddenByReceiver bool) error {
 	if isHiddenByReceiver {
 		return errors.New(CANT_HIDE_ALREADY_HIDDEN)
@@ -70,7 +70,7 @@ func IsHiddenByReceiver(isHiddenByReceiver bool) error {
 	return nil
 }
 
-// IsInvalidSendToID returns error message if the user to send id is invalid.
+// IsInvalidSendToID validates whether the user ID to send the question is valid.
 func IsInvalidSendToID(payload *CreateQuestionDTO) error {
 	if toolkitEntities.IsZeroID(payload.SendTo) {
 		return errors.New(CANT_SEND_INVALID_ID)
@@ -79,7 +79,7 @@ func IsInvalidSendToID(payload *CreateQuestionDTO) error {
 	return nil
 }
 
-// IsAlreadyReplied returns error message if the question is already replied.
+// IsAlreadyReplied validates whether the question is already replied.
 func IsAlreadyReplied(q *Question) error {
 	if q.IsReplied {
 		return errors.New(QUESTION_ALREADY_REPLIED)
@@ -88,7 +88,7 @@ func IsAlreadyReplied(q *Question) error {
 	return nil
 }
 
-// CanReply returns error message if the user can reply the question.
+// CanReply validates whether the authenticated user can reply to the question.
 func CanReply(q *Question, authenticatedUserId toolkitEntities.ID) error {
 	if q.SendTo != authenticatedUserId {
 		return errors.New(QUESTION_NOT_SENT_FOR_ME)
@@ -97,7 +97,7 @@ func CanReply(q *Question, authenticatedUserId toolkitEntities.ID) error {
 	return nil
 }
 
-// IsQuestionNotRepliedYet returns error message if user try to edit a reply that does not exists.
+// IsQuestionNotRepliedYet validates whether the user is trying to edit a reply that does not exist.
 func IsQuestionNotRepliedYet(q *Question) error {
 	if !q.IsReplied {
 		return errors.New(CANT_EDIT_REPLY_NOT_REPLIED_YET)
@@ -106,7 +106,7 @@ func IsQuestionNotRepliedYet(q *Question) error {
 	return nil
 }
 
-// ReachedLimitToEditReply returns error message if user reached limit to edit question reply.
+// ReachedLimitToEditReply validates whether the user has reached their limit to edit the question reply.
 func ReachedLimitToEditReply(q *Question) error {
 	// max is 5 but we add one more because when we edit a reply we add the prev content
 	if len(q.RepliesHistory) >= 6 {
