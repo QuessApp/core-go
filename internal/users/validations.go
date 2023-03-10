@@ -6,7 +6,9 @@ import (
 	toolkitEntities "github.com/quessapp/toolkit/entities"
 )
 
-// UserExists returns error message if user does not exists.
+// UserExists checks if the given user exists by verifying if the ID field is non-zero.
+// If the ID is zero, an error with the message "USER_NOT_FOUND" is returned.
+// Otherwise, nil is returned, indicating that the user exists.
 func UserExists(u *User) error {
 	if toolkitEntities.IsZeroID(u.ID) {
 		return errors.New(USER_NOT_FOUND)
