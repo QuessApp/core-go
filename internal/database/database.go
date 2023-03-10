@@ -15,11 +15,5 @@ func Connect(URI, DBName string) (*mongo.Database, error) {
 		return nil, err
 	}
 
-	// defer func() {
-	// 	if err := client.Disconnect(context.Background()); err != nil {
-	// 		panic(err)
-	// 	}
-	// }()
-
 	return client.Database(DBName), nil
 }
