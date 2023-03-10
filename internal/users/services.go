@@ -2,6 +2,7 @@ package users
 
 import (
 	"core/configs"
+
 	"log"
 	"time"
 
@@ -204,5 +205,5 @@ func ResetLimit(u *User, usersRepository *UsersRepository) error {
 		return nil
 	}
 
-	return usersRepository.DecrementLimit(u.ID, USER_DEFAULT_POST_MONTHLY_LIMIT)
+	return usersRepository.ResetLimit(u.ID)
 }

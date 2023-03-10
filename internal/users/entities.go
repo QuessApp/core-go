@@ -17,12 +17,6 @@ type BlockedUser struct {
 	BlockedBy   toolkitEntities.ID `json:"blockedBy" bson:"blockedBy"`
 }
 
-// UpdatePreferencesDTO is DTO for payload for update preferences handler.
-type UpdatePreferencesDTO struct {
-	EnanbleAPPPushNotifications bool `json:"enableAppPushNotifications" bson:"enableAppPushNotifications"`
-	EnableAPPEmails             bool `json:"enableAppEmails" bson:"enableAppEmails"`
-}
-
 // User is a model for each user in app.
 type User struct {
 	ID        toolkitEntities.ID `json:"id" bson:"_id"`

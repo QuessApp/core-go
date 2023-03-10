@@ -83,6 +83,17 @@ func (u UsersRepository) IsNickInUse(nick string) bool {
 	return user.Nick != ""
 }
 
+// IsEmailInUse checks is an user already take an email.
+func (u UsersRepository) IsEmailInUse(email string) bool {
+	coll := u.db.Collection(collections.USERS)
+
+	user := User{}
+
+	coll.FindOne(context.Background(), bson.D{{Key: "email", Value: email}}).Decode(&user)
+
+	return user.Email != ""
+}
+
 // Search searches for users whose names or nicks match the given value, and returns a paginated list of results.
 // The page parameter is used to determine which page of the results to return.
 // If the value parameter is an empty string, an empty list is returned.
@@ -162,6 +173,19 @@ func (u *UsersRepository) DecrementLimit(userId toolkitEntities.ID, newValue int
 	return err
 }
 
+// ResetLimit updates the "postsLimit" field of the user document with the given ID to 30.
+// It returns an error if the update operation fails.
+func (u *UsersRepository) ResetLimit(userId toolkitEntities.ID) error {
+	coll := u.db.Collection(collections.USERS)
+
+	filter := bson.D{{Key: "_id", Value: userId}}
+	update := bson.D{{Key: "$set", Value: bson.D{{Key: "postsLimit", Value: USER_DEFAULT_POST_MONTHLY_LIMIT}}}}
+
+	_, err := coll.UpdateOne(context.Background(), filter, update)
+
+	return err
+}
+
 // UpdateLastPublishedAt takes a user ID and a payload containing updated preferences for the user.
 // It updates the corresponding user document in the database with the new preference values for "enableAppEmails" and "enableAppPushNotifications".
 // It returns an error if the update operation fails.
@@ -192,6 +216,32 @@ func (u *UsersRepository) UpdateLastPublishedAt(userId toolkitEntities.ID) error
 	update := bson.D{{Key: "$set", Value: bson.D{
 		{
 			Key: "lastPublishAt", Value: time.Now(),
+		},
+	}}}
+
+	_, err := coll.UpdateOne(context.Background(), filter, update)
+
+	return err
+}
+
+func (u *UsersRepository) UpdateProfile(userId toolkitEntities.ID, payload *UpdateProfileDTO) error {
+	coll := u.db.Collection(collections.USERS)
+
+	filter := bson.D{{Key: "_id", Value: userId}}
+
+	// TOOD: update password and avatar
+	update := bson.D{{Key: "$set", Value: bson.D{
+		{
+			Key: "Nick", Value: payload.Nick,
+		},
+		{
+			Key: "Name", Value: payload.Name,
+		},
+		{
+			Key: "Locale", Value: payload.Locale,
+		},
+		{
+			Key: "Email", Value: payload.Email,
 		},
 	}}}
 
