@@ -5,8 +5,8 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/kuriozapp/toolkit/middlewares"
-	"github.com/kuriozapp/toolkit/responses"
+	"github.com/quessapp/toolkit/middlewares"
+	"github.com/quessapp/toolkit/responses"
 
 	"github.com/gofiber/fiber/v2"
 )

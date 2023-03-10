@@ -3,7 +3,7 @@ package users
 import (
 	"errors"
 
-	toolkitEntities "github.com/kuriozapp/toolkit/entities"
+	toolkitEntities "github.com/quessapp/toolkit/entities"
 )
 
 // UserExists returns error message if user does not exists.

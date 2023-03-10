@@ -3,7 +3,7 @@ package questions
 import (
 	"time"
 
-	toolkitEntities "github.com/kuriozapp/toolkit/entities"
+	toolkitEntities "github.com/quessapp/toolkit/entities"
 )
 
 // ReplyHistory is a model for each reply in app.

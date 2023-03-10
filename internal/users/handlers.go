@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/kuriozapp/toolkit/responses"
+	"github.com/quessapp/toolkit/responses"
 )
 
 // SearchUsersByValue performs a search for users based on a search value.

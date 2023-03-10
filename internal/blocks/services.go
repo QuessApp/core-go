@@ -3,7 +3,7 @@ package blocks
 import (
 	"core/internal/users"
 
-	toolkitEntities "github.com/kuriozapp/toolkit/entities"
+	toolkitEntities "github.com/quessapp/toolkit/entities"
 )
 
 // BlockUser blocks an user.

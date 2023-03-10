@@ -6,7 +6,7 @@ import (
 
 	"net/http"
 
-	"github.com/kuriozapp/toolkit/responses"
+	"github.com/quessapp/toolkit/responses"
 )
 
 // SignUpUserHandler is a handler to sign up an user.

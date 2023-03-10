@@ -6,9 +6,9 @@ import (
 
 	"net/http"
 
-	toolkitEntities "github.com/kuriozapp/toolkit/entities"
+	toolkitEntities "github.com/quessapp/toolkit/entities"
 
-	"github.com/kuriozapp/toolkit/responses"
+	"github.com/quessapp/toolkit/responses"
 )
 
 // BlockUserHandler is a handler to block an user.

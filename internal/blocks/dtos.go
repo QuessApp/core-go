@@ -1,9 +1,9 @@
 package blocks
 
 import (
-	toolkitEntities "github.com/kuriozapp/toolkit/entities"
+	toolkitEntities "github.com/quessapp/toolkit/entities"
 
-	"github.com/kuriozapp/toolkit/validations"
+	"github.com/quessapp/toolkit/validations"
 
 	validation "github.com/go-ozzo/ozzo-validation"
 )

@@ -13,7 +13,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/kuriozapp/toolkit/queue"
+	"github.com/quessapp/toolkit/queue"
 
 	"github.com/gofiber/fiber/v2"
 )

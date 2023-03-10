@@ -8,9 +8,9 @@ import (
 	"net/http"
 	"strconv"
 
-	toolkitEntities "github.com/kuriozapp/toolkit/entities"
+	toolkitEntities "github.com/quessapp/toolkit/entities"
 
-	"github.com/kuriozapp/toolkit/responses"
+	"github.com/quessapp/toolkit/responses"
 )
 
 // CreateQuestionHandler is a handler to create a question.

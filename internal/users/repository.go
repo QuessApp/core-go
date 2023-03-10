@@ -4,9 +4,9 @@ import (
 	"context"
 	"time"
 
-	collections "github.com/kuriozapp/toolkit/constants"
+	collections "github.com/quessapp/toolkit/constants"
 
-	toolkitEntities "github.com/kuriozapp/toolkit/entities"
+	toolkitEntities "github.com/quessapp/toolkit/entities"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"

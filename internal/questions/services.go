@@ -6,7 +6,7 @@ import (
 
 	"core/internal/users"
 
-	toolkitEntities "github.com/kuriozapp/toolkit/entities"
+	toolkitEntities "github.com/quessapp/toolkit/entities"
 )
 
 // CreateQuestion reads payload from request body then try to create a new question in database.

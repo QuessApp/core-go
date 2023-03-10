@@ -3,9 +3,9 @@ package questions
 import (
 	"context"
 
-	collections "github.com/kuriozapp/toolkit/constants"
+	collections "github.com/quessapp/toolkit/constants"
 
-	toolkitEntities "github.com/kuriozapp/toolkit/entities"
+	toolkitEntities "github.com/quessapp/toolkit/entities"
 
 	"time"
 
