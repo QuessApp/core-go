@@ -9,7 +9,8 @@ import (
 	toolkitEntities "github.com/quessapp/toolkit/entities"
 )
 
-// CreateQuestion reads payload from request body then try to create a new question in database.
+// CreateQuestion creates a new question in the system and sends an email notification to the recipient if enabled.
+// It returns an error if any validation checks fail or if there is an issue with creating the question.
 func CreateQuestion(handlerCtx *configs.HandlersCtx, payload *CreateQuestionDTO, authenticatedUserId toolkitEntities.ID, questionsRepository *QuestionsRepository, usersRepository *users.UsersRepository, blocksRepository *blocks.BlocksRepository) error {
 	if err := IsInvalidSendToID(payload); err != nil {
 		return err
@@ -75,7 +76,12 @@ func CreateQuestion(handlerCtx *configs.HandlersCtx, payload *CreateQuestionDTO,
 	return nil
 }
 
-// FindQuestionByID finds for a question in database by question id.
+// FindQuestionByID retrieves a question with the provided ID from the questions repository and returns
+// a Question object and an error. Before returning the question, it is checked if the question exists
+// and if the authenticated user has permission to view the question.
+//
+// If the question is owned by an anonymous user, the function maps the anonymous fields of the question
+// and returns the mapped question.
 func FindQuestionByID(handlerCtx *configs.HandlersCtx, id, authenticatedUserId toolkitEntities.ID, questionsRepository *QuestionsRepository, usersRepository *users.UsersRepository) (*Question, error) {
 	q := questionsRepository.FindQuestionByID(id)
 
@@ -101,7 +107,16 @@ func FindQuestionByID(handlerCtx *configs.HandlersCtx, id, authenticatedUserId t
 	return q.MapAnonymousFields(), nil
 }
 
-// GetAllQuestions gets all paginated questions from database.
+// GetAllQuestions retrieves a paginated list of questions from the questions repository and returns
+// a PaginatedQuestions object and an error. The pagination, sorting and filtering parameters are optional
+// and have default values. The authenticated user ID is used to determine which questions the user has
+// permission to view. If there are no questions that match the filter, an empty array is returned.
+//
+// For each question, the function checks if the question is owned by an anonymous user. If so, it sets
+// the "SentBy" field to nil. Otherwise, it retrieves the user who owns the question from the users
+// repository and maps the user fields to a new User object, which is assigned to the "SentBy" field of
+// the question. The function then returns a PaginatedQuestions object that contains the list of questions
+// and the total count of questions that match the filter.
 func GetAllQuestions(handlerCtx *configs.HandlersCtx, page *int64, sort, filter *string, authenticatedUserId toolkitEntities.ID, usersRepository *users.UsersRepository, questionsRepository *QuestionsRepository) (*PaginatedQuestions, error) {
 	if *page == 0 {
 		*page = 1
@@ -155,7 +170,10 @@ func GetAllQuestions(handlerCtx *configs.HandlersCtx, page *int64, sort, filter 
 	return &result, err
 }
 
-// DeleteQuestion deletes a question from database by id.
+// DeleteQuestion retrieves the question with the provided ID from the questions repository and checks if it exists.
+// If the question exists, the function checks if the authenticated user has permission to delete the question.
+// If the user has permission, the function deletes the question from the repository.
+// If the question does not exist or the user does not have permission to delete the question, the function returns an error.
 func DeleteQuestion(handlerCtx *configs.HandlersCtx, id, authenticatedUserId toolkitEntities.ID, questionsRepository *QuestionsRepository) error {
 	foundQuestion := questionsRepository.FindQuestionByID(id)
 
@@ -174,7 +192,10 @@ func DeleteQuestion(handlerCtx *configs.HandlersCtx, id, authenticatedUserId too
 	return nil
 }
 
-// HideQuestion hides a question.
+// HideQuestion is a function that takes in a handler context, question id, authenticated user id, and a questions repository as arguments.
+// It retrieves the question from the questions repository using the id, checks if the question exists, and if it can be hidden by the authenticated user.
+// It also checks if the authenticated user can view the question and if the question has not been previously hidden by the receiver.
+// If all checks pass, it calls the questions repository's Hide function to hide the question.
 func HideQuestion(handlerCtx *configs.HandlersCtx, id, authenticatedUserId toolkitEntities.ID, questionsRepository *QuestionsRepository) error {
 	q := questionsRepository.FindQuestionByID(id)
 
@@ -201,7 +222,10 @@ func HideQuestion(handlerCtx *configs.HandlersCtx, id, authenticatedUserId toolk
 	return nil
 }
 
-// ReplyQuestion replies a question.
+// ReplyQuestion is a function that takes in a handler context, a reply question DTO, authenticated user id, and a questions repository as arguments.
+// It validates the reply question DTO, retrieves the question from the questions repository using the id, and checks if the question can be viewed by the authenticated user.
+// It also checks if the question has not already been replied to and if the authenticated user can reply to the question.
+// If all checks pass, it calls the questions repository's Reply function to add the reply to the question.
 func ReplyQuestion(handlerCtx *configs.HandlersCtx, payload *ReplyQuestionDTO, authenticatedUserId toolkitEntities.ID, questionsRepository *QuestionsRepository) error {
 	if err := payload.Validate(); err != nil {
 		return err
@@ -232,7 +256,10 @@ func ReplyQuestion(handlerCtx *configs.HandlersCtx, payload *ReplyQuestionDTO, a
 	return nil
 }
 
-// EditQuestionReply edits a question reply.
+// EditQuestionReply is a function that takes in a handler context, an edit question reply DTO, authenticated user id, and a questions repository as arguments.
+// It validates the edit question reply DTO, retrieves the question from the questions repository using the id, and checks if the authenticated user can reply to the question.
+// It also checks if the question has already been replied to, if the authenticated user has not reached the limit for editing the reply, and if the question is not yet replied.
+// If all checks pass, it sets the old content and creation date of the question in the DTO and calls the questions repository's EditReply function to edit the reply.
 func EditQuestionReply(handlerCtx *configs.HandlersCtx, payload *EditQuestionReplyDTO, authenticatedUserId toolkitEntities.ID, questionsRepository *QuestionsRepository) error {
 	if err := payload.Validate(); err != nil {
 		return err
@@ -270,7 +297,9 @@ func EditQuestionReply(handlerCtx *configs.HandlersCtx, payload *EditQuestionRep
 	return nil
 }
 
-// RemoveQuestionReply removes a question reply.
+// RemoveQuestionReply is a function that takes in a handler context, a question id, authenticated user id, and a questions repository as arguments.
+// It retrieves the question from the questions repository using the id, and checks if the authenticated user can view the question and if the question has been replied to.
+// If all checks pass, it calls the questions repository's RemoveReply function to remove the reply
 func RemoveQuestionReply(handlerCtx *configs.HandlersCtx, id, authenticatedUserId toolkitEntities.ID, questionsRepository *QuestionsRepository) error {
 	q := questionsRepository.FindQuestionByID(id)
 

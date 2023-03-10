@@ -208,7 +208,8 @@ func (q QuestionsRepository) EditReply(payload *EditQuestionReplyDTO) error {
 	return err
 }
 
-// RemoveReply removes question reply
+// RemoveReply removes a reply from a question identified by id.
+// It sets reply field to nil, isReplied field to false, repliedAt field to nil, and repliesHistory field to an empty slice.
 func (q QuestionsRepository) RemoveReply(id toolkitEntities.ID) error {
 	coll := q.db.Collection(collections.QUESTIONS)
 
