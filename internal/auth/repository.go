@@ -10,7 +10,6 @@ import (
 
 	"time"
 
-	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -53,15 +52,4 @@ func (a AuthRepository) SignUp(payload *SignUpUserDTO) (*users.User, error) {
 	_, err := coll.InsertOne(context.Background(), user)
 
 	return &user, err
-}
-
-// IsEmailInUse checks is an user already take an email.
-func (a AuthRepository) IsEmailInUse(email string) bool {
-	coll := a.db.Collection(collections.USERS)
-
-	user := users.User{}
-
-	coll.FindOne(context.Background(), bson.D{{Key: "email", Value: email}}).Decode(&user)
-
-	return user.Email != ""
 }

@@ -19,9 +19,9 @@ func Setup(AppCtx *configs.AppCtx, authRepository *auth.AuthRepository, usersRep
 	auth.LoadRoutes(AppCtx, authRepository, usersRepository)
 	questions.LoadRoutes(AppCtx, usersRepository, questionsRepository, blocksRepository)
 	blocks.LoadRoutes(AppCtx, usersRepository, blocksRepository)
-	docs.LoadRoutes(AppCtx)
 	users.LoadRoutes(AppCtx, usersRepository)
 	settings.LoadRoutes(AppCtx, usersRepository)
+	docs.LoadRoutes(AppCtx)
 
 	log.Fatal(AppCtx.App.Listen(AppCtx.Cfg.ServerPort))
 }
