@@ -4,7 +4,7 @@ import (
 	"core/internal/users"
 	"errors"
 
-	toolkitEntities "github.com/kuriozapp/toolkit/entities"
+	toolkitEntities "github.com/quessapp/toolkit/entities"
 )
 
 // QuestionExists returns error message if question does not exisits in bd.

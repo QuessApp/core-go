@@ -3,9 +3,9 @@ package questions
 import (
 	"time"
 
-	"github.com/kuriozapp/toolkit/validations"
+	"github.com/quessapp/toolkit/validations"
 
-	toolkitEntities "github.com/kuriozapp/toolkit/entities"
+	toolkitEntities "github.com/quessapp/toolkit/entities"
 
 	validation "github.com/go-ozzo/ozzo-validation"
 )

@@ -3,7 +3,7 @@ package mocks
 import (
 	"core/internal/users"
 
-	toolkitEntities "github.com/kuriozapp/toolkit/entities"
+	toolkitEntities "github.com/quessapp/toolkit/entities"
 
 	"github.com/jaswdr/faker"
 )

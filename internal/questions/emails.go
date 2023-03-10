@@ -7,8 +7,8 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/kuriozapp/toolkit/crypto"
-	toolkitEntities "github.com/kuriozapp/toolkit/entities"
+	"github.com/quessapp/toolkit/crypto"
+	toolkitEntities "github.com/quessapp/toolkit/entities"
 	"github.com/streadway/amqp"
 )
 

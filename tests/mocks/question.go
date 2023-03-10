@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/jaswdr/faker"
-	toolkitEntities "github.com/kuriozapp/toolkit/entities"
+	toolkitEntities "github.com/quessapp/toolkit/entities"
 )
 
 // NewQuestion generates a fake question with generated fake fields values.

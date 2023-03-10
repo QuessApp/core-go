@@ -1,6 +1,6 @@
 package blocks
 
-import toolkitEntities "github.com/kuriozapp/toolkit/entities"
+import toolkitEntities "github.com/quessapp/toolkit/entities"
 
 // BlockedUser is a model for each blocked user in app.
 type BlockedUser struct {

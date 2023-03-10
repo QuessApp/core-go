@@ -7,8 +7,8 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v4"
-	date "github.com/kuriozapp/toolkit/constants"
-	toolkitEntities "github.com/kuriozapp/toolkit/entities"
+	date "github.com/quessapp/toolkit/constants"
+	toolkitEntities "github.com/quessapp/toolkit/entities"
 )
 
 var (

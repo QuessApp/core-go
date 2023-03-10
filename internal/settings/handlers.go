@@ -5,7 +5,7 @@ import (
 	"core/internal/users"
 	"net/http"
 
-	"github.com/kuriozapp/toolkit/responses"
+	"github.com/quessapp/toolkit/responses"
 )
 
 // UpdatePreferencesHandler is a handler to update user preferences.

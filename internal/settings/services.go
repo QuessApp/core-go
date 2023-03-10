@@ -4,7 +4,7 @@ import (
 	"core/configs"
 	"core/internal/users"
 
-	toolkitEntities "github.com/kuriozapp/toolkit/entities"
+	toolkitEntities "github.com/quessapp/toolkit/entities"
 )
 
 // UpdatePreferences updates user preferences such as emails, etc.
