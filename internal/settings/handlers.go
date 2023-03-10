@@ -8,7 +8,12 @@ import (
 	"github.com/quessapp/toolkit/responses"
 )
 
-// UpdatePreferencesHandler is a handler to update user preferences.
+// UpdatePreferencesHandler is an HTTP request handler function that updates a user's preferences based on the data provided in the request body.
+// This function takes a HandlersCtx object and a UsersRepository object as parameters.
+// It attempts to parse the request body into an UpdatePreferencesDTO object, and returns an error response with a 400 Bad Request status code
+// if the parsing fails. It then gets the authenticated user's ID from the request context, and calls the UpdatePreferences function to update
+// the user's preferences. If any error occurs during this process, it returns an error response with a 400 Bad Request status code.
+// If the update is successful, it returns a successful response with a 200 OK status code.
 func UpdatePreferencesHandler(handlerCtx *configs.HandlersCtx, usersRepository *users.UsersRepository) error {
 	payload := users.UpdatePreferencesDTO{}
 
