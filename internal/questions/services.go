@@ -3,6 +3,7 @@ package questions
 import (
 	"core/configs"
 	"core/internal/blocks"
+	"core/internal/emails"
 
 	"core/internal/users"
 
@@ -62,7 +63,7 @@ func CreateQuestion(handlerCtx *configs.HandlersCtx, payload *CreateQuestionDTO,
 	}
 
 	if userToSendQuestion.EnableAPPEmails {
-		SendEmailNewQuestionReceived(handlerCtx.AppCtx.Cfg, handlerCtx.MessageQueueCh, handlerCtx.SendEmailsQueue, payload, userToSendQuestion, userThatIsSendingQuestion)
+		emails.SendEmailNewQuestionReceived(handlerCtx.AppCtx.Cfg, handlerCtx.MessageQueueCh, handlerCtx.SendEmailsQueue, payload.Content, payload.IsAnonymous, userToSendQuestion, userThatIsSendingQuestion)
 	}
 
 	if err := users.UpdateLastPublishedAt(userThatIsSendingQuestion, usersRepository); err != nil {

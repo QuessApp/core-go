@@ -1,4 +1,4 @@
-package questions
+package emails
 
 import (
 	"core/configs"
@@ -12,25 +12,11 @@ import (
 	"github.com/streadway/amqp"
 )
 
-// DeclareEmailsQueue declares an queue in MQ to send emails through app.
-func DeclareEmailsQueue(AppCtx *configs.AppCtx) (*amqp.Queue, error) {
-	q, err := AppCtx.MessageQueueCh.QueueDeclare(
-		AppCtx.Cfg.SendEmailsQueueName, // name
-		true,                           // durable
-		false,                          // delete when unused
-		false,                          // exclusive
-		false,                          // no-wait
-		nil,                            // arguments
-	)
-
-	return &q, err
-}
-
 // SendEmailNewQuestionReceived sends an email to MQ.
-func SendEmailNewQuestionReceived(cfg *configs.Conf, ch *amqp.Channel, q *amqp.Queue, payload *CreateQuestionDTO, userToSendQuestion *users.User, userThatIsSendingQuestion *users.User) {
+func SendEmailNewQuestionReceived(cfg *configs.Conf, ch *amqp.Channel, q *amqp.Queue, content string, isAnonymous bool, userToSendQuestion *users.User, userThatIsSendingQuestion *users.User) {
 	var subject string
 
-	if payload.IsAnonymous {
+	if isAnonymous {
 		subject = "Você recebeu uma pergunta anônima"
 	} else {
 		subject = fmt.Sprintf("Você recebeu uma pergunta de @%s", userThatIsSendingQuestion.Nick)
@@ -39,7 +25,7 @@ func SendEmailNewQuestionReceived(cfg *configs.Conf, ch *amqp.Channel, q *amqp.Q
 	email := toolkitEntities.Email{
 		To:      userToSendQuestion.Email,
 		Subject: subject,
-		Body:    fmt.Sprintf(`"%v" - %v`, payload.Content, userThatIsSendingQuestion.Name),
+		Body:    fmt.Sprintf(`"%v" - %v`, content, userThatIsSendingQuestion.Name),
 	}
 
 	emailParsed, err := json.Marshal(email)
@@ -55,10 +41,10 @@ func SendEmailNewQuestionReceived(cfg *configs.Conf, ch *amqp.Channel, q *amqp.Q
 	}
 
 	err = ch.Publish(
-		"",     // exchange
-		q.Name, // routing key
-		false,  // mandatory
-		false,  // immediate
+		"",
+		q.Name,
+		false,
+		false,
 		amqp.Publishing{
 			ContentType: "text/plain",
 			Body:        []byte(encryptedMsg),

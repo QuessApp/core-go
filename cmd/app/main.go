@@ -5,6 +5,7 @@ import (
 	"core/internal/auth"
 	"core/internal/blocks"
 	"core/internal/database"
+	"core/internal/emails"
 	"core/internal/questions"
 	"core/internal/router"
 
@@ -51,7 +52,7 @@ func main() {
 		MessageQueueCh:   ch,
 	}
 
-	q, err := questions.DeclareEmailsQueue(AppCtx)
+	q, err := emails.DeclareQueue(AppCtx)
 
 	if err != nil {
 		log.Fatalln(err)

@@ -47,6 +47,7 @@ func (a AuthRepository) SignUp(payload *SignUpUserDTO) (*users.User, error) {
 		LastPublishAt:   nil,
 		SubscriptionID:  nil,
 		ProExpiresAt:    nil,
+		Locale:          payload.Locale,
 	}
 
 	_, err := coll.InsertOne(context.Background(), user)
