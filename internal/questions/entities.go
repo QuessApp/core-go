@@ -8,14 +8,14 @@ import (
 
 // ReplyHistory is a model for each reply in app.
 type ReplyHistory struct {
-	ID        toolkitEntities.ID `json:"id" bson:"_id,omitempty"`
-	CreatedAt time.Time          `json:"createdAt" bson:"createdAt,omitempty"`
+	ID        toolkitEntities.ID `json:"id" bson:"_id"`
+	CreatedAt time.Time          `json:"createdAt" bson:"createdAt"`
 	Content   string             `json:"content"`
 }
 
 // Questions is a model for each question in app.
 type Question struct {
-	ID      toolkitEntities.ID `json:"id" bson:"_id,omitempty"`
+	ID      toolkitEntities.ID `json:"id" bson:"_id"`
 	Content string             `json:"content"`
 
 	// SendTo represents the user that will receive the question. Type must bet Entities.ID, nill ou Entities.User
@@ -32,8 +32,8 @@ type Question struct {
 	// RepliesHistory is the historic of how many times an user updated the question reply.
 	RepliesHistory []ReplyHistory `json:"repliesHistory,omitempty" bson:"repliesHistory"`
 
-	CreatedAt time.Time `json:"createdAt" bson:"createdAt,omitempty"`
-	RepliedAt time.Time `json:"repliedAt" bson:"repliedAt,omitempty"`
+	CreatedAt time.Time  `json:"createdAt" bson:"createdAt,omitempty"`
+	RepliedAt *time.Time `json:"repliedAt,omitempty" bson:"repliedAt"`
 }
 
 // PaginatedQuestions is a model for paginated questions in app.

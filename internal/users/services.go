@@ -221,6 +221,10 @@ func ResetLimit(u *User, usersRepository *UsersRepository) error {
 		time.UTC,
 	)
 
+	if u.LastPublishAt == nil {
+		return nil
+	}
+
 	// TODO: Should we do this?
 	lastPublish := time.Date(
 		u.LastPublishAt.Year(),

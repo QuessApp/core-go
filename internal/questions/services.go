@@ -4,6 +4,7 @@ import (
 	"core/configs"
 	"core/internal/blocks"
 	"core/internal/emails"
+	"time"
 
 	"core/internal/users"
 
@@ -49,13 +50,6 @@ func CreateQuestion(handlerCtx *configs.HandlersCtx, payload *CreateQuestionDTO,
 
 	if err := users.DecrementUserLimit(userThatIsSendingQuestion.ID, usersRepository); err != nil {
 		return err
-	}
-
-	// TODO: add flag in database
-	if userThatIsSendingQuestion.IsShadowBanned {
-		// fake question, dont create
-		// record in database
-		return nil
 	}
 
 	if err := questionsRepository.Create(payload); err != nil {
@@ -289,7 +283,10 @@ func EditQuestionReply(handlerCtx *configs.HandlersCtx, payload *EditQuestionRep
 	}
 
 	payload.OldContent = q.Content
-	payload.OldContentCreatedAt = q.RepliedAt
+
+	if q.RepliedAt == nil {
+		payload.OldContentCreatedAt = time.Now()
+	}
 
 	if err := questionsRepository.EditReply(payload); err != nil {
 		return err
