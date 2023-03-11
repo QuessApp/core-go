@@ -42,7 +42,7 @@ type PaginatedQuestions struct {
 	TotalCount int64       `json:"totalCount"`
 }
 
-// MapAnonymousFields maps question in order to hide who sent the question, if the questions is anonymous.Otherwise, just returns the whole data.
+// MapAnonymousFields maps question in order to hide who sent the question, if the questions is anonymous. Otherwise, just returns the whole data.
 func (q Question) MapAnonymousFields() *Question {
 	if q.IsAnonymous {
 		return &Question{
