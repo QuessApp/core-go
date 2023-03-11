@@ -197,8 +197,8 @@ func DeleteQuestion(handlerCtx *configs.HandlersCtx, id, authenticatedUserID too
 // It retrieves the question from the questions repository using the id, checks if the question exists, and if it can be hidden by the authenticated user.
 // It also checks if the authenticated user can view the question and if the question has not been previously hidden by the receiver.
 // If all checks pass, it calls the questions repository's Hide function to hide the question.
-func HideQuestion(handlerCtx *configs.HandlersCtx, id, authenticatedUserID toolkitEntities.ID, questionsRepository *QuestionsRepository) error {
-	q := questionsRepository.FindQuestionByID(id)
+func HideQuestion(handlerCtx *configs.HandlersCtx, ID, authenticatedUserID toolkitEntities.ID, questionsRepository *QuestionsRepository) error {
+	q := questionsRepository.FindQuestionByID(ID)
 
 	if err := QuestionExists(q); err != nil {
 		return err
@@ -216,7 +216,7 @@ func HideQuestion(handlerCtx *configs.HandlersCtx, id, authenticatedUserID toolk
 		return err
 	}
 
-	if err := questionsRepository.Hide(id); err != nil {
+	if err := questionsRepository.Hide(ID); err != nil {
 		return err
 	}
 
@@ -301,8 +301,8 @@ func EditQuestionReply(handlerCtx *configs.HandlersCtx, payload *EditQuestionRep
 // RemoveQuestionReply is a function that takes in a handler context, a question id, authenticated user id, and a questions repository as arguments.
 // It retrieves the question from the questions repository using the id, and checks if the authenticated user can view the question and if the question has been replied to.
 // If all checks pass, it calls the questions repository's RemoveReply function to remove the reply
-func RemoveQuestionReply(handlerCtx *configs.HandlersCtx, id, authenticatedUserID toolkitEntities.ID, questionsRepository *QuestionsRepository) error {
-	q := questionsRepository.FindQuestionByID(id)
+func RemoveQuestionReply(handlerCtx *configs.HandlersCtx, ID, authenticatedUserID toolkitEntities.ID, questionsRepository *QuestionsRepository) error {
+	q := questionsRepository.FindQuestionByID(ID)
 
 	if err := QuestionExists(q); err != nil {
 		return err
@@ -316,7 +316,7 @@ func RemoveQuestionReply(handlerCtx *configs.HandlersCtx, id, authenticatedUserI
 		return err
 	}
 
-	if err := questionsRepository.RemoveReply(id); err != nil {
+	if err := questionsRepository.RemoveReply(ID); err != nil {
 		return err
 	}
 

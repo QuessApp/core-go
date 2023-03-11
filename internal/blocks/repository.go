@@ -37,10 +37,10 @@ func (b *BlocksRepository) BlockUser(payload *BlockUserDTO) error {
 }
 
 // UnblockUser removes block from database.
-func (b *BlocksRepository) UnblockUser(blockId toolkitEntities.ID) error {
+func (b *BlocksRepository) UnblockUser(blockID toolkitEntities.ID) error {
 	coll := b.db.Collection(collections.BLOCKS)
 
-	filter := bson.D{{Key: "userToBlock", Value: blockId}}
+	filter := bson.D{{Key: "userToBlock", Value: blockID}}
 
 	_, err := coll.DeleteOne(context.Background(), filter)
 

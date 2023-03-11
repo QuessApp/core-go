@@ -48,10 +48,10 @@ func (q QuestionsRepository) Create(payload *CreateQuestionDTO) error {
 }
 
 // FindByID finds a question by id in database.
-func (q QuestionsRepository) FindQuestionByID(id toolkitEntities.ID) *Question {
+func (q QuestionsRepository) FindQuestionByID(ID toolkitEntities.ID) *Question {
 	coll := q.db.Collection(collections.QUESTIONS)
 
-	filter := bson.D{{Key: "_id", Value: id}}
+	filter := bson.D{{Key: "_id", Value: ID}}
 
 	question := Question{}
 
@@ -129,10 +129,10 @@ func (q QuestionsRepository) GetAll(page *int64, sort, filter *string, authentic
 }
 
 // Delete deletes a question from database.
-func (q QuestionsRepository) Delete(id toolkitEntities.ID) error {
+func (q QuestionsRepository) Delete(ID toolkitEntities.ID) error {
 	coll := q.db.Collection(collections.QUESTIONS)
 
-	filter := bson.D{{Key: "_id", Value: id}}
+	filter := bson.D{{Key: "_id", Value: ID}}
 
 	_, err := coll.DeleteOne(context.Background(), filter)
 
@@ -140,11 +140,11 @@ func (q QuestionsRepository) Delete(id toolkitEntities.ID) error {
 }
 
 // Hide hides a question.
-func (q QuestionsRepository) Hide(id toolkitEntities.ID) error {
+func (q QuestionsRepository) Hide(ID toolkitEntities.ID) error {
 	coll := q.db.Collection(collections.QUESTIONS)
 	update := bson.D{{Key: "$set", Value: bson.D{{Key: "isHiddenByReceiver", Value: true}}}}
 
-	_, err := coll.UpdateByID(context.Background(), id, update)
+	_, err := coll.UpdateByID(context.Background(), ID, update)
 
 	return err
 }
@@ -210,10 +210,10 @@ func (q QuestionsRepository) EditReply(payload *EditQuestionReplyDTO) error {
 
 // RemoveReply removes a reply from a question identified by id.
 // It sets reply field to nil, isReplied field to false, repliedAt field to nil, and repliesHistory field to an empty slice.
-func (q QuestionsRepository) RemoveReply(id toolkitEntities.ID) error {
+func (q QuestionsRepository) RemoveReply(ID toolkitEntities.ID) error {
 	coll := q.db.Collection(collections.QUESTIONS)
 
-	filter := bson.D{{Key: "_id", Value: id}}
+	filter := bson.D{{Key: "_id", Value: ID}}
 
 	update := bson.D{
 		{
