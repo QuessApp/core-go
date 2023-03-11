@@ -202,6 +202,83 @@ func UpdateLastPublishedAt(user *User, usersRepository *UsersRepository) error {
 	return usersRepository.UpdateLastPublishedAt(user.ID)
 }
 
+// ResetLimit checks if the user's posts limit can be reset based on the USER_POST_MONTHLY_LIMIT_DAYS_TO_RESET constant.
+// If the user's last publish date is greater than or equal to USER_POST_MONTHLY_LIMIT_DAYS_TO_RESET days in the past,
+// their posts limit will be reset to the default value specified in the USER_DEFAULT_POST_MONTHLY_LIMIT constant.
+// Otherwise, their posts limit will not be reset and no error will be returned.
+// This function takes a pointer to a User object and a UsersRepository object as parameters, and returns any error that may occur.
+func ResetLimit(u *User, usersRepository *UsersRepository) error {
+	// TODO: Should we do this?
+	currentDate := time.Date(
+		time.Now().Year(),
+		time.Now().Month(),
+		time.Now().Day(),
+		time.Now().Hour(),
+		time.Now().Minute(),
+		time.Now().Second(),
+		time.Now().Nanosecond(),
+		time.UTC,
+	)
+
+	// TODO: Should we do this?
+	lastPublish := time.Date(
+		u.LastPublishAt.Year(),
+		u.LastPublishAt.Month(),
+		u.LastPublishAt.Day(),
+		u.LastPublishAt.Hour(),
+		u.LastPublishAt.Minute(),
+		u.LastPublishAt.Second(),
+		u.LastPublishAt.Nanosecond(),
+		time.UTC,
+	)
+
+	diffBetweenLastPublishedAndCurrentDate := currentDate.Sub(lastPublish)
+	diffInDays := int64(diffBetweenLastPublishedAndCurrentDate.Hours() / 24)
+	canReset := diffInDays >= USER_POST_MONTHLY_LIMIT_DAYS_TO_RESET
+
+	if !canReset {
+		log.Printf("It's not necessary to reset limit for user %s because it has not passed %d days since their last publish. Their current limit is %d", u.Nick, USER_POST_MONTHLY_LIMIT_DAYS_TO_RESET, u.PostsLimit)
+		return nil
+	}
+
+	return usersRepository.ResetLimit(u.ID)
+}
+
+// UpdateUserProfile updates the profile of the user with the given ID using the provided payload.
+// It takes four parameters, a HandlerCtx, an UpdateProfileDTO payload, an authenticatedUserID of type toolkitEntities.ID,
+// and a UsersRepository, and returns an error if the update is unsuccessful.
+func UpdateUserProfile(handlerCtx *configs.HandlersCtx, payload *UpdateProfileDTO, authenticatedUserID toolkitEntities.ID, usersRepository *UsersRepository) error {
+	if err := payload.Validate(); err != nil {
+		return err
+	}
+
+	u := usersRepository.FindUserByID(authenticatedUserID)
+
+	if err := UserExists(u); err != nil {
+		return err
+	}
+
+	// if new value equals to prev value, do not update
+	if payload.Email != u.Email {
+		if err := IsEmailInUse(usersRepository.IsEmailInUse(payload.Email)); err != nil {
+			return err
+		}
+	}
+
+	// if new value equals to prev value, do not update
+	if payload.Nick != u.Nick {
+		if err := IsNickInUse(usersRepository.IsNickInUse(payload.Nick)); err != nil {
+			return err
+		}
+	}
+
+	if err := usersRepository.UpdateProfile(authenticatedUserID, payload); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 // CreateUserToken creates an user JWT token with followed fields:
 // id, name, email, exp. It returns string and error.
 func CreateUserToken(u *User, expiresIn int64, secret string) (string, error) {
@@ -249,46 +326,4 @@ func DecodeUserToken(c *fiber.Ctx) toolkitEntities.DecodeUserTokenResult {
 // GetUserByToken decodes a token and get user info from token.
 func GetUserByToken(c *fiber.Ctx) toolkitEntities.DecodeUserTokenResult {
 	return DecodeUserToken(c)
-}
-
-// ResetLimit checks if the user's posts limit can be reset based on the USER_POST_MONTHLY_LIMIT_DAYS_TO_RESET constant.
-// If the user's last publish date is greater than or equal to USER_POST_MONTHLY_LIMIT_DAYS_TO_RESET days in the past,
-// their posts limit will be reset to the default value specified in the USER_DEFAULT_POST_MONTHLY_LIMIT constant.
-// Otherwise, their posts limit will not be reset and no error will be returned.
-// This function takes a pointer to a User object and a UsersRepository object as parameters, and returns any error that may occur.
-func ResetLimit(u *User, usersRepository *UsersRepository) error {
-	// TODO: Should we do this?
-	currentDate := time.Date(
-		time.Now().Year(),
-		time.Now().Month(),
-		time.Now().Day(),
-		time.Now().Hour(),
-		time.Now().Minute(),
-		time.Now().Second(),
-		time.Now().Nanosecond(),
-		time.UTC,
-	)
-
-	// TODO: Should we do this?
-	lastPublish := time.Date(
-		u.LastPublishAt.Year(),
-		u.LastPublishAt.Month(),
-		u.LastPublishAt.Day(),
-		u.LastPublishAt.Hour(),
-		u.LastPublishAt.Minute(),
-		u.LastPublishAt.Second(),
-		u.LastPublishAt.Nanosecond(),
-		time.UTC,
-	)
-
-	diffBetweenLastPublishedAndCurrentDate := currentDate.Sub(lastPublish)
-	diffInDays := int64(diffBetweenLastPublishedAndCurrentDate.Hours() / 24)
-	canReset := diffInDays >= USER_POST_MONTHLY_LIMIT_DAYS_TO_RESET
-
-	if !canReset {
-		log.Printf("It's not necessary to reset limit for user %s because it has not passed %d days since their last publish. Their current limit is %d", u.Nick, USER_POST_MONTHLY_LIMIT_DAYS_TO_RESET, u.PostsLimit)
-		return nil
-	}
-
-	return usersRepository.ResetLimit(u.ID)
 }

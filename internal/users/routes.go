@@ -19,6 +19,9 @@ func LoadRoutes(AppCtx *configs.AppCtx, usersRepository *UsersRepository) {
 	g.Get("/me", func(c *fiber.Ctx) error {
 		return GetAuthenticatedUserHandler(&configs.HandlersCtx{C: c, AppCtx: *AppCtx}, usersRepository)
 	})
+	g.Put("/me", func(c *fiber.Ctx) error {
+		return UpdateUserProfileHandler(&configs.HandlersCtx{C: c, AppCtx: *AppCtx}, usersRepository)
+	})
 	g.Patch("/me/avatar", func(c *fiber.Ctx) error {
 		return UpdateUserAvatarHandler(&configs.HandlersCtx{C: c, AppCtx: *AppCtx}, usersRepository)
 	})
