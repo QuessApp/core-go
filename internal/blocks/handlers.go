@@ -16,14 +16,14 @@ import (
 // It reads data from payload, gets user id from url params, gets user from token and try to block the user.
 func BlockUserHandler(handlerCtx *configs.HandlersCtx, usersRepository *users.UsersRepository, blocksRepository *BlocksRepository) error {
 	payload := BlockUserDTO{}
-	id, err := toolkitEntities.ParseID(handlerCtx.C.Params("id"))
+	ID, err := toolkitEntities.ParseID(handlerCtx.C.Params("id"))
 
 	if err != nil {
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
 	payload.BlockedBy = users.GetUserByToken(handlerCtx.C).ID
-	payload.UserToBlock = id
+	payload.UserToBlock = ID
 
 	if err := BlockUser(&payload, usersRepository, blocksRepository); err != nil {
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())

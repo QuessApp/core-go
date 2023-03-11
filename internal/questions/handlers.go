@@ -58,7 +58,7 @@ func GetAllQuestionsHandler(handlerCtx *configs.HandlersCtx, usersRepository *us
 
 // FindQuestionByIDHandler is a handler to find a question by its id.
 func FindQuestionByIDHandler(handlerCtx *configs.HandlersCtx, usersRepository *users.UsersRepository, questionsRepository *QuestionsRepository) error {
-	id, err := toolkitEntities.ParseID(handlerCtx.C.Params("id"))
+	ID, err := toolkitEntities.ParseID(handlerCtx.C.Params("id"))
 
 	if err != nil {
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
@@ -66,7 +66,7 @@ func FindQuestionByIDHandler(handlerCtx *configs.HandlersCtx, usersRepository *u
 
 	authenticatedUserID := users.GetUserByToken(handlerCtx.C).ID
 
-	question, err := FindQuestionByID(handlerCtx, id, authenticatedUserID, questionsRepository, usersRepository)
+	question, err := FindQuestionByID(handlerCtx, ID, authenticatedUserID, questionsRepository, usersRepository)
 
 	if err != nil {
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
@@ -77,7 +77,7 @@ func FindQuestionByIDHandler(handlerCtx *configs.HandlersCtx, usersRepository *u
 
 // DeleteQuestionHandler is a handler to delete a question by its id.
 func DeleteQuestionHandler(handlerCtx *configs.HandlersCtx, questionsRepository *QuestionsRepository) error {
-	id, err := toolkitEntities.ParseID(handlerCtx.C.Params("id"))
+	ID, err := toolkitEntities.ParseID(handlerCtx.C.Params("id"))
 
 	if err != nil {
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
@@ -85,7 +85,7 @@ func DeleteQuestionHandler(handlerCtx *configs.HandlersCtx, questionsRepository 
 
 	authenticatedUserID := users.GetUserByToken(handlerCtx.C).ID
 
-	if err := DeleteQuestion(handlerCtx, id, authenticatedUserID, questionsRepository); err != nil {
+	if err := DeleteQuestion(handlerCtx, ID, authenticatedUserID, questionsRepository); err != nil {
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
@@ -94,7 +94,7 @@ func DeleteQuestionHandler(handlerCtx *configs.HandlersCtx, questionsRepository 
 
 // HideQuestionHandler is a handler to hide question by its id.
 func HideQuestionHandler(handlerCtx *configs.HandlersCtx, questionsRepository *QuestionsRepository) error {
-	id, err := toolkitEntities.ParseID(handlerCtx.C.Params("id"))
+	ID, err := toolkitEntities.ParseID(handlerCtx.C.Params("id"))
 
 	if err != nil {
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
@@ -102,7 +102,7 @@ func HideQuestionHandler(handlerCtx *configs.HandlersCtx, questionsRepository *Q
 
 	authenticatedUserID := users.GetUserByToken(handlerCtx.C).ID
 
-	if err := HideQuestion(handlerCtx, id, authenticatedUserID, questionsRepository); err != nil {
+	if err := HideQuestion(handlerCtx, ID, authenticatedUserID, questionsRepository); err != nil {
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
@@ -117,7 +117,7 @@ func ReplyQuestionHandler(handlerCtx *configs.HandlersCtx, questionsRepository *
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
-	id, err := toolkitEntities.ParseID(handlerCtx.C.Params("id"))
+	ID, err := toolkitEntities.ParseID(handlerCtx.C.Params("id"))
 
 	if err != nil {
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
@@ -125,7 +125,7 @@ func ReplyQuestionHandler(handlerCtx *configs.HandlersCtx, questionsRepository *
 
 	authenticatedUserID := users.GetUserByToken(handlerCtx.C).ID
 
-	payload.ID = id
+	payload.ID = ID
 
 	if err := ReplyQuestion(handlerCtx, &payload, authenticatedUserID, questionsRepository); err != nil {
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
@@ -142,7 +142,7 @@ func EditReplyQuestionHandler(handlerCtx *configs.HandlersCtx, questionsReposito
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
-	id, err := toolkitEntities.ParseID(handlerCtx.C.Params("id"))
+	ID, err := toolkitEntities.ParseID(handlerCtx.C.Params("id"))
 
 	if err != nil {
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
@@ -150,7 +150,7 @@ func EditReplyQuestionHandler(handlerCtx *configs.HandlersCtx, questionsReposito
 
 	authenticatedUserID := users.GetUserByToken(handlerCtx.C).ID
 
-	payload.ID = id
+	payload.ID = ID
 
 	if err := EditQuestionReply(handlerCtx, &payload, authenticatedUserID, questionsRepository); err != nil {
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
@@ -161,7 +161,7 @@ func EditReplyQuestionHandler(handlerCtx *configs.HandlersCtx, questionsReposito
 
 // RemoveQuestionReplyHandler is a handler to remove reply from question.
 func RemoveQuestionReplyHandler(handlerCtx *configs.HandlersCtx, questionsRepository *QuestionsRepository) error {
-	id, err := toolkitEntities.ParseID(handlerCtx.C.Params("id"))
+	ID, err := toolkitEntities.ParseID(handlerCtx.C.Params("id"))
 
 	if err != nil {
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
@@ -169,7 +169,7 @@ func RemoveQuestionReplyHandler(handlerCtx *configs.HandlersCtx, questionsReposi
 
 	authenticatedUserID := users.GetUserByToken(handlerCtx.C).ID
 
-	if err := RemoveQuestionReply(handlerCtx, id, authenticatedUserID, questionsRepository); err != nil {
+	if err := RemoveQuestionReply(handlerCtx, ID, authenticatedUserID, questionsRepository); err != nil {
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
