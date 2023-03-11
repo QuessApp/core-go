@@ -1,7 +1,7 @@
 {
   "_type": "export",
   "__export_format": 4,
-  "__export_date": "2023-03-08T23:48:35.059Z",
+  "__export_date": "2023-03-11T03:50:40.648Z",
   "__export_source": "insomnia.desktop.app:v2022.7.5",
   "resources": [
     {
@@ -61,6 +61,87 @@
       "_type": "workspace"
     },
     {
+      "_id": "req_e33f22f3e8a0454b8bc072900ed5058e",
+      "parentId": "fld_f404ee292856492997b6456988cc8c83",
+      "modified": 1678505802854,
+      "created": 1678496364704,
+      "url": "{{ _.URL }}/users/me/avatar",
+      "name": "Upload avatar",
+      "description": "",
+      "method": "PATCH",
+      "body": {
+        "mimeType": "multipart/form-data",
+        "params": [
+          {
+            "id": "pair_d223d6cc9e4c4e6d8014d8d50fbcab32",
+            "name": "avatar",
+            "value": "",
+            "description": "",
+            "type": "file",
+            "fileName": "C:\\Users\\Caio Augusto\\Pictures\\62035389.jpg"
+          }
+        ]
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "multipart/form-data"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.authToken }}"
+      },
+      "metaSortKey": -1678496364704,
+      "isPrivate": false,
+      "settingStoreCookies": false,
+      "settingSendCookies": false,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "fld_f404ee292856492997b6456988cc8c83",
+      "parentId": "wrk_5cb4aa41b9b24464924ad9bd1fbde86d",
+      "modified": 1678147586978,
+      "created": 1678147586978,
+      "name": "Users",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1678147586978,
+      "_type": "request_group"
+    },
+    {
+      "_id": "req_9de81e2693c94706a020a73e2909d756",
+      "parentId": "fld_f404ee292856492997b6456988cc8c83",
+      "modified": 1678321466187,
+      "created": 1678319821230,
+      "url": "{{ _.URL }}/users/caioamfr",
+      "name": "Find by nick",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.authToken }}"
+      },
+      "metaSortKey": -1678319821230,
+      "isPrivate": false,
+      "settingStoreCookies": false,
+      "settingSendCookies": false,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
       "_id": "req_7ddabe361f784c4591459cbed6d2ec71",
       "parentId": "fld_f404ee292856492997b6456988cc8c83",
       "modified": 1678319288834,
@@ -87,21 +168,9 @@
       "_type": "request"
     },
     {
-      "_id": "fld_f404ee292856492997b6456988cc8c83",
-      "parentId": "wrk_5cb4aa41b9b24464924ad9bd1fbde86d",
-      "modified": 1678147586978,
-      "created": 1678147586978,
-      "name": "Users",
-      "description": "",
-      "environment": {},
-      "environmentPropertyOrder": null,
-      "metaSortKey": -1678147586978,
-      "_type": "request_group"
-    },
-    {
       "_id": "req_ccba2064437a4aec99279cbc9dcacac2",
       "parentId": "fld_f404ee292856492997b6456988cc8c83",
-      "modified": 1678319263066,
+      "modified": 1678321458969,
       "created": 1678319263066,
       "url": "{{ _.URL }}/users",
       "name": "Search",
@@ -112,7 +181,7 @@
         {
           "id": "pair_8676b2514388471c91bc1ab9856883d8",
           "name": "search",
-          "value": "fa",
+          "value": "ca",
           "description": ""
         },
         {
@@ -140,7 +209,7 @@
     {
       "_id": "req_5538701d54844e2380ceefccdc72ea77",
       "parentId": "fld_456a851ea2b94f1c9f6276463efc09ad",
-      "modified": 1678237823676,
+      "modified": 1678505786611,
       "created": 1678144719171,
       "url": "{{ _.URL }}/blocks/user/63f7f9a969f24b3e170a5292",
       "name": "Unblock",
@@ -422,7 +491,7 @@
     {
       "_id": "req_30a329187ea645dfacca846cd70a53a2",
       "parentId": "fld_69d07efde75f42f7b9c341feaf715263",
-      "modified": 1678237076452,
+      "modified": 1678477486760,
       "created": 1678203915600,
       "url": "{{ _.URL }}/auth/signup",
       "name": "Sign Up",
@@ -430,7 +499,7 @@
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n\t\"nick\": \"nutty123\",\n\t\"name\": \"nutty123\",\n\t\"password\": \"nutty123\",\n\t\"email\": \"nutty123@gmail.com\"\n}"
+        "text": "{\n\t\"nick\": \"nutty123\",\n\t\"name\": \"nutty123\",\n\t\"password\": \"nutty123\",\n\t\"email\": \"nutty123@gmail.com\",\n\t\"locale\": \"en-US\"\n}"
       },
       "parameters": [],
       "headers": [
@@ -465,7 +534,7 @@
     {
       "_id": "req_d331a162d4f743bc9c7939f46e3f42c5",
       "parentId": "fld_69d07efde75f42f7b9c341feaf715263",
-      "modified": 1678237127324,
+      "modified": 1678504930671,
       "created": 1677618747702,
       "url": "{{ _.URL }}/auth/signin",
       "name": "Sign In",
@@ -534,12 +603,12 @@
     {
       "_id": "env_baee203b6784455eab8dab84d4eee8ac",
       "parentId": "env_2fa14e2979e18bec5f59dcc296aa47c603e9ff7c",
-      "modified": 1678318855208,
+      "modified": 1678504148838,
       "created": 1677618772728,
       "name": "Dev",
       "data": {
         "URL": "http://localhost:8080",
-        "authToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImNhaW9hbWZyQGdtYWlsLmNvbSIsImV4cCI6MTY3ODMyMjQ0MywiaWQiOiI2NDA3ZGQ4ODk1YmQ0ZmU0NGI4MWRlMzAiLCJuYW1lIjoiY2Fpw6NvIn0.29gKZ3WxDbXYJXUG57uQK2USo3VPiA7kyh1nGkUkxf8"
+        "authToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im51dHR5MTIzQGdtYWlsLmNvbSIsImV4cCI6MTY3ODUwNzc0MywiaWQiOiI2NDBiODhhZmJiYmI3YzlkOGI3OTIyOWYiLCJuYW1lIjoibnV0dHkxMjMifQ.1RKowBjYyZYYPOvlSE-4YFjo9AFkCedYydAuK3Pkn_8"
       },
       "dataPropertyOrder": {
         "&": [
