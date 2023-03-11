@@ -3,7 +3,8 @@ package users
 import (
 	"core/configs"
 	"fmt"
-	"io"
+	"mime/multipart"
+	"os"
 	"strings"
 
 	"log"
@@ -123,14 +124,47 @@ func DeleteUserAvatar(handlerCtx *configs.HandlersCtx, fileName string) error {
 	return err
 }
 
-// UploadUserAvatar uploads a user's avatar image to S3 and updates the user's
+// UpdateUserAvatar uploads a user's avatar image to S3 and updates the user's
 // avatar URL in the database. If the user already has an avatar, the function
 // deletes the old avatar from S3 before uploading the new one. The uploaded
 // file is given public-read access.
-func UploadUserAvatar(handlerCtx *configs.HandlersCtx, fileName string, file io.ReadSeeker, authenticatedUserID toolkitEntities.ID, usersRepository *UsersRepository) error {
-	acl := "public-read"
+func UpdateUserAvatar(handlerCtx *configs.HandlersCtx, form *multipart.FileHeader, authenticatedUserID toolkitEntities.ID, usersRepository *UsersRepository) error {
+	ACL := "public-read"
 
 	u := usersRepository.FindUserByID(authenticatedUserID)
+
+	if err := UserExists(u); err != nil {
+		return err
+	}
+
+	allowedFileTypes := map[string]bool{
+		"image/jpeg": true,
+		"image/png":  true,
+	}
+
+	if err := IsAllowedFileType(allowedFileTypes[form.Header.Get("Content-Type")]); err != nil {
+		return err
+	}
+
+	if err := ReachedMaxSizeLimit(form.Size); err != nil {
+		return err
+	}
+
+	fileName := fmt.Sprintf("%s-%s", authenticatedUserID.Hex(), form.Filename)
+	fileDir := fmt.Sprintf("./tmp/%s", fileName)
+
+	if err := handlerCtx.C.SaveFile(form, fileDir); err != nil {
+		return err
+	}
+
+	f, err := os.Open(fileDir)
+
+	if err != nil {
+		return err
+	}
+
+	defer os.Remove(fileDir)
+	defer f.Close()
 
 	newAvatarURI := fmt.Sprintf("%s%s", handlerCtx.Cfg.CDN_URI, fileName)
 
@@ -152,7 +186,7 @@ func UploadUserAvatar(handlerCtx *configs.HandlersCtx, fileName string, file io.
 		}
 	}
 
-	_, err := toolkitS3.UploadFile(handlerCtx.S3Client, handlerCtx.Cfg.S3BucketName, fileName, file, &acl)
+	_, err = toolkitS3.UploadFile(handlerCtx.S3Client, handlerCtx.Cfg.S3BucketName, fileName, f, &ACL)
 
 	if err != nil {
 		return err

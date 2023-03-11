@@ -2,8 +2,6 @@ package users
 
 import (
 	"core/configs"
-	"fmt"
-	"os"
 
 	"net/http"
 	"strconv"
@@ -68,8 +66,11 @@ func FindUserByNickHandler(handlerCtx *configs.HandlersCtx, usersRepository *Use
 	return responses.ParseSuccessful(handlerCtx.C, http.StatusOK, user)
 }
 
-// UploadUserAvatarHandler handles requests to upload a new user avatar.
-func UploadUserAvatarHandler(handlerCtx *configs.HandlersCtx, usersRepository *UsersRepository) error {
+// UpdateUserAvatarHandler handles the user avatar upload request.
+// It takes a `handlerCtx` parameter of type `*configs.HandlersCtx`, which contains the request context.
+// It also takes a `usersRepository` parameter of type `*UsersRepository`, which is used to interact with the database.
+// It returns an error if the upload was unsuccessful or if the request parameters were invalid, otherwise it returns nil.
+func UpdateUserAvatarHandler(handlerCtx *configs.HandlersCtx, usersRepository *UsersRepository) error {
 	authenticatedUserID := GetUserByToken(handlerCtx.C).ID
 	form, err := handlerCtx.C.FormFile("avatar")
 
@@ -77,25 +78,7 @@ func UploadUserAvatarHandler(handlerCtx *configs.HandlersCtx, usersRepository *U
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
-	fileName := fmt.Sprintf("%s-%s", authenticatedUserID.Hex(), form.Filename)
-	fileDir := fmt.Sprintf("./tmp/%s", fileName)
-
-	if err := handlerCtx.C.SaveFile(form, fileDir); err != nil {
-		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusInternalServerError, err.Error())
-	}
-
-	f, err := os.Open(fileDir)
-
-	if err != nil {
-		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusInternalServerError, err.Error())
-	}
-
-	defer os.Remove(fileDir)
-	defer f.Close()
-
-	err = UploadUserAvatar(handlerCtx, fileName, f, authenticatedUserID, usersRepository)
-
-	if err != nil {
+	if err := UpdateUserAvatar(handlerCtx, form, authenticatedUserID, usersRepository); err != nil {
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 

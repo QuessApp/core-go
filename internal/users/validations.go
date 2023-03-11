@@ -16,3 +16,26 @@ func UserExists(u *User) error {
 
 	return nil
 }
+
+// ReachedMaxSizeLimit checks if the file size is greater than or equal to 1MB.
+// It returns an error if the file size exceeds the limit, otherwise it returns nil.
+func ReachedMaxSizeLimit(fileSize int64) error {
+	isFileSizeGreaterThanOneMB := fileSize > (1024 * 1024)
+
+	if isFileSizeGreaterThanOneMB {
+		return errors.New(MAX_FILE_SIZE)
+	}
+
+	return nil
+}
+
+// IsAllowedFileType checks if a file type is allowed or not.
+// It takes a boolean parameter `isAllowed`, which should be true if the file type is allowed and false otherwise.
+// It returns an error if the file type is not allowed, otherwise it returns nil.
+func IsAllowedFileType(isAllowed bool) error {
+	if !isAllowed {
+		return errors.New(FILE_TYPE_INVALID)
+	}
+
+	return nil
+}
