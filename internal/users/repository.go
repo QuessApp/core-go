@@ -60,12 +60,12 @@ func (u UsersRepository) FindUserByNick(nick string) *User {
 // FindUserByID retrieves a user from the database based on their id and returns a pointer to the User object.
 // It takes the user's id as a parameter and performs a database lookup to find the matching user.
 // If the user is found, a pointer to the User object is returned. Otherwise, a nil pointer is returned.
-func (u UsersRepository) FindUserByID(userId toolkitEntities.ID) *User {
+func (u UsersRepository) FindUserByID(userID toolkitEntities.ID) *User {
 	coll := u.db.Collection(collections.USERS)
 
 	var foundUser User
 
-	coll.FindOne(context.Background(), bson.D{{Key: "_id", Value: userId}}).Decode(&foundUser)
+	coll.FindOne(context.Background(), bson.D{{Key: "_id", Value: userID}}).Decode(&foundUser)
 
 	return &foundUser
 }
@@ -162,11 +162,23 @@ func (u UsersRepository) Search(value string, page *int64) (*PaginatedUsers, err
 
 // DecrementLimit updates the "postsLimit" field of the user document with the given ID to the provided value.
 // It returns an error if the update operation fails.
-func (u *UsersRepository) DecrementLimit(userId toolkitEntities.ID, newValue int) error {
+func (u *UsersRepository) DecrementLimit(userID toolkitEntities.ID, newValue int) error {
 	coll := u.db.Collection(collections.USERS)
 
-	filter := bson.D{{Key: "_id", Value: userId}}
+	filter := bson.D{{Key: "_id", Value: userID}}
 	update := bson.D{{Key: "$set", Value: bson.D{{Key: "postsLimit", Value: newValue}}}}
+
+	_, err := coll.UpdateOne(context.Background(), filter, update)
+
+	return err
+}
+
+// UpdateAvatar updates the avatar URL for a user in the database.
+func (u *UsersRepository) UpdateAvatar(userID toolkitEntities.ID, URI string) error {
+	coll := u.db.Collection(collections.USERS)
+
+	filter := bson.D{{Key: "_id", Value: userID}}
+	update := bson.D{{Key: "$set", Value: bson.D{{Key: "avatarUrl", Value: URI}}}}
 
 	_, err := coll.UpdateOne(context.Background(), filter, update)
 
@@ -175,10 +187,10 @@ func (u *UsersRepository) DecrementLimit(userId toolkitEntities.ID, newValue int
 
 // ResetLimit updates the "postsLimit" field of the user document with the given ID to 30.
 // It returns an error if the update operation fails.
-func (u *UsersRepository) ResetLimit(userId toolkitEntities.ID) error {
+func (u *UsersRepository) ResetLimit(userID toolkitEntities.ID) error {
 	coll := u.db.Collection(collections.USERS)
 
-	filter := bson.D{{Key: "_id", Value: userId}}
+	filter := bson.D{{Key: "_id", Value: userID}}
 	update := bson.D{{Key: "$set", Value: bson.D{{Key: "postsLimit", Value: USER_DEFAULT_POST_MONTHLY_LIMIT}}}}
 
 	_, err := coll.UpdateOne(context.Background(), filter, update)
@@ -189,10 +201,10 @@ func (u *UsersRepository) ResetLimit(userId toolkitEntities.ID) error {
 // UpdateLastPublishedAt takes a user ID and a payload containing updated preferences for the user.
 // It updates the corresponding user document in the database with the new preference values for "enableAppEmails" and "enableAppPushNotifications".
 // It returns an error if the update operation fails.
-func (u *UsersRepository) UpdatePreferences(userId toolkitEntities.ID, payload *UpdatePreferencesDTO) error {
+func (u *UsersRepository) UpdatePreferences(userID toolkitEntities.ID, payload *UpdatePreferencesDTO) error {
 	coll := u.db.Collection(collections.USERS)
 
-	filter := bson.D{{Key: "_id", Value: userId}}
+	filter := bson.D{{Key: "_id", Value: userID}}
 	update := bson.D{{Key: "$set", Value: bson.D{
 		{
 			Key: "enableAppEmails", Value: payload.EnableAPPEmails,
@@ -209,10 +221,10 @@ func (u *UsersRepository) UpdatePreferences(userId toolkitEntities.ID, payload *
 
 // UpdateLastPublishedAt takes a user ID and updates the corresponding user document in the database with the new value for field "lastPublishAt".
 // It returns an error if the update operation fails.
-func (u *UsersRepository) UpdateLastPublishedAt(userId toolkitEntities.ID) error {
+func (u *UsersRepository) UpdateLastPublishedAt(userID toolkitEntities.ID) error {
 	coll := u.db.Collection(collections.USERS)
 
-	filter := bson.D{{Key: "_id", Value: userId}}
+	filter := bson.D{{Key: "_id", Value: userID}}
 	update := bson.D{{Key: "$set", Value: bson.D{
 		{
 			Key: "lastPublishAt", Value: time.Now(),
@@ -224,10 +236,11 @@ func (u *UsersRepository) UpdateLastPublishedAt(userId toolkitEntities.ID) error
 	return err
 }
 
-func (u *UsersRepository) UpdateProfile(userId toolkitEntities.ID, payload *UpdateProfileDTO) error {
+// UpdateProfile updates the profile information for a user in the database.
+func (u *UsersRepository) UpdateProfile(userID toolkitEntities.ID, payload *UpdateProfileDTO) error {
 	coll := u.db.Collection(collections.USERS)
 
-	filter := bson.D{{Key: "_id", Value: userId}}
+	filter := bson.D{{Key: "_id", Value: userID}}
 
 	// TOOD: update password and avatar
 	update := bson.D{{Key: "$set", Value: bson.D{

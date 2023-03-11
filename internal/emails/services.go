@@ -37,7 +37,7 @@ func SendEmailNewQuestionReceived(cfg *configs.Conf, ch *amqp.Channel, q *amqp.Q
 	encryptedMsg, err := crypto.Encrypt(string(emailParsed), cfg.CipherKey)
 
 	if err != nil {
-		log.Fatalf("fail to to encrypt email email to user %s \n", err)
+		log.Fatalf("fail to encrypt email email to user %s \n", err)
 	}
 
 	err = ch.Publish(

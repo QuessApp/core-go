@@ -17,8 +17,8 @@ func QuestionExists(q *Question) error {
 }
 
 // QuestionCanViewQuestion validates whether the authenticated user is authorized to view the question.
-func QuestionCanViewQuestion(q *Question, authenticatedUserId toolkitEntities.ID) error {
-	if q.SendTo != authenticatedUserId && q.SentBy != authenticatedUserId {
+func QuestionCanViewQuestion(q *Question, authenticatedUserID toolkitEntities.ID) error {
+	if q.SendTo != authenticatedUserID && q.SentBy != authenticatedUserID {
 		return errors.New(QUESTION_NOT_AUTHORIZED)
 	}
 
@@ -26,8 +26,8 @@ func QuestionCanViewQuestion(q *Question, authenticatedUserId toolkitEntities.ID
 }
 
 // IsSendingQuestionToYourself validates whether the user is trying to send a question to themselves.
-func IsSendingQuestionToYourself(sendTo toolkitEntities.ID, authenticatedUserId toolkitEntities.ID) error {
-	if sendTo == authenticatedUserId {
+func IsSendingQuestionToYourself(sendTo toolkitEntities.ID, authenticatedUserID toolkitEntities.ID) error {
+	if sendTo == authenticatedUserID {
 		return errors.New(SENDING_QUESTION_TO_YOURSELF)
 	}
 
@@ -44,8 +44,8 @@ func ReachedPostsLimitToCreateQuestion(u *users.User) error {
 }
 
 // CanUserDeleteQuestion validates whether the user who is trying to delete the question is the question owner.
-func CanUserDeleteQuestion(q *Question, authenticatedUserId toolkitEntities.ID) error {
-	if q.SentBy != authenticatedUserId {
+func CanUserDeleteQuestion(q *Question, authenticatedUserID toolkitEntities.ID) error {
+	if q.SentBy != authenticatedUserID {
 		return errors.New(CANT_DELETE_QUESTION_NOT_SENT_BY_YOU)
 	}
 
@@ -53,8 +53,8 @@ func CanUserDeleteQuestion(q *Question, authenticatedUserId toolkitEntities.ID) 
 }
 
 // CanHideQuestion validates whether the question is sent to the authenticated user.
-func CanHideQuestion(q *Question, authenticatedUserId toolkitEntities.ID) error {
-	if q.SendTo != authenticatedUserId {
+func CanHideQuestion(q *Question, authenticatedUserID toolkitEntities.ID) error {
+	if q.SendTo != authenticatedUserID {
 		return errors.New(QUESTION_NOT_SENT_FOR_ME)
 	}
 
@@ -89,8 +89,8 @@ func IsAlreadyReplied(q *Question) error {
 }
 
 // CanReply validates whether the authenticated user can reply to the question.
-func CanReply(q *Question, authenticatedUserId toolkitEntities.ID) error {
-	if q.SendTo != authenticatedUserId {
+func CanReply(q *Question, authenticatedUserID toolkitEntities.ID) error {
+	if q.SendTo != authenticatedUserID {
 		return errors.New(QUESTION_NOT_SENT_FOR_ME)
 	}
 

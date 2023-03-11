@@ -21,11 +21,11 @@ func UpdatePreferencesHandler(handlerCtx *configs.HandlersCtx, usersRepository *
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
-	authenticatedUserId := users.GetUserByToken(handlerCtx.C).ID
+	authenticatedUserID := users.GetUserByToken(handlerCtx.C).ID
 
-	if err := UpdatePreferences(handlerCtx, &payload, authenticatedUserId, usersRepository); err != nil {
+	if err := UpdatePreferences(handlerCtx, &payload, authenticatedUserID, usersRepository); err != nil {
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
-	return responses.ParseSuccessful(handlerCtx.C, http.StatusOK, nil)
+	return responses.ParseSuccessful(handlerCtx.C, http.StatusCreated, nil)
 }

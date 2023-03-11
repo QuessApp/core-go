@@ -2,6 +2,9 @@ package users
 
 import (
 	"core/configs"
+	"fmt"
+	"io"
+	"strings"
 
 	"log"
 	"time"
@@ -10,6 +13,7 @@ import (
 	"github.com/golang-jwt/jwt/v4"
 	date "github.com/quessapp/toolkit/constants"
 	toolkitEntities "github.com/quessapp/toolkit/entities"
+	toolkitS3 "github.com/quessapp/toolkit/s3"
 )
 
 var (
@@ -19,9 +23,9 @@ var (
 )
 
 // SearchUser searches for users based on a search value and returns a paginated list of matching users.
-// If the page argument is 0, it sets it to 1 (default). The authenticatedUserId argument is used to filter out the authenticated user from the search results.
+// If the page argument is 0, it sets it to 1 (default). The authenticatedUserID argument is used to filter out the authenticated user from the search results.
 // The function returns a pointer to a PaginatedUsers struct representing the paginated list of matching users, and an error, if any occurred during the search process.
-func SearchUser(handlerCtx *configs.HandlersCtx, value string, page *int64, authenticatedUserId toolkitEntities.ID, usersRepository *UsersRepository) (*PaginatedUsers, error) {
+func SearchUser(handlerCtx *configs.HandlersCtx, value string, page *int64, authenticatedUserID toolkitEntities.ID, usersRepository *UsersRepository) (*PaginatedUsers, error) {
 	if *page == 0 {
 		*page = 1
 	}
@@ -30,10 +34,10 @@ func SearchUser(handlerCtx *configs.HandlersCtx, value string, page *int64, auth
 }
 
 // GetAuthenticatedUser retrieves the authenticated user's data, generates access and refresh tokens for them, and returns a ResponseWithUser struct containing the user's data and tokens.
-// The authenticatedUserId argument is used to retrieve the user's data from the usersRepository argument.
+// The authenticatedUserID argument is used to retrieve the user's data from the usersRepository argument.
 // The function returns a pointer to a ResponseWithUser struct representing the user's data and tokens, and an error, if any occurred during the process.
-func GetAuthenticatedUser(handlerCtx *configs.HandlersCtx, authenticatedUserId toolkitEntities.ID, usersRepository *UsersRepository) (*ResponseWithUser, error) {
-	u := usersRepository.FindUserByID(authenticatedUserId)
+func GetAuthenticatedUser(handlerCtx *configs.HandlersCtx, authenticatedUserID toolkitEntities.ID, usersRepository *UsersRepository) (*ResponseWithUser, error) {
+	u := usersRepository.FindUserByID(authenticatedUserID)
 
 	if err := UserExists(u); err != nil {
 		return nil, err
@@ -92,8 +96,8 @@ func FindUserByNick(handlerCtx *configs.HandlersCtx, nick string, usersRepositor
 // DecrementUserLimit decrements the posts limit of the user with the given ID by one.
 // If the user is a PRO member, their limit will not be decremented and no error will be returned.
 // If an error occurs while decrementing the limit, that error will be returned.
-func DecrementUserLimit(userId toolkitEntities.ID, usersRepository *UsersRepository) error {
-	foundUser := usersRepository.FindUserByID(userId)
+func DecrementUserLimit(userID toolkitEntities.ID, usersRepository *UsersRepository) error {
+	foundUser := usersRepository.FindUserByID(userID)
 
 	if foundUser.IsPRO {
 		log.Printf("Not necessary to decrement user %s limit. The user is a PRO member.\n", foundUser.Nick)
@@ -103,9 +107,54 @@ func DecrementUserLimit(userId toolkitEntities.ID, usersRepository *UsersReposit
 
 	foundUser.PostsLimit -= 1
 
-	if err := usersRepository.DecrementLimit(userId, foundUser.PostsLimit); err != nil {
+	if err := usersRepository.DecrementLimit(userID, foundUser.PostsLimit); err != nil {
 		log.Printf("Fail to decrement user limit %s.\n", err)
 
+		return err
+	}
+
+	return nil
+}
+
+// DeleteUserAvatar deletes a user's avatar image from S3.
+func DeleteUserAvatar(handlerCtx *configs.HandlersCtx, fileName string) error {
+	_, err := toolkitS3.DeleteFile(handlerCtx.S3Client, handlerCtx.Cfg.S3BucketName, fileName)
+
+	return err
+}
+
+// UploadUserAvatar uploads a user's avatar image to S3 and updates the user's
+// avatar URL in the database. If the user already has an avatar, the function
+// deletes the old avatar from S3 before uploading the new one. The uploaded
+// file is given public-read access.
+func UploadUserAvatar(handlerCtx *configs.HandlersCtx, fileName string, file io.ReadSeeker, authenticatedUserID toolkitEntities.ID, usersRepository *UsersRepository) error {
+	acl := "public-read"
+
+	u := usersRepository.FindUserByID(authenticatedUserID)
+
+	newAvatarURI := fmt.Sprintf("%s%s", handlerCtx.Cfg.CDN_URI, fileName)
+
+	if err := usersRepository.UpdateAvatar(authenticatedUserID, newAvatarURI); err != nil {
+		return err
+	}
+
+	if u.AvatarURL != "" {
+		oldAvatarFileName := strings.Split(u.AvatarURL, handlerCtx.Cfg.CDN_URI)
+
+		if len(oldAvatarFileName) < 1 {
+			return nil
+		}
+
+		log.Printf("deleting user %s old avatar (%s) to upload a new image \n", u.Nick, oldAvatarFileName)
+
+		if err := DeleteUserAvatar(handlerCtx, oldAvatarFileName[1]); err != nil {
+			return err
+		}
+	}
+
+	_, err := toolkitS3.UploadFile(handlerCtx.S3Client, handlerCtx.Cfg.S3BucketName, fileName, file, &acl)
+
+	if err != nil {
 		return err
 	}
 
@@ -152,10 +201,10 @@ func DecodeUserToken(c *fiber.Ctx) toolkitEntities.DecodeUserTokenResult {
 	user := c.Locals("user").(*jwt.Token)
 	claims := user.Claims.(jwt.MapClaims)
 
-	parsedId, _ := toolkitEntities.ParseID(claims["id"].(string))
+	parsedID, _ := toolkitEntities.ParseID(claims["id"].(string))
 
 	u := toolkitEntities.DecodeUserTokenResult{
-		ID:    parsedId,
+		ID:    parsedID,
 		Name:  claims["name"].(string),
 		Email: claims["email"].(string),
 	}

@@ -14,6 +14,7 @@ import (
 	"log"
 
 	"github.com/quessapp/toolkit/queue"
+	"github.com/quessapp/toolkit/s3"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -25,9 +26,9 @@ func main() {
 		panic(err)
 	}
 
-	URIConn := fmt.Sprintf("%s:%s", config.DBHost, config.DBPort)
+	DatabaseURIConn := fmt.Sprintf("%s:%s", config.DBHost, config.DBPort)
 
-	db, err := database.Connect(URIConn, config.DBName)
+	db, err := database.Connect(DatabaseURIConn, config.DBName)
 
 	if err != nil {
 		panic(err)
@@ -43,12 +44,22 @@ func main() {
 	questionsRepository := questions.NewRepository(db)
 	blocksRepository := blocks.NewRepository(db)
 
+	S3Client, err := s3.Configure(&config.S3Region, &s3.S3Credentials{
+		AccessKey: config.S3AccessKey,
+		Secret:    config.S3Secret,
+		Token:     config.S3Token,
+	})
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+
 	AppCtx := &configs.AppCtx{
-		App:              app,
-		DB:               db,
-		Cfg:              config,
-		MessageQueueConn: conn,
-		MessageQueueCh:   ch,
+		App:            app,
+		DB:             db,
+		Cfg:            config,
+		MessageQueueCh: ch,
+		S3Client:       S3Client,
 	}
 
 	q, err := emails.DeclareQueue(AppCtx)

@@ -48,10 +48,10 @@ func (b *BlocksRepository) UnblockUser(blockId toolkitEntities.ID) error {
 }
 
 // IsBlocked returns if user is blocked by someone.
-func (b *BlocksRepository) IsUserBlocked(userId toolkitEntities.ID) bool {
+func (b *BlocksRepository) IsUserBlocked(userID toolkitEntities.ID) bool {
 	coll := b.db.Collection(collections.BLOCKS)
 
-	filter := bson.D{{Key: "userToBlock", Value: userId}}
+	filter := bson.D{{Key: "userToBlock", Value: userID}}
 	foundRegistry := BlockedUser{}
 
 	coll.FindOne(context.Background(), filter).Decode(&foundRegistry)

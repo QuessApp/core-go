@@ -42,12 +42,12 @@ func BlockUser(payload *BlockUserDTO, usersRepository *users.UsersRepository, bl
 // It checks if user is really blocked.
 //
 // After validations, if there are not errors, the user will be unblocked by other user.
-func UnblockUser(userId toolkitEntities.ID, usersRepository *users.UsersRepository, blocksRepository *BlocksRepository) error {
-	if err := IsReallyBlocked(blocksRepository.IsUserBlocked(userId)); err != nil {
+func UnblockUser(userID toolkitEntities.ID, usersRepository *users.UsersRepository, blocksRepository *BlocksRepository) error {
+	if err := IsReallyBlocked(blocksRepository.IsUserBlocked(userID)); err != nil {
 		return err
 	}
 
-	err := blocksRepository.UnblockUser(userId)
+	err := blocksRepository.UnblockUser(userID)
 
 	if err != nil {
 		return err
