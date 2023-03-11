@@ -124,11 +124,11 @@ func DeleteUserAvatar(handlerCtx *configs.HandlersCtx, fileName string) error {
 	return err
 }
 
-// UploadUserAvatar uploads a user's avatar image to S3 and updates the user's
+// UpdateUserAvatar uploads a user's avatar image to S3 and updates the user's
 // avatar URL in the database. If the user already has an avatar, the function
 // deletes the old avatar from S3 before uploading the new one. The uploaded
 // file is given public-read access.
-func UploadUserAvatar(handlerCtx *configs.HandlersCtx, form *multipart.FileHeader, authenticatedUserID toolkitEntities.ID, usersRepository *UsersRepository) error {
+func UpdateUserAvatar(handlerCtx *configs.HandlersCtx, form *multipart.FileHeader, authenticatedUserID toolkitEntities.ID, usersRepository *UsersRepository) error {
 	ACL := "public-read"
 
 	u := usersRepository.FindUserByID(authenticatedUserID)

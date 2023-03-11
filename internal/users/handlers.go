@@ -66,11 +66,11 @@ func FindUserByNickHandler(handlerCtx *configs.HandlersCtx, usersRepository *Use
 	return responses.ParseSuccessful(handlerCtx.C, http.StatusOK, user)
 }
 
-// UploadUserAvatarHandler handles the user avatar upload request.
+// UpdateUserAvatarHandler handles the user avatar upload request.
 // It takes a `handlerCtx` parameter of type `*configs.HandlersCtx`, which contains the request context.
 // It also takes a `usersRepository` parameter of type `*UsersRepository`, which is used to interact with the database.
 // It returns an error if the upload was unsuccessful or if the request parameters were invalid, otherwise it returns nil.
-func UploadUserAvatarHandler(handlerCtx *configs.HandlersCtx, usersRepository *UsersRepository) error {
+func UpdateUserAvatarHandler(handlerCtx *configs.HandlersCtx, usersRepository *UsersRepository) error {
 	authenticatedUserID := GetUserByToken(handlerCtx.C).ID
 	form, err := handlerCtx.C.FormFile("avatar")
 
@@ -78,7 +78,7 @@ func UploadUserAvatarHandler(handlerCtx *configs.HandlersCtx, usersRepository *U
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
-	if err := UploadUserAvatar(handlerCtx, form, authenticatedUserID, usersRepository); err != nil {
+	if err := UpdateUserAvatar(handlerCtx, form, authenticatedUserID, usersRepository); err != nil {
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 

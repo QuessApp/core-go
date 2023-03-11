@@ -4,7 +4,6 @@ import (
 	"errors"
 
 	toolkitEntities "github.com/quessapp/toolkit/entities"
-	toolkitUtils "github.com/quessapp/toolkit/utils"
 )
 
 // UserExists checks if the given user exists by verifying if the ID field is non-zero.
@@ -21,9 +20,9 @@ func UserExists(u *User) error {
 // ReachedMaxSizeLimit checks if the file size is greater than or equal to 1MB.
 // It returns an error if the file size exceeds the limit, otherwise it returns nil.
 func ReachedMaxSizeLimit(fileSize int64) error {
-	maxFileSizeInMB := int64(toolkitUtils.ToFixed(float64(fileSize*1024*1024), 0)) // 1MB
+	isFileSizeGreaterThanOneMB := fileSize > (1024 * 1024)
 
-	if fileSize >= maxFileSizeInMB {
+	if isFileSizeGreaterThanOneMB {
 		return errors.New(MAX_FILE_SIZE)
 	}
 
