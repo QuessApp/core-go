@@ -1,7 +1,7 @@
 {
   "_type": "export",
   "__export_format": 4,
-  "__export_date": "2023-03-11T16:16:54.322Z",
+  "__export_date": "2023-03-11T18:03:50.389Z",
   "__export_source": "insomnia.desktop.app:v2023.1.0",
   "resources": [
     {
@@ -63,10 +63,10 @@
     {
       "_id": "req_460c15d72dc34223bbb982ce6180a23d",
       "parentId": "fld_f404ee292856492997b6456988cc8c83",
-      "modified": 1678550812663,
+      "modified": 1678553388873,
       "created": 1678548416726,
       "url": "{{ _.URL }}/users/me",
-      "name": "Update Profile",
+      "name": "Update my profile",
       "description": "",
       "method": "PUT",
       "body": {
@@ -109,10 +109,10 @@
     {
       "_id": "req_e33f22f3e8a0454b8bc072900ed5058e",
       "parentId": "fld_f404ee292856492997b6456988cc8c83",
-      "modified": 1678514937538,
+      "modified": 1678553383399,
       "created": 1678496364704,
       "url": "{{ _.URL }}/users/me/avatar",
-      "name": "Update avatar",
+      "name": "Update my avatar",
       "description": "",
       "method": "PATCH",
       "body": {
@@ -124,7 +124,7 @@
             "value": "",
             "description": "",
             "type": "file",
-            "fileName": "C:\\Users\\Caio Augusto\\Pictures\\62035389.jpg"
+            "fileName": "C:\\Users\\Caio Augusto\\Pictures\\Logo.png"
           }
         ]
       },
@@ -137,7 +137,7 @@
       ],
       "authentication": {
         "type": "bearer",
-        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im51dHR5MTIzQGdtYWlsLmNvbSIsImV4cCI6MTY3ODUxNDk5MywiaWQiOiI2NDBiODhhZmJiYmI3YzlkOGI3OTIyOWYiLCJuYW1lIjoibnV0dHkxMjMifQ.oCrntCAs7JsYHIc7cBRvBB_6Lu1bYPt1E7RygfyvD_k"
+        "token": "{{ _.authToken }}"
       },
       "metaSortKey": -1678496364704,
       "isPrivate": false,
@@ -152,9 +152,9 @@
     {
       "_id": "req_9de81e2693c94706a020a73e2909d756",
       "parentId": "fld_f404ee292856492997b6456988cc8c83",
-      "modified": 1678321466187,
+      "modified": 1678551710801,
       "created": 1678319821230,
-      "url": "{{ _.URL }}/users/caioamfr",
+      "url": "{{ _.URL }}/users/nuttyyy",
       "name": "Find by nick",
       "description": "",
       "method": "GET",
@@ -204,7 +204,7 @@
     {
       "_id": "req_ccba2064437a4aec99279cbc9dcacac2",
       "parentId": "fld_f404ee292856492997b6456988cc8c83",
-      "modified": 1678321458969,
+      "modified": 1678551697456,
       "created": 1678319263066,
       "url": "{{ _.URL }}/users",
       "name": "Search",
@@ -215,7 +215,7 @@
         {
           "id": "pair_8676b2514388471c91bc1ab9856883d8",
           "name": "search",
-          "value": "ca",
+          "value": "n",
           "description": ""
         },
         {
@@ -345,9 +345,9 @@
     {
       "_id": "req_2c6c998d2d5146248d596adb6eca41e4",
       "parentId": "fld_3ac9e1c0d3bb4e7495e93f35557278e3",
-      "modified": 1678237820705,
+      "modified": 1678557414319,
       "created": 1678204833817,
-      "url": "{{ _.URL }}/questions/reply/6407deac3163831cfb0dddf5",
+      "url": "{{ _.URL }}/questions/reply/640cbe11356515b952125e33",
       "name": "Reply",
       "description": "",
       "method": "PATCH",
@@ -379,9 +379,9 @@
     {
       "_id": "req_019b9ab0b752413d9a5d23ab73a9ddea",
       "parentId": "fld_3ac9e1c0d3bb4e7495e93f35557278e3",
-      "modified": 1678237819756,
+      "modified": 1678557412374,
       "created": 1678204893505,
-      "url": "{{ _.URL }}/questions/reply/edit/6407deac3163831cfb0dddf5",
+      "url": "{{ _.URL }}/questions/reply/edit/640cbe11356515b952125e33",
       "name": "Edit reply",
       "description": "",
       "method": "PATCH",
@@ -413,9 +413,9 @@
     {
       "_id": "req_4249a61488544c119a4330075b5d40d9",
       "parentId": "fld_3ac9e1c0d3bb4e7495e93f35557278e3",
-      "modified": 1678237818594,
+      "modified": 1678557405755,
       "created": 1677875708184,
-      "url": "{{ _.URL }}/questions/64053cbf63e362ffd5e6ef19",
+      "url": "{{ _.URL }}/questions/640cbe000798455c54079fa6",
       "name": "Find By ID",
       "description": "",
       "method": "GET",
@@ -439,7 +439,7 @@
     {
       "_id": "req_e24810265c6249f988b7ddd5ca7fe80a",
       "parentId": "fld_3ac9e1c0d3bb4e7495e93f35557278e3",
-      "modified": 1678237817207,
+      "modified": 1678557409389,
       "created": 1677866168728,
       "url": "{{ _.URL }}/questions",
       "name": "Get all",
@@ -456,7 +456,7 @@
         {
           "id": "pair_4e0e4f4e034e4069ba0187659bb4a4d5",
           "name": "filter",
-          "value": "sent",
+          "value": "replied",
           "description": ""
         },
         {
@@ -484,7 +484,7 @@
     {
       "_id": "req_60bb13e30e114ef6bcc1171256e8fd1a",
       "parentId": "fld_3ac9e1c0d3bb4e7495e93f35557278e3",
-      "modified": 1678237815396,
+      "modified": 1678557468579,
       "created": 1677800909933,
       "url": "{{ _.URL }}/questions",
       "name": "Send",
@@ -492,7 +492,7 @@
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n\t\"content\": \"bdsadsa\",\n\t\"sendTo\": \"6407dd8895bd4fe44b81de30\",\n\t\"isAnonymous\": true\n}"
+        "text": "{\n\t\"content\": \"bdsadsa\",\n\t\"sendTo\": \"640cbdea0798455c54079fa4\",\n\t\"isAnonymous\": false\n}"
       },
       "parameters": [],
       "headers": [
@@ -525,7 +525,7 @@
     {
       "_id": "req_30a329187ea645dfacca846cd70a53a2",
       "parentId": "fld_69d07efde75f42f7b9c341feaf715263",
-      "modified": 1678548968620,
+      "modified": 1678556655135,
       "created": 1678203915600,
       "url": "{{ _.URL }}/auth/signup",
       "name": "Sign Up",
@@ -533,7 +533,7 @@
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n\t\"nick\": \"nutty123\",\n\t\"name\": \"nutty123\",\n\t\"password\": \"nutty123\",\n\t\"email\": \"nutty123@gmail.com\",\n\t\"locale\": \"en-US\"\n}"
+        "text": "{\n\t\"nick\": \"caioamfr\",\n\t\"name\": \"caioamfr\",\n\t\"password\": \"caioamfr\",\n\t\"email\": \"caioamfr@gmail.com\",\n\t\"locale\": \"en-US\"\n}"
       },
       "parameters": [],
       "headers": [
@@ -568,7 +568,7 @@
     {
       "_id": "req_d331a162d4f743bc9c7939f46e3f42c5",
       "parentId": "fld_69d07efde75f42f7b9c341feaf715263",
-      "modified": 1678548989015,
+      "modified": 1678556695835,
       "created": 1677618747702,
       "url": "{{ _.URL }}/auth/signin",
       "name": "Sign In",
@@ -637,12 +637,12 @@
     {
       "_id": "env_baee203b6784455eab8dab84d4eee8ac",
       "parentId": "env_2fa14e2979e18bec5f59dcc296aa47c603e9ff7c",
-      "modified": 1678548996479,
+      "modified": 1678557457279,
       "created": 1677618772728,
       "name": "Dev",
       "data": {
         "URL": "http://localhost:8080",
-        "authToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImNhaW9hbWZyQGdtYWlsLmNvbSIsImV4cCI6MTY3ODU1MjU4OSwiaWQiOiI2NDBjOWY5NmFjMzk5YWMzNGExMjg1NmEiLCJuYW1lIjoiY2Fpb2FtZnIifQ.enxNYmhvrkg6ea1i-byf43ERs8wQPEluG3q_4btXAo0"
+        "authToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImNhaW9hbWZyQGdtYWlsLmNvbSIsImV4cCI6MTY3ODU2MTA1MSwiaWQiOiI2NDBjYmRlZjA3OTg0NTVjNTQwNzlmYTUiLCJuYW1lIjoiY2Fpb2FtZnIifQ.R65UMC05JumwiQH744tH7WhNy9sTLQjXfPcJ4gSJUYQ"
       },
       "dataPropertyOrder": {
         "&": [
