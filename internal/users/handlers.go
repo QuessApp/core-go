@@ -2,6 +2,8 @@ package users
 
 import (
 	"core/configs"
+	"fmt"
+	"os"
 
 	"net/http"
 	"strconv"
@@ -25,9 +27,9 @@ func SearchUserHandler(handlerCtx *configs.HandlersCtx, usersRepository *UsersRe
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
-	authenticatedUserId := GetUserByToken(handlerCtx.C).ID
+	authenticatedUserID := GetUserByToken(handlerCtx.C).ID
 
-	users, err := SearchUser(handlerCtx, value, &page, authenticatedUserId, usersRepository)
+	users, err := SearchUser(handlerCtx, value, &page, authenticatedUserID, usersRepository)
 
 	if err != nil {
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
@@ -40,9 +42,9 @@ func SearchUserHandler(handlerCtx *configs.HandlersCtx, usersRepository *UsersRe
 // It returns a successful HTTP response with the authenticated user's data if the user is found.
 // Otherwise, it returns a Bad Request HTTP response with an error message.
 func GetAuthenticatedUserHandler(handlerCtx *configs.HandlersCtx, usersRepository *UsersRepository) error {
-	authenticatedUserId := GetUserByToken(handlerCtx.C).ID
+	authenticatedUserID := GetUserByToken(handlerCtx.C).ID
 
-	user, err := GetAuthenticatedUser(handlerCtx, authenticatedUserId, usersRepository)
+	user, err := GetAuthenticatedUser(handlerCtx, authenticatedUserID, usersRepository)
 
 	if err != nil {
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
@@ -64,4 +66,38 @@ func FindUserByNickHandler(handlerCtx *configs.HandlersCtx, usersRepository *Use
 	}
 
 	return responses.ParseSuccessful(handlerCtx.C, http.StatusOK, user)
+}
+
+// UploadUserAvatarHandler handles requests to upload a new user avatar.
+func UploadUserAvatarHandler(handlerCtx *configs.HandlersCtx, usersRepository *UsersRepository) error {
+	authenticatedUserID := GetUserByToken(handlerCtx.C).ID
+	form, err := handlerCtx.C.FormFile("avatar")
+
+	if err != nil {
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
+	}
+
+	fileName := fmt.Sprintf("%s-%s", authenticatedUserID.Hex(), form.Filename)
+	fileDir := fmt.Sprintf("./tmp/%s", fileName)
+
+	if err := handlerCtx.C.SaveFile(form, fileDir); err != nil {
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusInternalServerError, err.Error())
+	}
+
+	f, err := os.Open(fileDir)
+
+	if err != nil {
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusInternalServerError, err.Error())
+	}
+
+	defer os.Remove(fileDir)
+	defer f.Close()
+
+	err = UploadUserAvatar(handlerCtx, fileName, f, authenticatedUserID, usersRepository)
+
+	if err != nil {
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
+	}
+
+	return responses.ParseSuccessful(handlerCtx.C, http.StatusOK, nil)
 }
