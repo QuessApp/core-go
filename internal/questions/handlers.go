@@ -131,7 +131,7 @@ func ReplyQuestionHandler(handlerCtx *configs.HandlersCtx, questionsRepository *
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
-	return responses.ParseSuccessful(handlerCtx.C, http.StatusOK, nil)
+	return responses.ParseSuccessful(handlerCtx.C, http.StatusCreated, nil)
 }
 
 // EditReplyQuestionHandler is a handler to edit reply question by its id.
@@ -156,7 +156,7 @@ func EditReplyQuestionHandler(handlerCtx *configs.HandlersCtx, questionsReposito
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
-	return responses.ParseSuccessful(handlerCtx.C, http.StatusOK, nil)
+	return responses.ParseSuccessful(handlerCtx.C, http.StatusCreated, nil)
 }
 
 // RemoveQuestionReplyHandler is a handler to remove reply from question.
