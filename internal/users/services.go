@@ -257,6 +257,7 @@ func GetUserByToken(c *fiber.Ctx) toolkitEntities.DecodeUserTokenResult {
 // Otherwise, their posts limit will not be reset and no error will be returned.
 // This function takes a pointer to a User object and a UsersRepository object as parameters, and returns any error that may occur.
 func ResetLimit(u *User, usersRepository *UsersRepository) error {
+	// TODO: Should we do this?
 	currentDate := time.Date(
 		time.Now().Year(),
 		time.Now().Month(),
@@ -268,6 +269,7 @@ func ResetLimit(u *User, usersRepository *UsersRepository) error {
 		time.UTC,
 	)
 
+	// TODO: Should we do this?
 	lastPublish := time.Date(
 		u.LastPublishAt.Year(),
 		u.LastPublishAt.Month(),
