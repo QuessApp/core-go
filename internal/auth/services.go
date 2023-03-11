@@ -20,11 +20,11 @@ func SignUp(handlerCtx *configs.HandlersCtx, payload *SignUpUserDTO, authReposit
 		return nil, err
 	}
 
-	if err := IsEmailInUse(usersRepository.IsEmailInUse(payload.Email)); err != nil {
+	if err := users.IsEmailInUse(usersRepository.IsEmailInUse(payload.Email)); err != nil {
 		return nil, err
 	}
 
-	if err := IsNickInUse(usersRepository.IsNickInUse(payload.Nick)); err != nil {
+	if err := users.IsNickInUse(usersRepository.IsNickInUse(payload.Nick)); err != nil {
 		return nil, err
 	}
 

@@ -236,7 +236,9 @@ func (u *UsersRepository) UpdateLastPublishedAt(userID toolkitEntities.ID) error
 	return err
 }
 
-// UpdateProfile updates the profile information for a user in the database.
+// UpdateProfile updates the profile of the user with the given ID using the provided payload.
+// It takes two parameters, a userID of type toolkitEntities.ID and a pointer to an UpdateProfileDTO payload.
+// It returns an error if the update is unsuccessful.
 func (u *UsersRepository) UpdateProfile(userID toolkitEntities.ID, payload *UpdateProfileDTO) error {
 	coll := u.db.Collection(collections.USERS)
 
@@ -245,16 +247,16 @@ func (u *UsersRepository) UpdateProfile(userID toolkitEntities.ID, payload *Upda
 	// TODO: update password
 	update := bson.D{{Key: "$set", Value: bson.D{
 		{
-			Key: "Nick", Value: payload.Nick,
+			Key: "nick", Value: payload.Nick,
 		},
 		{
-			Key: "Name", Value: payload.Name,
+			Key: "name", Value: payload.Name,
 		},
 		{
-			Key: "Locale", Value: payload.Locale,
+			Key: "locale", Value: payload.Locale,
 		},
 		{
-			Key: "Email", Value: payload.Email,
+			Key: "email", Value: payload.Email,
 		},
 	}}}
 

@@ -84,3 +84,20 @@ func UpdateUserAvatarHandler(handlerCtx *configs.HandlersCtx, usersRepository *U
 
 	return responses.ParseSuccessful(handlerCtx.C, http.StatusCreated, nil)
 }
+
+// UpdateUserProfileHandler updates the authenticated user's profile using the provided payload.
+// It takes two parameters, a HandlerCtx and a UsersRepository, and returns an error if the update is unsuccessful.
+func UpdateUserProfileHandler(handlerCtx *configs.HandlersCtx, usersRepository *UsersRepository) error {
+	authenticatedUserID := GetUserByToken(handlerCtx.C).ID
+	payload := UpdateProfileDTO{}
+
+	if err := handlerCtx.C.BodyParser(&payload); err != nil {
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
+	}
+
+	if err := UpdateUserProfile(handlerCtx, &payload, authenticatedUserID, usersRepository); err != nil {
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
+	}
+
+	return responses.ParseSuccessful(handlerCtx.C, http.StatusCreated, nil)
+}
