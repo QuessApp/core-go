@@ -8,6 +8,8 @@ import (
 	"github.com/quessapp/toolkit/regexes"
 	"github.com/quessapp/toolkit/validations"
 
+	"core/pkg/errors"
+
 	toolkitEntities "github.com/quessapp/toolkit/entities"
 
 	validation "github.com/go-ozzo/ozzo-validation"
@@ -46,11 +48,11 @@ func (d *SignUpUserDTO) Format() {
 // It validates if nick, password, name, email and locale are valid.
 func (d SignUpUserDTO) Validate() error {
 	validationResult := validation.ValidateStruct(&d,
-		validation.Field(&d.Nick, validation.Required.Error(NICK_FIELD_REQUIRED), validation.Length(3, 50).Error(NICK_FIELD_LENGTH)),
-		validation.Field(&d.Password, validation.Required.Error(PASSWORD_FIELD_REQUIRED), validation.Length(6, 200).Error(PASSWORD_FIELD_LENGTH)),
-		validation.Field(&d.Name, validation.Required.Error(NAME_FIELD_REQUIRED), validation.Length(3, 50).Error(NAME_FIELD_LENGTH)),
-		validation.Field(&d.Email, validation.Required.Error(EMAIL_FIELD_REQUIRED), validation.Length(5, 200).Error(EMAIL_FIELD_LENGTH), is.Email.Error(EMAIL_FORMAT_INVALID)),
-		validation.Field(&d.Locale, validation.Required.Error(LOCALE_FIELD_REQUIRED), validation.Match(regexp.MustCompile(regexes.LOCALES)).Error(LOCALE_FIELD_INVALID)),
+		validation.Field(&d.Nick, validation.Required.Error(errors.NICK_FIELD_REQUIRED), validation.Length(3, 50).Error(errors.NICK_FIELD_LENGTH)),
+		validation.Field(&d.Password, validation.Required.Error(errors.PASSWORD_FIELD_REQUIRED), validation.Length(6, 200).Error(errors.PASSWORD_FIELD_LENGTH)),
+		validation.Field(&d.Name, validation.Required.Error(errors.NAME_FIELD_REQUIRED), validation.Length(3, 50).Error(errors.NAME_FIELD_LENGTH)),
+		validation.Field(&d.Email, validation.Required.Error(errors.EMAIL_FIELD_REQUIRED), validation.Length(5, 200).Error(errors.EMAIL_FIELD_LENGTH), is.Email.Error(errors.EMAIL_FORMAT_INVALID)),
+		validation.Field(&d.Locale, validation.Required.Error(errors.LOCALE_FIELD_REQUIRED), validation.Match(regexp.MustCompile(regexes.LOCALES)).Error(errors.LOCALE_FIELD_INVALID)),
 	)
 
 	return validations.GetValidationError(validationResult)
@@ -61,8 +63,8 @@ func (d SignUpUserDTO) Validate() error {
 // It validates if nick and password are valid.
 func (d SignInUserDTO) Validate() error {
 	validationResult := validation.ValidateStruct(&d,
-		validation.Field(&d.Nick, validation.Required.Error(NICK_FIELD_REQUIRED), validation.Length(3, 50).Error(NICK_FIELD_LENGTH)),
-		validation.Field(&d.Password, validation.Required.Error(PASSWORD_FIELD_REQUIRED), validation.Length(6, 200).Error(PASSWORD_FIELD_LENGTH)),
+		validation.Field(&d.Nick, validation.Required.Error(errors.NICK_FIELD_REQUIRED), validation.Length(3, 50).Error(errors.NICK_FIELD_LENGTH)),
+		validation.Field(&d.Password, validation.Required.Error(errors.PASSWORD_FIELD_REQUIRED), validation.Length(6, 200).Error(errors.PASSWORD_FIELD_LENGTH)),
 	)
 
 	return validations.GetValidationError(validationResult)

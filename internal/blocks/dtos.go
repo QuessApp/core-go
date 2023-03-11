@@ -5,6 +5,8 @@ import (
 
 	"github.com/quessapp/toolkit/validations"
 
+	"core/pkg/errors"
+
 	validation "github.com/go-ozzo/ozzo-validation"
 )
 
@@ -25,7 +27,7 @@ type UnblockUserDTO struct {
 // It validates if user to block id is valid.
 func (d BlockUserDTO) Validate() error {
 	validationResult := validation.ValidateStruct(&d,
-		validation.Field(&d.UserToBlock, validation.Required.Error(USER_TO_BLOCK_REQUIRED)),
+		validation.Field(&d.UserToBlock, validation.Required.Error(errors.USER_TO_BLOCK_REQUIRED)),
 	)
 
 	return validations.GetValidationError(validationResult)
