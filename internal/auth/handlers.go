@@ -9,9 +9,10 @@ import (
 	"github.com/quessapp/toolkit/responses"
 )
 
-// SignUpUserHandler is a handler to sign up an user.
-//
-// It reads data from payload and try to sign up the user.
+// SignUpUserHandler is an HTTP handler function that handles requests for user sign-up.
+// It receives a HandlersCtx containing the HTTP request context, an AuthRepository for authentication,
+// and a UsersRepository for user data access. It parses the request body into a SignUpUserDTO,
+// creates a new user using the provided AuthRepository and UsersRepository, and returns a JSON response with the created user data.
 func SignUpUserHandler(handlerCtx *configs.HandlersCtx, authRepository *AuthRepository, usersRepository *users.UsersRepository) error {
 	payload := SignUpUserDTO{}
 
@@ -28,9 +29,10 @@ func SignUpUserHandler(handlerCtx *configs.HandlersCtx, authRepository *AuthRepo
 	return responses.ParseSuccessful(handlerCtx.C, http.StatusCreated, u)
 }
 
-// SignInUserHandler is a handler to sign in an user.
-//
-// It reads data from payload and try to sign in the user.
+// SignInUserHandler is an HTTP handler function that handles requests for user sign-in.
+// It receives a HandlersCtx containing the HTTP request context, an AuthRepository for authentication,
+// and a UsersRepository for user data access. It parses the request body into a SignInUserDTO,
+// authenticates the user using the provided AuthRepository, and returns a JSON response with the authenticated user data.
 func SignInUserHandler(handlerCtx *configs.HandlersCtx, authRepository *AuthRepository, usersRepository *users.UsersRepository) error {
 	payload := SignInUserDTO{}
 
