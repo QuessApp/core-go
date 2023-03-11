@@ -12,7 +12,9 @@ import (
 	"github.com/streadway/amqp"
 )
 
-// SendEmailNewQuestionReceived sends an email to MQ.
+// SendEmailNewQuestionReceived sends an email notification to the user that receives a new question.
+// The email contains the content of the question, the sender's name, and whether the question is anonymous or not.
+// The email is encrypted and sent using an AMQP channel and queue.
 func SendEmailNewQuestionReceived(cfg *configs.Conf, ch *amqp.Channel, q *amqp.Queue, content string, isAnonymous bool, userToSendQuestion *users.User, userThatIsSendingQuestion *users.User) {
 	var subject string
 

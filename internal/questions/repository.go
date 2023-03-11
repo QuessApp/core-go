@@ -24,7 +24,8 @@ func NewRepository(db *mongo.Database) *QuestionsRepository {
 	return &QuestionsRepository{db}
 }
 
-// Create creates a question in database.
+// Create creates a new question in the database with the given payload.
+// It returns an error if the insertion operation fails.
 func (q QuestionsRepository) Create(payload *CreateQuestionDTO) error {
 	coll := q.db.Collection(collections.QUESTIONS)
 
@@ -47,7 +48,8 @@ func (q QuestionsRepository) Create(payload *CreateQuestionDTO) error {
 	return err
 }
 
-// FindByID finds a question by id in database.
+// FindQuestionByID finds a question in the database by its ID.
+// It returns a pointer to the Question found, or nil if no question was found.
 func (q QuestionsRepository) FindQuestionByID(ID toolkitEntities.ID) *Question {
 	coll := q.db.Collection(collections.QUESTIONS)
 
@@ -60,7 +62,13 @@ func (q QuestionsRepository) FindQuestionByID(ID toolkitEntities.ID) *Question {
 	return &question
 }
 
-// GetAll gets all paginated questions from database.
+// GetAll returns a paginated list of questions from the questions collection. It takes
+// a page number (int64), a sort (string), a filter (string) and an authenticatedUserID (toolkitEntities.ID)
+// as arguments and returns a pointer to a PaginatedQuestions struct and an error. The function retrieves
+// the corresponding documents from the questions collection based on the filter (sent, replied or all),
+// the sort (asc or desc) and the page number, and returns them as a list of Question structs, along with
+// the total number of documents found in the collection that match the given filter. The function also
+// returns an error if the database query fails.
 func (q QuestionsRepository) GetAll(page *int64, sort, filter *string, authenticatedUserID toolkitEntities.ID) (*PaginatedQuestions, error) {
 	var LIMIT int64 = 30
 
@@ -128,7 +136,10 @@ func (q QuestionsRepository) GetAll(page *int64, sort, filter *string, authentic
 	return &result, nil
 }
 
-// Delete deletes a question from database.
+// Delete deletes a question from the questions collection. It takes a
+// toolkitEntities.ID as argument and returns an error. The function deletes the
+// corresponding document in the questions collection and returns an error if the
+// delete operation fails.
 func (q QuestionsRepository) Delete(ID toolkitEntities.ID) error {
 	coll := q.db.Collection(collections.QUESTIONS)
 
@@ -139,7 +150,10 @@ func (q QuestionsRepository) Delete(ID toolkitEntities.ID) error {
 	return err
 }
 
-// Hide hides a question.
+// Hide hides a question from the receiver's feed by setting the isHiddenByReceiver
+// field to true. It takes a toolkitEntities.ID as argument and returns an error.
+// The function updates the corresponding document in the questions collection
+// and returns an error if the update operation fails.
 func (q QuestionsRepository) Hide(ID toolkitEntities.ID) error {
 	coll := q.db.Collection(collections.QUESTIONS)
 	update := bson.D{{Key: "$set", Value: bson.D{{Key: "isHiddenByReceiver", Value: true}}}}
@@ -169,7 +183,12 @@ func (q QuestionsRepository) Reply(payload *ReplyQuestionDTO) error {
 	return err
 }
 
-// EditReply edit reply from a question. It pushes an array with each edit, creating a history.
+// EditReply updates the content of a reply to a question and adds the old content
+// to the repliesHistory field. It takes a pointer to an EditQuestionReplyDTO as
+// argument and returns an error. The function first creates a ReplyHistory slice
+// containing the old and new contents, and then updates the reply and
+// repliesHistory fields in the corresponding document in the questions collection.
+// The function returns an error if the update operation fails.
 func (q QuestionsRepository) EditReply(payload *EditQuestionReplyDTO) error {
 	coll := q.db.Collection(collections.QUESTIONS)
 
@@ -208,8 +227,9 @@ func (q QuestionsRepository) EditReply(payload *EditQuestionReplyDTO) error {
 	return err
 }
 
-// RemoveReply removes a reply from a question identified by id.
-// It sets reply field to nil, isReplied field to false, repliedAt field to nil, and repliesHistory field to an empty slice.
+// RemoveReply removes the reply to a question with the given ID from the Questions collection.
+// It requires a toolkitEntities.ID object as input parameter.
+// It returns an error if the reply cannot be removed from the collection.
 func (q QuestionsRepository) RemoveReply(ID toolkitEntities.ID) error {
 	coll := q.db.Collection(collections.QUESTIONS)
 

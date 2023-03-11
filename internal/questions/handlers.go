@@ -13,7 +13,9 @@ import (
 	"github.com/quessapp/toolkit/responses"
 )
 
-// CreateQuestionHandler is a handler to create a question.
+// CreateQuestionHandler creates a new question using the provided payload.
+// It takes three parameters, a HandlerCtx, a QuestionsRepository, a UsersRepository, and a BlocksRepository.
+// It returns an error if the creation is unsuccessful.
 func CreateQuestionHandler(handlerCtx *configs.HandlersCtx, questionsRepository *QuestionsRepository, usersRepository *users.UsersRepository, blocksRepository *blocks.BlocksRepository) error {
 	payload := CreateQuestionDTO{}
 
@@ -32,7 +34,9 @@ func CreateQuestionHandler(handlerCtx *configs.HandlersCtx, questionsRepository 
 	return responses.ParseSuccessful(handlerCtx.C, http.StatusCreated, nil)
 }
 
-// GetAllQuestionsHandler is a handler to find all paginated questions.
+// GetAllQuestionsHandler retrieves all questions based on the provided filters and returns them as a paginated list.
+// It takes three parameters, a HandlerCtx, a UsersRepository, and a QuestionsRepository.
+// It returns an error if the retrieval is unsuccessful.
 func GetAllQuestionsHandler(handlerCtx *configs.HandlersCtx, usersRepository *users.UsersRepository, questionsRepository *QuestionsRepository) error {
 	authenticatedUserID := users.GetUserByToken(handlerCtx.C).ID
 
@@ -56,7 +60,9 @@ func GetAllQuestionsHandler(handlerCtx *configs.HandlersCtx, usersRepository *us
 	return responses.ParseSuccessful(handlerCtx.C, http.StatusOK, questions)
 }
 
-// FindQuestionByIDHandler is a handler to find a question by its id.
+// FindQuestionByIDHandler retrieves a question based on the provided ID and returns it.
+// It takes three parameters, a HandlerCtx, a UsersRepository, and a QuestionsRepository.
+// It returns an error if the retrieval is unsuccessful.
 func FindQuestionByIDHandler(handlerCtx *configs.HandlersCtx, usersRepository *users.UsersRepository, questionsRepository *QuestionsRepository) error {
 	ID, err := toolkitEntities.ParseID(handlerCtx.C.Params("id"))
 
@@ -75,7 +81,9 @@ func FindQuestionByIDHandler(handlerCtx *configs.HandlersCtx, usersRepository *u
 	return responses.ParseSuccessful(handlerCtx.C, http.StatusOK, question)
 }
 
-// DeleteQuestionHandler is a handler to delete a question by its id.
+// DeleteQuestionHandler handles the request to delete a question with the given ID.
+// It requires a HandlersCtx object and a QuestionsRepository object as input parameters.
+// It returns an error if the ID cannot be parsed or if the question cannot be deleted.
 func DeleteQuestionHandler(handlerCtx *configs.HandlersCtx, questionsRepository *QuestionsRepository) error {
 	ID, err := toolkitEntities.ParseID(handlerCtx.C.Params("id"))
 
@@ -92,7 +100,9 @@ func DeleteQuestionHandler(handlerCtx *configs.HandlersCtx, questionsRepository 
 	return responses.ParseSuccessful(handlerCtx.C, http.StatusOK, nil)
 }
 
-// HideQuestionHandler is a handler to hide question by its id.
+// HideQuestionHandler handles the request to hide a question with the given ID.
+// It requires a HandlersCtx object and a QuestionsRepository object as input parameters.
+// It returns an error if the ID cannot be parsed or if the question cannot be hidden.
 func HideQuestionHandler(handlerCtx *configs.HandlersCtx, questionsRepository *QuestionsRepository) error {
 	ID, err := toolkitEntities.ParseID(handlerCtx.C.Params("id"))
 
@@ -109,7 +119,9 @@ func HideQuestionHandler(handlerCtx *configs.HandlersCtx, questionsRepository *Q
 	return responses.ParseSuccessful(handlerCtx.C, http.StatusOK, nil)
 }
 
-// ReplyQuestionHandler is a handler to reply question by its id.
+// ReplyQuestionHandler handles the request to reply to a question with the given ID.
+// It requires a HandlersCtx object and a QuestionsRepository object as input parameters.
+// It returns an error if the request payload cannot be parsed, if the ID cannot be parsed, or if the question cannot be replied to.
 func ReplyQuestionHandler(handlerCtx *configs.HandlersCtx, questionsRepository *QuestionsRepository) error {
 	payload := ReplyQuestionDTO{}
 
@@ -134,7 +146,9 @@ func ReplyQuestionHandler(handlerCtx *configs.HandlersCtx, questionsRepository *
 	return responses.ParseSuccessful(handlerCtx.C, http.StatusCreated, nil)
 }
 
-// EditReplyQuestionHandler is a handler to edit reply question by its id.
+// EditReplyQuestionHandler handles the request to edit a reply to a question with the given ID.
+// It requires a HandlersCtx object and a QuestionsRepository object as input parameters.
+// It returns an error if the request payload cannot be parsed, if the ID cannot be parsed, or if the reply cannot be edited.
 func EditReplyQuestionHandler(handlerCtx *configs.HandlersCtx, questionsRepository *QuestionsRepository) error {
 	payload := EditQuestionReplyDTO{}
 
@@ -159,7 +173,9 @@ func EditReplyQuestionHandler(handlerCtx *configs.HandlersCtx, questionsReposito
 	return responses.ParseSuccessful(handlerCtx.C, http.StatusCreated, nil)
 }
 
-// RemoveQuestionReplyHandler is a handler to remove reply from question.
+// RemoveQuestionReplyHandler handles the request to remove a reply to a question with the given ID.
+// It requires a HandlersCtx object and a QuestionsRepository object as input parameters.
+// It returns an error if the ID cannot be parsed or if the reply cannot be removed.
 func RemoveQuestionReplyHandler(handlerCtx *configs.HandlersCtx, questionsRepository *QuestionsRepository) error {
 	ID, err := toolkitEntities.ParseID(handlerCtx.C.Params("id"))
 
