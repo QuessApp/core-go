@@ -65,6 +65,7 @@ func GetAuthenticatedUser(handlerCtx *configs.HandlersCtx, authenticatedUserID t
 			Email:      u.Email,
 			IsPRO:      u.IsPRO,
 			PostsLimit: u.PostsLimit,
+			Locale:     u.Locale,
 		},
 		AccessToken:  accessToken,
 		RefreshToken: refreshToken,
