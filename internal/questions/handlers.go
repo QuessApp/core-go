@@ -21,11 +21,11 @@ func CreateQuestionHandler(handlerCtx *configs.HandlersCtx, questionsRepository 
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
-	authenticatedUserId := users.GetUserByToken(handlerCtx.C).ID
+	authenticatedUserID := users.GetUserByToken(handlerCtx.C).ID
 
-	payload.SentBy = authenticatedUserId
+	payload.SentBy = authenticatedUserID
 
-	if err := CreateQuestion(handlerCtx, &payload, authenticatedUserId, questionsRepository, usersRepository, blocksRepository); err != nil {
+	if err := CreateQuestion(handlerCtx, &payload, authenticatedUserID, questionsRepository, usersRepository, blocksRepository); err != nil {
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
@@ -34,7 +34,7 @@ func CreateQuestionHandler(handlerCtx *configs.HandlersCtx, questionsRepository 
 
 // GetAllQuestionsHandler is a handler to find all paginated questions.
 func GetAllQuestionsHandler(handlerCtx *configs.HandlersCtx, usersRepository *users.UsersRepository, questionsRepository *QuestionsRepository) error {
-	authenticatedUserId := users.GetUserByToken(handlerCtx.C).ID
+	authenticatedUserID := users.GetUserByToken(handlerCtx.C).ID
 
 	p, err := strconv.Atoi(handlerCtx.C.Query("page"))
 
@@ -47,7 +47,7 @@ func GetAllQuestionsHandler(handlerCtx *configs.HandlersCtx, usersRepository *us
 	sort := handlerCtx.C.Query("sort")
 	filter := handlerCtx.C.Query("filter")
 
-	questions, err := GetAllQuestions(handlerCtx, &page, &sort, &filter, authenticatedUserId, usersRepository, questionsRepository)
+	questions, err := GetAllQuestions(handlerCtx, &page, &sort, &filter, authenticatedUserID, usersRepository, questionsRepository)
 
 	if err != nil {
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
@@ -64,9 +64,9 @@ func FindQuestionByIDHandler(handlerCtx *configs.HandlersCtx, usersRepository *u
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
-	authenticatedUserId := users.GetUserByToken(handlerCtx.C).ID
+	authenticatedUserID := users.GetUserByToken(handlerCtx.C).ID
 
-	question, err := FindQuestionByID(handlerCtx, id, authenticatedUserId, questionsRepository, usersRepository)
+	question, err := FindQuestionByID(handlerCtx, id, authenticatedUserID, questionsRepository, usersRepository)
 
 	if err != nil {
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
@@ -83,9 +83,9 @@ func DeleteQuestionHandler(handlerCtx *configs.HandlersCtx, questionsRepository 
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
-	authenticatedUserId := users.GetUserByToken(handlerCtx.C).ID
+	authenticatedUserID := users.GetUserByToken(handlerCtx.C).ID
 
-	if err := DeleteQuestion(handlerCtx, id, authenticatedUserId, questionsRepository); err != nil {
+	if err := DeleteQuestion(handlerCtx, id, authenticatedUserID, questionsRepository); err != nil {
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
@@ -100,9 +100,9 @@ func HideQuestionHandler(handlerCtx *configs.HandlersCtx, questionsRepository *Q
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
-	authenticatedUserId := users.GetUserByToken(handlerCtx.C).ID
+	authenticatedUserID := users.GetUserByToken(handlerCtx.C).ID
 
-	if err := HideQuestion(handlerCtx, id, authenticatedUserId, questionsRepository); err != nil {
+	if err := HideQuestion(handlerCtx, id, authenticatedUserID, questionsRepository); err != nil {
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
@@ -123,11 +123,11 @@ func ReplyQuestionHandler(handlerCtx *configs.HandlersCtx, questionsRepository *
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
-	authenticatedUserId := users.GetUserByToken(handlerCtx.C).ID
+	authenticatedUserID := users.GetUserByToken(handlerCtx.C).ID
 
 	payload.ID = id
 
-	if err := ReplyQuestion(handlerCtx, &payload, authenticatedUserId, questionsRepository); err != nil {
+	if err := ReplyQuestion(handlerCtx, &payload, authenticatedUserID, questionsRepository); err != nil {
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
@@ -148,11 +148,11 @@ func EditReplyQuestionHandler(handlerCtx *configs.HandlersCtx, questionsReposito
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
-	authenticatedUserId := users.GetUserByToken(handlerCtx.C).ID
+	authenticatedUserID := users.GetUserByToken(handlerCtx.C).ID
 
 	payload.ID = id
 
-	if err := EditQuestionReply(handlerCtx, &payload, authenticatedUserId, questionsRepository); err != nil {
+	if err := EditQuestionReply(handlerCtx, &payload, authenticatedUserID, questionsRepository); err != nil {
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
@@ -167,9 +167,9 @@ func RemoveQuestionReplyHandler(handlerCtx *configs.HandlersCtx, questionsReposi
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
-	authenticatedUserId := users.GetUserByToken(handlerCtx.C).ID
+	authenticatedUserID := users.GetUserByToken(handlerCtx.C).ID
 
-	if err := RemoveQuestionReply(handlerCtx, id, authenticatedUserId, questionsRepository); err != nil {
+	if err := RemoveQuestionReply(handlerCtx, id, authenticatedUserID, questionsRepository); err != nil {
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 

@@ -3,6 +3,7 @@ module core
 go 1.18
 
 require (
+	github.com/aws/aws-sdk-go v1.44.209
 	github.com/go-chi/jwtauth v1.2.0
 	github.com/go-ozzo/ozzo-validation v3.6.0+incompatible
 	github.com/gofiber/fiber/v2 v2.42.0
@@ -10,7 +11,7 @@ require (
 	github.com/gofiber/swagger v0.1.9
 	github.com/golang-jwt/jwt/v4 v4.5.0
 	github.com/jaswdr/faker v1.16.0
-	github.com/quessapp/toolkit v0.0.0-20230310194006-164168d0b815
+	github.com/quessapp/toolkit v0.0.0-20230311030533-a766ce032068
 	github.com/spf13/viper v1.15.0
 	github.com/streadway/amqp v1.0.0
 	github.com/stretchr/testify v1.8.2
@@ -34,6 +35,7 @@ require (
 	github.com/golang/snappy v0.0.4 // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
+	github.com/jmespath/go-jmespath v0.4.0 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/klauspost/compress v1.15.15 // indirect
 	github.com/lestrrat-go/backoff/v2 v2.0.8 // indirect

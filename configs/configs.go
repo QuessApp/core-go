@@ -3,6 +3,7 @@ package configs
 import (
 	"log"
 
+	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/go-chi/jwtauth"
 	"github.com/gofiber/fiber/v2"
 	"github.com/spf13/viper"
@@ -42,6 +43,16 @@ type Conf struct {
 
 	// Crypto
 	CipherKey string `mapstructure:"CIPHER_KEY"`
+
+	// S3 Uploader
+	S3Region     string `mapstructure:"S3_REGION"`
+	S3BucketName string `mapstructure:"S3_BUCKET_NAME"`
+	S3AccessKey  string `mapstructure:"S3_ACCESS_KEY"`
+	S3Secret     string `mapstructure:"S3_SECRET"`
+	S3Token      string `mapstructure:"S3_TOKEN"`
+
+	// Cloudfront
+	CDN_URI string `mapstructure:"CDN_URI"`
 }
 
 var cfg *Conf
@@ -49,12 +60,12 @@ var cfg *Conf
 // AppCtx is a global model for app. It defines the router, db, config, repositories, etc.
 // Use AppCtx to avoid long function params.
 type AppCtx struct {
-	App              *fiber.App
-	DB               *mongo.Database
-	Cfg              *Conf
-	MessageQueueConn *amqp.Connection
-	MessageQueueCh   *amqp.Channel
-	SendEmailsQueue  *amqp.Queue
+	App             *fiber.App
+	DB              *mongo.Database
+	Cfg             *Conf
+	MessageQueueCh  *amqp.Channel
+	SendEmailsQueue *amqp.Queue
+	S3Client        *s3.S3
 }
 
 // HandlersCtx is a global model for handlers. It defines the fiber context, app context, etc..

@@ -61,20 +61,20 @@ func (q QuestionsRepository) FindQuestionByID(id toolkitEntities.ID) *Question {
 }
 
 // GetAll gets all paginated questions from database.
-func (q QuestionsRepository) GetAll(page *int64, sort, filter *string, authenticatedUserId toolkitEntities.ID) (*PaginatedQuestions, error) {
+func (q QuestionsRepository) GetAll(page *int64, sort, filter *string, authenticatedUserID toolkitEntities.ID) (*PaginatedQuestions, error) {
 	var LIMIT int64 = 30
 
 	coll := q.db.Collection(collections.QUESTIONS)
 
 	findFilterOptions := bson.D{
-		{Key: "sendTo", Value: authenticatedUserId},
+		{Key: "sendTo", Value: authenticatedUserID},
 		{Key: "isReplied", Value: false},
 		{Key: "isHiddenByReceiver", Value: false},
 	}
 
 	if *filter == "sent" {
 		findFilterOptions = bson.D{
-			{Key: "sentBy", Value: authenticatedUserId},
+			{Key: "sentBy", Value: authenticatedUserID},
 			{Key: "isReplied", Value: false},
 			{Key: "isHiddenByReceiver", Value: false},
 		}
