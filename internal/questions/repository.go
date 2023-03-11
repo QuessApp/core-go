@@ -31,6 +31,7 @@ func (q QuestionsRepository) Create(payload *CreateQuestionDTO) error {
 
 	payload.ID = toolkitEntities.NewID()
 	payload.CreatedAt = time.Now()
+	var repliedAt *time.Time
 
 	question := Question{
 		ID:             payload.ID,
@@ -40,6 +41,7 @@ func (q QuestionsRepository) Create(payload *CreateQuestionDTO) error {
 		CreatedAt:      payload.CreatedAt,
 		SentBy:         payload.SentBy,
 		Reply:          nil,
+		RepliedAt:      repliedAt,
 		RepliesHistory: []ReplyHistory{},
 	}
 
