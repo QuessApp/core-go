@@ -221,11 +221,13 @@ func ResetLimit(u *User, usersRepository *UsersRepository) error {
 		time.UTC,
 	)
 
+	// The default/initial value in the database is "null", so we cannot take a null value and try to perform calculations on it.
+	// TODO: should we do this?
 	if u.LastPublishAt == nil {
 		return nil
 	}
 
-	// TODO: Should we do this?
+	// TODO: should we do this?
 	lastPublish := time.Date(
 		u.LastPublishAt.Year(),
 		u.LastPublishAt.Month(),
