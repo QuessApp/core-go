@@ -16,7 +16,7 @@ func ApplyRecoverMiddleware(app *fiber.App, cfg *configs.Conf) {
 			isDev := cfg.Env == "development"
 
 			if isDev {
-				log.Println("[DEV] For development purpouses like debugging the recover middleware is disabled.")
+				log.Println("[DEV] For development purposes like debugging the recover middleware is disabled.")
 			}
 
 			return isDev
