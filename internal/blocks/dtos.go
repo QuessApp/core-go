@@ -22,9 +22,10 @@ type UnblockUserDTO struct {
 	BlockedUserID toolkitEntities.ID
 }
 
-// Validate validates passed struct then returns a string.
-//
-// It validates if user to block id is valid.
+// Validate is a method of BlockUserDTO that validates the UserToBlock field of the struct.
+// The UserToBlock field is required, and the function returns an error if it's empty or nil.
+// The method then returns the validation error, if any, using the validations.GetValidationError method.
+// If there are no validation errors, the method returns nil.
 func (d BlockUserDTO) Validate() error {
 	validationResult := validation.ValidateStruct(&d,
 		validation.Field(&d.UserToBlock, validation.Required.Error(errors.USER_TO_BLOCK_REQUIRED)),

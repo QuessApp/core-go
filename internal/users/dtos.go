@@ -45,9 +45,11 @@ func (d UpdateProfileDTO) Validate() error {
 	return validations.GetValidationError(validationResult)
 }
 
-// Validate validates passed struct then returns a string.
-//
-// It validates if enable app emails and push notifications are valid.
+// Validate is a method of UpdatePreferencesDTO that validates the fields of the struct.
+// The method uses the validation package to validate the EnableAPPEmails and EnableAPPPushNotifications fields.
+// Both fields are required and must be present.
+// The method then returns the validation error, if any, using the validations.GetValidationError method.
+// If there are no validation errors, the method returns nil.
 func (d UpdatePreferencesDTO) Validate() error {
 	validationResult := validation.ValidateStruct(&d,
 		validation.Field(&d.EnableAPPEmails, validation.Required.Error(errors.ENABLE_APP_EMAILS_FIELD_REQUIRED)),
