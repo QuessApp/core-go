@@ -12,5 +12,9 @@ import (
 // It updates the user's preferences using the data in the UpdatePreferencesDTO object by calling the UpdatePreferences method of the UsersRepository object.
 // If any error occurs during this process, it returns that error.
 func UpdatePreferences(handlerCtx *configs.HandlersCtx, payload *users.UpdatePreferencesDTO, authenticatedUserID toolkitEntities.ID, usersRepository *users.UsersRepository) error {
+	if err := payload.Validate(); err != nil {
+		return err
+	}
+
 	return usersRepository.UpdatePreferences(authenticatedUserID, payload)
 }

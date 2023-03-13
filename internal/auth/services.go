@@ -8,11 +8,13 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-// SignUp reads payload from request body then try to register a new user in database.
-//
-// It formats the payload, check if provided email and nick are already in use.
-//
-// After validations, the provided password will be hashed. If no error is returned, the user will be created in database.
+// SignUp is a function for signing up a user. It takes in several parameters, including a HandlersCtx struct, a SignUpUserDTO payload, an AuthRepository, and a UsersRepository.
+// The function first formats the payload using the Format() method defined in the SignUpUserDTO struct. It then validates the payload using the Validate() method also defined in the SignUpUserDTO struct.
+// Next, the function checks if the email and nick are already in use using the IsEmailInUse() and IsNickInUse() methods defined in the users package.
+// If the payload is valid and the email and nick are not already in use, the function generates a hashed password using the bcrypt package and the payload's password.
+// The function then calls the SignUp() method of the AuthRepository and passes in the payload. If the signup is successful,
+// the function creates an access token and refresh token for the user using the CreateAccessToken() and CreateRefreshToken() methods defined in the users package.
+// Finally, the function creates a ResponseWithUser struct containing the user's ID, name, email, locale, access token, and refresh token, and returns it along with any error that occurred during the process.
 func SignUp(handlerCtx *configs.HandlersCtx, payload *SignUpUserDTO, authRepository *AuthRepository, usersRepository *users.UsersRepository) (*users.ResponseWithUser, error) {
 	payload.Format()
 
@@ -69,11 +71,15 @@ func SignUp(handlerCtx *configs.HandlersCtx, payload *SignUpUserDTO, authReposit
 	return data, nil
 }
 
-// SignIn reads nick and password from the request and will try to return user's data.
+// SignIn function is responsible for authenticating a user with their nickname and password.
 //
-// It will verify if user already exists and after validations the provided password will be hashed and compared with password in database.
+// It receives a HandlersCtx struct containing the configuration of the app's handlers,
+// a pointer to a SignInUserDTO struct containing the user's nickname and password,
+// and a pointer to a UsersRepository struct responsible for accessing user data in the database.
 //
-// If no error is returned, the user will be created in database and access & refresh token will be returned.
+// It returns a ResponseWithUser struct containing the authenticated user's information,
+// an access token and a refresh token if the authentication was successful.
+// Otherwise, it returns an error.
 func SignIn(handlerCtx *configs.HandlersCtx, payload *SignInUserDTO, usersRepository *users.UsersRepository) (*users.ResponseWithUser, error) {
 	if err := payload.Validate(); err != nil {
 		return nil, err

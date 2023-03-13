@@ -45,7 +45,7 @@ func (q QuestionsRepository) Create(payload *CreateQuestionDTO) error {
 		RepliesHistory: []ReplyHistory{},
 	}
 
-	_, err := coll.InsertOne(context.TODO(), question)
+	_, err := coll.InsertOne(context.Background(), question)
 
 	return err
 }
@@ -120,7 +120,7 @@ func (q QuestionsRepository) GetAll(page *int64, sort, filter *string, authentic
 		return nil, err
 	}
 
-	if err = cursor.All(context.TODO(), &questions); err != nil {
+	if err = cursor.All(context.Background(), &questions); err != nil {
 		return nil, err
 	}
 

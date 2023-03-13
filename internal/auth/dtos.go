@@ -35,7 +35,6 @@ type SignInUserDTO struct {
 }
 
 // Format formats DTO information.
-//
 // It removes special characters from nick and trim email.
 func (d *SignUpUserDTO) Format() {
 	d.Nick = regexp.MustCompile(regexes.SPECIAL_CHARS).ReplaceAllString(d.Nick, "")
@@ -43,9 +42,14 @@ func (d *SignUpUserDTO) Format() {
 	d.Email = strings.TrimSpace(d.Email)
 }
 
-// Validate validates passed struct then returns a string.
-//
-// It validates if nick, password, name, email and locale are valid.
+// Validate is a method of SignUpUserDTO that validates the fields of the struct.
+// The method uses the validation package to validate the Nick, Password, Name, Email and Locale fields.
+// The Nick, Password, Name and Email fields are required and must have a length between 3 and 50 characters for the Nick, Name and Password fields
+// and between 5 and 200 characters for the Email field.
+// The Email field must also match a valid email format using the is.Email method.
+// The Locale field is required and must match the regular expression defined in the regexes package for valid locales.
+// The method then returns the validation error, if any, using the validations.GetValidationError method.
+// If there are no validation errors, the method returns nil.
 func (d SignUpUserDTO) Validate() error {
 	validationResult := validation.ValidateStruct(&d,
 		validation.Field(&d.Nick, validation.Required.Error(errors.NICK_FIELD_REQUIRED), validation.Length(3, 50).Error(errors.NICK_FIELD_LENGTH)),
@@ -58,9 +62,11 @@ func (d SignUpUserDTO) Validate() error {
 	return validations.GetValidationError(validationResult)
 }
 
-// Validate validates passed struct then returns a string.
-//
-// It validates if nick and password are valid.
+// Validate is a method of SignInUserDTO that validates the fields of the struct.
+// The method uses the validation package to validate the Nick and Password fields.
+// Both fields are required and must have a length between 3 and 50 characters for the Nick field and between 6 and 200 characters for the Password field.
+// The method then returns the validation error, if any, using the validations.GetValidationError method.
+// If there are no validation errors, the method returns nil.
 func (d SignInUserDTO) Validate() error {
 	validationResult := validation.ValidateStruct(&d,
 		validation.Field(&d.Nick, validation.Required.Error(errors.NICK_FIELD_REQUIRED), validation.Length(3, 50).Error(errors.NICK_FIELD_LENGTH)),

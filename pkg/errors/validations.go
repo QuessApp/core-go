@@ -30,6 +30,9 @@ const (
 
 	LOCALE_FIELD_REQUIRED = "campo de localidade é obrigatório"
 	LOCALE_FIELD_INVALID  = "campo de localidade contém valor inesperado"
+
+	ENABLE_APP_EMAILS_FIELD_REQUIRED        = "campo para habilitar/desabilitar e-mails é obrigatório"
+	ENABLE_APP_NOTIFICATIONS_FIELD_REQUIRED = "campo para habilitar/desabilitar notificações é obrigatório"
 )
 
 const (
