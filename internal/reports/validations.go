@@ -24,7 +24,7 @@ func AlreadySent(alreadySent bool) error {
 // Otherwise, it returns nil, indicating that the user can proceed with reporting the other user.
 func IsReportingYourself(authenticatedUserID toolkitEntities.ID, sendTo toolkitEntities.ID) error {
 	if sendTo == authenticatedUserID {
-		return errors.New(pkgErrors.CANT_REPORT_YOUSERLF)
+		return errors.New(pkgErrors.CANT_REPORT_YOURSELF)
 	}
 
 	return nil
