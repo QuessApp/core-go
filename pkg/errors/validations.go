@@ -33,6 +33,12 @@ const (
 
 	ENABLE_APP_EMAILS_FIELD_REQUIRED        = "campo para habilitar/desabilitar e-mails é obrigatório"
 	ENABLE_APP_NOTIFICATIONS_FIELD_REQUIRED = "campo para habilitar/desabilitar notificações é obrigatório"
+
+	REASON_FIELD_REQUIRED = "campo de motivo é obrigatório"
+	REASON_FIELD_INVALID  = "campo de motivo contém valor inesperado"
+
+	TYPE_FIELD_REQUIRED = "campo de tipo é obrigatório"
+	TYPE_FIELD_INVALID  = "campo de tipo contém valor inesperado"
 )
 
 const (
@@ -67,4 +73,9 @@ const (
 	ALREADY_BLOCKED          = "você não pode bloquear este usuário porque você já o bloqueou"
 	CANT_BLOCK_YOURSELF      = "você não pode se bloquear"
 	CANT_UNBLOCK_NOT_BLOCKED = "você não pode remover o bloqueio deste usuário porque este usuário não está bloqueado"
+)
+
+const (
+	CANT_REPORT_ALREADY_SENT = "você não pode enviar essa denúncia, pois já enviou uma semelhante anteriormente"
+	CANT_REPORT_YOUSERLF     = "você não pode enviar uma denúncia para si mesmo"
 )
