@@ -4,7 +4,7 @@ Idiomatic backoff for Go
 
 This library is an implementation of backoff algorithm for retrying operations
 in an idiomatic Go way. It respects `context.Context` natively, and the critical
-notifications are done through *channel operations*, allowing you to write code 
+notifications are done through _channel operations_, allowing you to write code
 that is both more explicit and flexibile.
 
 For a longer discussion, [please read this article](https://medium.com/@lestrrat/yak-shaving-with-backoff-libraries-in-go-80240f0aa30c)
@@ -64,7 +64,7 @@ This way the controller object is protected from concurrent access (if you have 
 
 ## Null
 
-A null policy means there's no backoff. 
+A null policy means there's no backoff.
 
 For example, if you were to support both using and not using a backoff in your code you can say
 
@@ -139,7 +139,7 @@ go mod init
 go mod tidy
 git add go.mod go.sum
 git commit -m "Add go.mod and go.sum" -a
-git push 
+git push
 ```
 
 Then from subsequent calls:
@@ -177,7 +177,6 @@ Then, if you have a go.mod in your app, you can just do
 go mod edit -replace github.com/lestrrat-go/backoff/v2=github.com/myusername/myawesomemfork/v2
 ```
 
-Oh, wait, then you already have go.mod, so this is a non-issue. 
+Oh, wait, then you already have go.mod, so this is a non-issue.
 
 ...Yeah, just migrate to using go modules, please?
-

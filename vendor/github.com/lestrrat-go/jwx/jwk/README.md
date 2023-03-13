@@ -2,10 +2,10 @@
 
 Package jwk implements JWK as described in [RFC7517](https://tools.ietf.org/html/rfc7517)
 
-* Parse and work with RSA/EC/Symmetric/OKP JWK types
-  * Convert to and from JSON
-  * Convert to and from raw key types (e.g. *rsa.PrivateKey)
-* Ability to keep a JWKS fresh.
+- Parse and work with RSA/EC/Symmetric/OKP JWK types
+  - Convert to and from JSON
+  - Convert to and from raw key types (e.g. \*rsa.PrivateKey)
+- Ability to keep a JWKS fresh.
 
 How-to style documentation can be found in the [docs directory](../docs).
 
@@ -13,16 +13,16 @@ Examples are located in the examples directory ([jwk_example_test.go](../example
 
 Supported key types:
 
-| kty | Curve                   | Go Key Type                                   |
-|:----|:------------------------|:----------------------------------------------|
-| RSA | N/A                     | rsa.PrivateKey / rsa.PublicKey (2)            |
-| EC  | P-256<br>P-384<br>P-521<br>secp256k1 (1) | ecdsa.PrivateKey / ecdsa.PublicKey (2)        |
-| oct | N/A                     | []byte                                        |
-| OKP | Ed25519 (1)             | ed25519.PrivateKey / ed25519.PublicKey (2)    |
-|     | X25519 (1)              | (jwx/)x25519.PrivateKey / x25519.PublicKey (2)|
+| kty | Curve                                    | Go Key Type                                    |
+| :-- | :--------------------------------------- | :--------------------------------------------- |
+| RSA | N/A                                      | rsa.PrivateKey / rsa.PublicKey (2)             |
+| EC  | P-256<br>P-384<br>P-521<br>secp256k1 (1) | ecdsa.PrivateKey / ecdsa.PublicKey (2)         |
+| oct | N/A                                      | []byte                                         |
+| OKP | Ed25519 (1)                              | ed25519.PrivateKey / ed25519.PublicKey (2)     |
+|     | X25519 (1)                               | (jwx/)x25519.PrivateKey / x25519.PublicKey (2) |
 
-* Note 1: Experimental
-* Note 2: Either value or pointers accepted (e.g. rsa.PrivateKey or *rsa.PrivateKey)
+- Note 1: Experimental
+- Note 2: Either value or pointers accepted (e.g. rsa.PrivateKey or \*rsa.PrivateKey)
 
 # SYNOPSIS
 
@@ -270,5 +270,3 @@ func main() {
   }
 }
 ```
-
-
