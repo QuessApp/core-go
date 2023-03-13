@@ -7,6 +7,7 @@ import (
 	"core/internal/database"
 	"core/internal/emails"
 	"core/internal/questions"
+	"core/internal/reports"
 	"core/internal/router"
 	"core/internal/users"
 
@@ -43,6 +44,7 @@ func main() {
 	usersRepository := users.NewRepository(db)
 	questionsRepository := questions.NewRepository(db)
 	blocksRepository := blocks.NewRepository(db)
+	reportsRepository := reports.NewRepository(db)
 
 	S3Client, err := s3.Configure(&config.S3Region, &s3.S3Credentials{
 		AccessKey: config.S3AccessKey,
@@ -70,5 +72,5 @@ func main() {
 
 	AppCtx.SendEmailsQueue = q
 
-	router.Setup(AppCtx, authRepository, usersRepository, blocksRepository, questionsRepository)
+	router.Setup(AppCtx, authRepository, usersRepository, blocksRepository, questionsRepository, reportsRepository)
 }

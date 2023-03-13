@@ -12,7 +12,7 @@ require (
 	github.com/gofiber/swagger v0.1.9
 	github.com/golang-jwt/jwt/v4 v4.5.0
 	github.com/jaswdr/faker v1.16.0
-	github.com/quessapp/toolkit v0.0.0-20230311053546-3f80973a0a21
+	github.com/quessapp/toolkit v0.0.0-20230313160010-f94fa1b60ba1
 	github.com/spf13/viper v1.15.0
 	github.com/streadway/amqp v1.0.0
 	github.com/stretchr/testify v1.8.2

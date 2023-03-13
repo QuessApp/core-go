@@ -5,4 +5,5 @@ const (
 	QUESTIONS = "questions"
 	BLOCKS    = "blocks"
 	TOKENS    = "tokens"
+	REPORTS   = "reports"
 )

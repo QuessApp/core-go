@@ -11,6 +11,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
+// TODO: separate in unique struct. eg: one struct for DB Config, one for Queues, etc.
+
 // Conf is a model for app config. Like the app name, app port.
 // Also it can initialize DB configs, JWT, etc.
 type Conf struct {

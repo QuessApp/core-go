@@ -95,9 +95,9 @@ func (sr *SingleResult) setRdrContents() error {
 	case sr.rdr != nil:
 		return nil
 	case sr.cur != nil:
-		defer sr.cur.Close(context.TODO())
+		defer sr.cur.Close(context.Background())
 
-		if !sr.cur.Next(context.TODO()) {
+		if !sr.cur.Next(context.Background()) {
 			if err := sr.cur.Err(); err != nil {
 				return err
 			}

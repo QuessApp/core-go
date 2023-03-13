@@ -30,7 +30,7 @@ func Compact(m *Message, _ ...SerializerOption) ([]byte, error) {
 		return nil, errors.New("invalid protected header")
 	}
 
-	ctx := context.TODO()
+	ctx := context.Background()
 	hcopy, err := m.protectedHeaders.Clone(ctx)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to copy protected header")

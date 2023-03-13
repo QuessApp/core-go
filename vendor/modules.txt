@@ -237,7 +237,7 @@ github.com/pkg/errors
 # github.com/pmezard/go-difflib v1.0.0
 ## explicit
 github.com/pmezard/go-difflib/difflib
-# github.com/quessapp/toolkit v0.0.0-20230311053546-3f80973a0a21
+# github.com/quessapp/toolkit v0.0.0-20230313160010-f94fa1b60ba1
 ## explicit; go 1.20
 github.com/quessapp/toolkit/constants
 github.com/quessapp/toolkit/crypto
