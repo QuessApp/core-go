@@ -39,3 +39,15 @@ func (d UpdateProfileDTO) Validate() error {
 
 	return validations.GetValidationError(validationResult)
 }
+
+// Validate validates passed struct then returns a string.
+//
+// It validates if enable app emails and push notifications are valid.
+func (d UpdatePreferencesDTO) Validate() error {
+	validationResult := validation.ValidateStruct(&d,
+		validation.Field(&d.EnableAPPEmails, validation.Required.Error(errors.ENABLE_APP_EMAILS_FIELD_REQUIRED)),
+		validation.Field(&d.EnanbleAPPPushNotifications, validation.Required.Error(errors.ENABLE_APP_NOTIFICATIONS_FIELD_REQUIRED)),
+	)
+
+	return validations.GetValidationError(validationResult)
+}
