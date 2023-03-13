@@ -24,7 +24,7 @@ func main() {
 	config, err := configs.LoadConfig(".")
 
 	if err != nil {
-		panic(err)
+		log.Fatalf("failed to load config: %s", err)
 	}
 
 	DatabaseURIConn := fmt.Sprintf("%s:%s", config.DBHost, config.DBPort)
@@ -32,7 +32,7 @@ func main() {
 	db, err := database.Connect(DatabaseURIConn, config.DBName)
 
 	if err != nil {
-		panic(err)
+		log.Fatalf("failed to connect to database: %s", err)
 	}
 
 	conn, ch := queue.Connect(config.MessageQueueURI)
@@ -53,7 +53,7 @@ func main() {
 	})
 
 	if err != nil {
-		log.Fatalln(err)
+		log.Fatalf("failed to configure S3 client: %s", err)
 	}
 
 	AppCtx := &configs.AppCtx{
@@ -67,7 +67,7 @@ func main() {
 	q, err := emails.DeclareQueue(AppCtx)
 
 	if err != nil {
-		log.Fatalln(err)
+		log.Fatalf("failed to declare emails queue: %s", err)
 	}
 
 	AppCtx.SendEmailsQueue = q
