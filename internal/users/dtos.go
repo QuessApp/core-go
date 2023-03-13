@@ -22,13 +22,18 @@ type UpdateProfileDTO struct {
 
 // UpdatePreferencesDTO is DTO for payload for update preferences handler.
 type UpdatePreferencesDTO struct {
-	EnanbleAPPPushNotifications bool `json:"enableAppPushNotifications" bson:"enableAppPushNotifications"`
-	EnableAPPEmails             bool `json:"enableAppEmails" bson:"enableAppEmails"`
+	EnableAPPPushNotifications bool `json:"enableAppPushNotifications" bson:"enableAppPushNotifications"`
+	EnableAPPEmails            bool `json:"enableAppEmails" bson:"enableAppEmails"`
 }
 
-// Validate validates passed struct then returns a string.
-//
-// It validates if nick, password, name, email and locale are valid.
+// Validate is a method of UpdateProfileDTO that validates the fields of the struct.
+// The method uses the validation package to validate the Nick, Name, Email and Locale fields.
+// The Nick, Name and Email fields are required and must have a length between 3 and 50 characters for the Nick and Name fields
+// and between 5 and 200 characters for the Email field.
+// The Email field must also match a valid email format using the is.Email method.
+// The Locale field is required and must match the regular expression defined in the regexes package for valid locales.
+// The method then returns the validation error, if any, using the validations.GetValidationError method.
+// If there are no validation errors, the method returns nil.
 func (d UpdateProfileDTO) Validate() error {
 	validationResult := validation.ValidateStruct(&d,
 		validation.Field(&d.Nick, validation.Required.Error(errors.NICK_FIELD_REQUIRED), validation.Length(3, 50).Error(errors.NICK_FIELD_LENGTH)),
@@ -46,7 +51,7 @@ func (d UpdateProfileDTO) Validate() error {
 func (d UpdatePreferencesDTO) Validate() error {
 	validationResult := validation.ValidateStruct(&d,
 		validation.Field(&d.EnableAPPEmails, validation.Required.Error(errors.ENABLE_APP_EMAILS_FIELD_REQUIRED)),
-		validation.Field(&d.EnanbleAPPPushNotifications, validation.Required.Error(errors.ENABLE_APP_NOTIFICATIONS_FIELD_REQUIRED)),
+		validation.Field(&d.EnableAPPPushNotifications, validation.Required.Error(errors.ENABLE_APP_NOTIFICATIONS_FIELD_REQUIRED)),
 	)
 
 	return validations.GetValidationError(validationResult)

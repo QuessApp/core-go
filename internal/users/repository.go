@@ -142,7 +142,7 @@ func (u UsersRepository) Search(value string, page *int64) (*PaginatedUsers, err
 		return nil, err
 	}
 
-	if err = cursor.All(context.TODO(), &users); err != nil {
+	if err = cursor.All(context.Background(), &users); err != nil {
 		return nil, err
 	}
 
@@ -210,7 +210,7 @@ func (u *UsersRepository) UpdatePreferences(userID toolkitEntities.ID, payload *
 			Key: "enableAppEmails", Value: payload.EnableAPPEmails,
 		},
 		{
-			Key: "enableAppPushNotifications", Value: payload.EnanbleAPPPushNotifications,
+			Key: "enableAppPushNotifications", Value: payload.EnableAPPPushNotifications,
 		},
 	}}}
 
