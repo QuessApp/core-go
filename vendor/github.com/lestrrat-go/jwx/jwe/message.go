@@ -411,7 +411,7 @@ func (m *Message) UnmarshalJSON(buf []byte) error {
 func (m *Message) makeDummyRecipient(enckeybuf string, protected Headers) error {
 	// Recipients in this case should not contain the content encryption key,
 	// so move that out
-	hdrs, err := protected.Clone(context.Background())
+	hdrs, err := protected.Clone(context.TODO())
 	if err != nil {
 		return errors.Wrap(err, `failed to clone headers`)
 	}
@@ -468,7 +468,7 @@ func doDecryptCtx(dctx *decryptCtx) ([]byte, error) {
 	}
 
 	var err error
-	ctx := context.Background()
+	ctx := context.TODO()
 	h, err := m.protectedHeaders.Clone(ctx)
 	if err != nil {
 		return nil, errors.Wrap(err, `failed to copy protected headers`)
