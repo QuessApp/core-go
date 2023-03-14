@@ -1,9 +1,9 @@
 package auth
 
 import (
-	"core/configs"
+	"github.com/quessapp/core-go/configs"
 
-	"core/internal/users"
+	"github.com/quessapp/core-go/internal/users"
 
 	"golang.org/x/crypto/bcrypt"
 )

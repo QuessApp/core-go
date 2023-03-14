@@ -1,8 +1,9 @@
 package blocks
 
 import (
-	pkgErrors "core/pkg/errors"
 	"errors"
+
+	pkgErrors "github.com/quessapp/core-go/pkg/errors"
 )
 
 // DidBlockedReceiver returns error message if user is blocked or catch any error.

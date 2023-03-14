@@ -1,8 +1,9 @@
 package mocks
 
 import (
-	"core/internal/questions"
 	"time"
+
+	"github.com/quessapp/core-go/internal/questions"
 
 	"github.com/jaswdr/faker"
 	toolkitEntities "github.com/quessapp/toolkit/entities"

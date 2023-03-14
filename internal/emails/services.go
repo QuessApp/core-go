@@ -1,11 +1,13 @@
 package emails
 
 import (
-	"core/configs"
-	"core/internal/users"
 	"encoding/json"
 	"fmt"
 	"log"
+
+	"github.com/quessapp/core-go/configs"
+
+	"github.com/quessapp/core-go/internal/users"
 
 	"github.com/quessapp/toolkit/crypto"
 	toolkitEntities "github.com/quessapp/toolkit/entities"

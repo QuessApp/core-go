@@ -5,7 +5,7 @@ import (
 
 	"github.com/quessapp/toolkit/validations"
 
-	"core/pkg/errors"
+	"github.com/quessapp/core-go/pkg/errors"
 
 	toolkitEntities "github.com/quessapp/toolkit/entities"
 

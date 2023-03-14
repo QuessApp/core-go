@@ -1,7 +1,7 @@
 package reports
 
 import (
-	"core/pkg/errors"
+	"github.com/quessapp/core-go/pkg/errors"
 
 	validation "github.com/go-ozzo/ozzo-validation"
 	"github.com/quessapp/toolkit/validations"

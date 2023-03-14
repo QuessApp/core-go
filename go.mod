@@ -1,4 +1,4 @@
-module core
+module github.com/quessapp/core-go
 
 go 1.18
 

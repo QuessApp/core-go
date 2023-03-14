@@ -1,9 +1,10 @@
 package settings
 
 import (
-	"core/configs"
-	"core/internal/middlewares"
-	"core/internal/users"
+	"github.com/quessapp/core-go/configs"
+
+	"github.com/quessapp/core-go/internal/middlewares"
+	"github.com/quessapp/core-go/internal/users"
 
 	"github.com/gofiber/fiber/v2"
 )

@@ -1,8 +1,9 @@
 package users
 
 import (
-	"core/pkg/errors"
 	"regexp"
+
+	"github.com/quessapp/core-go/pkg/errors"
 
 	"github.com/quessapp/toolkit/regexes"
 

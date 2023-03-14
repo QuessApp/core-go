@@ -2,7 +2,8 @@ package auth
 
 import (
 	"context"
-	"core/internal/users"
+
+	"github.com/quessapp/core-go/internal/users"
 
 	collections "github.com/quessapp/toolkit/constants"
 

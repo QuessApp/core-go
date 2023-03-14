@@ -1,8 +1,9 @@
 package middlewares
 
 import (
-	"core/configs"
 	"log"
+
+	"github.com/quessapp/core-go/configs"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/recover"

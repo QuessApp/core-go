@@ -1,9 +1,10 @@
 package questions
 
 import (
-	"core/configs"
-	"core/internal/blocks"
-	"core/internal/users"
+	"github.com/quessapp/core-go/configs"
+
+	"github.com/quessapp/core-go/internal/blocks"
+	"github.com/quessapp/core-go/internal/users"
 
 	"net/http"
 	"strconv"

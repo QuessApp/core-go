@@ -1,15 +1,16 @@
 package main
 
 import (
-	"core/configs"
-	"core/internal/auth"
-	"core/internal/blocks"
-	"core/internal/database"
-	"core/internal/emails"
-	"core/internal/questions"
-	"core/internal/reports"
-	"core/internal/router"
-	"core/internal/users"
+	"github.com/quessapp/core-go/configs"
+
+	"github.com/quessapp/core-go/internal/auth"
+	"github.com/quessapp/core-go/internal/blocks"
+	"github.com/quessapp/core-go/internal/database"
+	"github.com/quessapp/core-go/internal/emails"
+	"github.com/quessapp/core-go/internal/questions"
+	"github.com/quessapp/core-go/internal/reports"
+	"github.com/quessapp/core-go/internal/router"
+	"github.com/quessapp/core-go/internal/users"
 
 	"fmt"
 	"log"

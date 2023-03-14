@@ -1,12 +1,14 @@
 package questions
 
 import (
-	"core/configs"
-	"core/internal/blocks"
-	"core/internal/emails"
 	"time"
 
-	"core/internal/users"
+	"github.com/quessapp/core-go/configs"
+
+	"github.com/quessapp/core-go/internal/blocks"
+	"github.com/quessapp/core-go/internal/emails"
+
+	"github.com/quessapp/core-go/internal/users"
 
 	toolkitEntities "github.com/quessapp/toolkit/entities"
 )
@@ -57,7 +59,7 @@ func CreateQuestion(handlerCtx *configs.HandlersCtx, payload *CreateQuestionDTO,
 	}
 
 	if userToSendQuestion.EnableAPPEmails {
-		emails.SendEmailNewQuestionReceived(handlerCtx.AppCtx.Cfg, handlerCtx.MessageQueueCh, handlerCtx.SendEmailsQueue, payload.Content, payload.IsAnonymous, userToSendQuestion, userThatIsSendingQuestion)
+		go emails.SendEmailNewQuestionReceived(handlerCtx.AppCtx.Cfg, handlerCtx.MessageQueueCh, handlerCtx.SendEmailsQueue, payload.Content, payload.IsAnonymous, userToSendQuestion, userThatIsSendingQuestion)
 	}
 
 	if err := users.UpdateLastPublishedAt(userThatIsSendingQuestion, usersRepository); err != nil {

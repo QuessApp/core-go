@@ -1,8 +1,9 @@
 package auth
 
 import (
-	pkgErrors "core/pkg/errors"
 	"errors"
+
+	pkgErrors "github.com/quessapp/core-go/pkg/errors"
 )
 
 // IsPasswordCorrect returns an error if hashed password don't match.

@@ -1,9 +1,11 @@
 package settings
 
 import (
-	"core/configs"
-	"core/internal/users"
 	"net/http"
+
+	"github.com/quessapp/core-go/configs"
+
+	"github.com/quessapp/core-go/internal/users"
 
 	"github.com/quessapp/toolkit/responses"
 )

@@ -1,9 +1,11 @@
 package questions
 
 import (
-	"core/internal/users"
-	pkgErrors "core/pkg/errors"
 	"errors"
+
+	"github.com/quessapp/core-go/internal/users"
+
+	pkgErrors "github.com/quessapp/core-go/pkg/errors"
 
 	toolkitEntities "github.com/quessapp/toolkit/entities"
 )

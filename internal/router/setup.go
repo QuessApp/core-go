@@ -1,16 +1,19 @@
 package router
 
 import (
-	"core/configs"
-	"core/docs"
-	"core/internal/auth"
-	"core/internal/blocks"
-	"core/internal/middlewares"
-	"core/internal/questions"
-	"core/internal/reports"
-	"core/internal/settings"
-	"core/internal/users"
 	"log"
+
+	"github.com/quessapp/core-go/docs"
+
+	"github.com/quessapp/core-go/configs"
+
+	"github.com/quessapp/core-go/internal/auth"
+	"github.com/quessapp/core-go/internal/blocks"
+	"github.com/quessapp/core-go/internal/middlewares"
+	"github.com/quessapp/core-go/internal/questions"
+	"github.com/quessapp/core-go/internal/reports"
+	"github.com/quessapp/core-go/internal/settings"
+	"github.com/quessapp/core-go/internal/users"
 )
 
 // TODO: may we can attach all repositories into AppCtx to avoid long params?

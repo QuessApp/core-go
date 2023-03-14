@@ -1,11 +1,12 @@
 package users
 
 import (
-	"core/configs"
 	"fmt"
 	"mime/multipart"
 	"os"
 	"strings"
+
+	"github.com/quessapp/core-go/configs"
 
 	"log"
 	"time"
