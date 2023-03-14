@@ -1,8 +1,9 @@
 package dtos
 
 import (
-	"core/internal/auth"
 	"testing"
+
+	"github.com/quessapp/core-go/internal/auth"
 
 	"github.com/stretchr/testify/assert"
 )

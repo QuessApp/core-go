@@ -145,7 +145,7 @@ func New(cfg *Config) (*Topology, error) {
 	}
 	t.desc.Store(description.Topology{})
 	t.updateCallback = func(desc description.Server) description.Server {
-		return t.apply(context.Background(), desc)
+		return t.apply(context.TODO(), desc)
 	}
 
 	if t.cfg.URI != "" {

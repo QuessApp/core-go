@@ -1,8 +1,9 @@
 package tests
 
 import (
-	"core/tests/mocks"
 	"testing"
+
+	"github.com/quessapp/core-go/tests/mocks"
 
 	"github.com/stretchr/testify/assert"
 )

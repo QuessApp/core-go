@@ -1,9 +1,10 @@
 package dtos
 
 import (
-	"core/internal/questions"
 	"strings"
 	"testing"
+
+	"github.com/quessapp/core-go/internal/questions"
 
 	"github.com/stretchr/testify/assert"
 )

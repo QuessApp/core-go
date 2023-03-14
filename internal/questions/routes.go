@@ -1,11 +1,12 @@
 package questions
 
 import (
-	"core/configs"
-	"core/internal/blocks"
-	"core/internal/middlewares"
+	"github.com/quessapp/core-go/configs"
 
-	"core/internal/users"
+	"github.com/quessapp/core-go/internal/blocks"
+	"github.com/quessapp/core-go/internal/middlewares"
+
+	"github.com/quessapp/core-go/internal/users"
 
 	"github.com/gofiber/fiber/v2"
 )

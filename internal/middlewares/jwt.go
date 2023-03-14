@@ -1,8 +1,9 @@
 package middlewares
 
 import (
-	"core/configs"
 	"net/http"
+
+	"github.com/quessapp/core-go/configs"
 
 	"github.com/quessapp/toolkit/responses"
 

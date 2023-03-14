@@ -1,8 +1,9 @@
 package auth
 
 import (
-	"core/configs"
-	"core/internal/users"
+	"github.com/quessapp/core-go/configs"
+
+	"github.com/quessapp/core-go/internal/users"
 
 	"github.com/gofiber/fiber/v2"
 )

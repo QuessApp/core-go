@@ -1,8 +1,9 @@
 package docs
 
 import (
-	"core/configs"
 	"fmt"
+
+	"github.com/quessapp/core-go/configs"
 
 	"github.com/gofiber/swagger"
 )

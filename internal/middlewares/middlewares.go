@@ -1,7 +1,7 @@
 package middlewares
 
 import (
-	"core/configs"
+	"github.com/quessapp/core-go/configs"
 
 	"github.com/gofiber/fiber/v2"
 )

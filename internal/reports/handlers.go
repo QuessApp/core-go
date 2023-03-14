@@ -1,10 +1,12 @@
 package reports
 
 import (
-	"core/configs"
-	"core/internal/questions"
-	"core/internal/users"
 	"net/http"
+
+	"github.com/quessapp/core-go/configs"
+
+	"github.com/quessapp/core-go/internal/questions"
+	"github.com/quessapp/core-go/internal/users"
 
 	"github.com/quessapp/toolkit/responses"
 )

@@ -1,9 +1,9 @@
 package users
 
 import (
-	"core/configs"
+	"github.com/quessapp/core-go/configs"
 
-	"core/internal/middlewares"
+	"github.com/quessapp/core-go/internal/middlewares"
 
 	"github.com/gofiber/fiber/v2"
 )

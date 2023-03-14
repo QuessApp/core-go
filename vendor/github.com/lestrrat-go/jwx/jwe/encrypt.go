@@ -92,7 +92,7 @@ func (e encryptCtx) Encrypt(plaintext []byte) (*Message, error) {
 	// If there's only one recipient, you want to include that in the
 	// protected header
 	if len(recipients) == 1 {
-		h, err := e.protected.Merge(context.Background(), recipients[0].Headers())
+		h, err := e.protected.Merge(context.TODO(), recipients[0].Headers())
 		if err != nil {
 			return nil, errors.Wrap(err, "failed to merge protected headers")
 		}

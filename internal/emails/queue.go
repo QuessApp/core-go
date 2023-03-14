@@ -1,7 +1,7 @@
 package emails
 
 import (
-	"core/configs"
+	"github.com/quessapp/core-go/configs"
 
 	"github.com/streadway/amqp"
 )

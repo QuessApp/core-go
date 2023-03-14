@@ -1,7 +1,7 @@
 package users
 
 import (
-	"core/configs"
+	"github.com/quessapp/core-go/configs"
 
 	"net/http"
 	"strconv"

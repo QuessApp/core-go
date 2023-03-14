@@ -5,7 +5,7 @@ import (
 
 	"github.com/quessapp/toolkit/validations"
 
-	"core/pkg/errors"
+	"github.com/quessapp/core-go/pkg/errors"
 
 	validation "github.com/go-ozzo/ozzo-validation"
 )
