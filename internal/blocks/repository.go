@@ -21,7 +21,8 @@ func NewRepository(db *mongo.Database) *BlocksRepository {
 	return &BlocksRepository{db}
 }
 
-// BlockUser blocks an user.
+// BlockUser is a method of BlocksRepository that adds a new block for the given user ID.
+// It takes in a BlockUserDTO and returns an error if there is one.
 func (b *BlocksRepository) BlockUser(payload *BlockUserDTO) error {
 	coll := b.db.Collection(collections.BLOCKS)
 
@@ -36,7 +37,8 @@ func (b *BlocksRepository) BlockUser(payload *BlockUserDTO) error {
 	return err
 }
 
-// UnblockUser removes block from database.
+// UnblockUser is a method of BlocksRepository that removes a block for the given user ID.
+// It takes in a blockID of type toolkitEntities.ID and returns an error if there is one.
 func (b *BlocksRepository) UnblockUser(blockID toolkitEntities.ID) error {
 	coll := b.db.Collection(collections.BLOCKS)
 
@@ -47,7 +49,8 @@ func (b *BlocksRepository) UnblockUser(blockID toolkitEntities.ID) error {
 	return err
 }
 
-// IsBlocked returns if user is blocked by someone.
+// IsUserBlocked is a method of BlocksRepository that checks if a user is blocked given their ID.
+// It takes in a userID of type toolkitEntities.ID and returns a boolean value.
 func (b *BlocksRepository) IsUserBlocked(userID toolkitEntities.ID) bool {
 	coll := b.db.Collection(collections.BLOCKS)
 

@@ -12,9 +12,8 @@ import (
 	"github.com/quessapp/toolkit/responses"
 )
 
-// BlockUserHandler is a handler to block an user.
-//
-// It reads data from payload, gets user id from url params, gets user from token and try to block the user.
+// BlockUserHandler is a handler function that blocks a user given their ID.
+// It takes in a HandlersCtx, a UsersRepository, and a BlocksRepository, and returns an error if there is one.
 func BlockUserHandler(handlerCtx *configs.HandlersCtx, usersRepository *users.UsersRepository, blocksRepository *BlocksRepository) error {
 	payload := BlockUserDTO{}
 	ID, err := toolkitEntities.ParseID(handlerCtx.C.Params("id"))
@@ -33,9 +32,8 @@ func BlockUserHandler(handlerCtx *configs.HandlersCtx, usersRepository *users.Us
 	return responses.ParseSuccessful(handlerCtx.C, http.StatusCreated, nil)
 }
 
-// UnblockUserHandler is a handler to unblock an user.
-//
-// It gets user id from url params, get user from token and try to unblock the user.
+// UnblockUserHandler is a handler function that unblocks a user given their ID.
+// It takes in a HandlersCtx, a UsersRepository, and a BlocksRepository, and returns an error if there is one.
 func UnblockUserHandler(handlerCtx *configs.HandlersCtx, usersRepository *users.UsersRepository, blocksRepository *BlocksRepository) error {
 	id, err := toolkitEntities.ParseID(handlerCtx.C.Params("id"))
 

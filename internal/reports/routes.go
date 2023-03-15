@@ -10,9 +10,11 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-// LoadRoutes loads all questions routes of app.
-//
-// It create routes and assign handlers to each route.
+// LoadRoutes is responsible for setting up the routes related to reports in the Fiber app.
+// AppCtx is the application context.
+// questionsRepository is the repository for questions.
+// usersRepository is the repository for users.
+// reportsRepository is the repository for reports.
 func LoadRoutes(AppCtx *configs.AppCtx, questionsRepository *questions.QuestionsRepository, usersRepository *users.UsersRepository, reportsRepository *ReportsRepository) {
 	g := AppCtx.App.Group("/reports", middlewares.JWTMiddleware(AppCtx.App, AppCtx.Cfg))
 

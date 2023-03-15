@@ -6,11 +6,8 @@ import (
 	toolkitEntities "github.com/quessapp/toolkit/entities"
 )
 
-// BlockUser blocks an user.
-//
-// It formats the payload, checks if user to block exists, already blocked, checks if trying to block yourself.
-//
-// After validations, if there are not errors, the user will be blocked by other user.
+// BlockUser is a function that blocks a user given a payload, a UsersRepository, and a BlocksRepository.
+// It takes in a payload of type *BlockUserDTO, a UsersRepository, and a BlocksRepository, and returns an error.
 func BlockUser(payload *BlockUserDTO, usersRepository *users.UsersRepository, blocksRepository *BlocksRepository) error {
 	if err := payload.Validate(); err != nil {
 		return err
@@ -37,11 +34,8 @@ func BlockUser(payload *BlockUserDTO, usersRepository *users.UsersRepository, bl
 	return nil
 }
 
-// UnblockUser unblocks an user.
-//
-// It checks if user is really blocked.
-//
-// After validations, if there are not errors, the user will be unblocked by other user.
+// UnblockUser is a function that unblocks a user given a userID, a UsersRepository, and a BlocksRepository.
+// It takes in a userID of type toolkitEntities.ID, a UsersRepository, and a BlocksRepository, and returns an error.
 func UnblockUser(userID toolkitEntities.ID, usersRepository *users.UsersRepository, blocksRepository *BlocksRepository) error {
 	if err := IsReallyBlocked(blocksRepository.IsUserBlocked(userID)); err != nil {
 		return err

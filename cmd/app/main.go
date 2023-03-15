@@ -12,13 +12,13 @@ import (
 	"github.com/quessapp/core-go/internal/router"
 	"github.com/quessapp/core-go/internal/users"
 
-	"fmt"
-	"log"
-
 	"github.com/quessapp/toolkit/queue"
 	"github.com/quessapp/toolkit/s3"
 
 	"github.com/gofiber/fiber/v2"
+
+	"fmt"
+	"log"
 )
 
 func main() {
