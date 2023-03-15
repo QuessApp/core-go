@@ -2,16 +2,14 @@ package blocks
 
 import (
 	"github.com/quessapp/core-go/configs"
-
 	"github.com/quessapp/core-go/internal/middlewares"
 	"github.com/quessapp/core-go/internal/users"
 
 	"github.com/gofiber/fiber/v2"
 )
 
-// LoadRoutes loads all blocks routes of app.
-//
-// It create routes and assign handlers to each route.
+// LoadRoutes is a function that sets up the routes for the blocks API.
+// It takes in an AppCtx, a UsersRepository, and a BlocksRepository.
 func LoadRoutes(AppCtx *configs.AppCtx, usersRepository *users.UsersRepository, blocksRepository *BlocksRepository) {
 	g := AppCtx.App.Group("/blocks", middlewares.JWTMiddleware(AppCtx.App, AppCtx.Cfg))
 

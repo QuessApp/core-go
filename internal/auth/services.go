@@ -2,7 +2,6 @@ package auth
 
 import (
 	"github.com/quessapp/core-go/configs"
-
 	"github.com/quessapp/core-go/internal/users"
 
 	"golang.org/x/crypto/bcrypt"

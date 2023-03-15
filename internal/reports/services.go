@@ -2,10 +2,8 @@ package reports
 
 import (
 	"github.com/quessapp/core-go/configs"
-
 	"github.com/quessapp/core-go/internal/questions"
 	"github.com/quessapp/core-go/internal/users"
-
 	toolkitEntities "github.com/quessapp/toolkit/entities"
 )
 

@@ -2,18 +2,19 @@ package questions
 
 import (
 	"github.com/quessapp/core-go/configs"
-
 	"github.com/quessapp/core-go/internal/blocks"
 	"github.com/quessapp/core-go/internal/middlewares"
-
 	"github.com/quessapp/core-go/internal/users"
 
 	"github.com/gofiber/fiber/v2"
 )
 
-// LoadRoutes loads all questions routes of app.
-//
-// It create routes and assign handlers to each route.
+// LoadRoutes is responsible for defining and setting up all the routes related to the questions endpoint.
+// It receives four parameters: AppCtx, usersRepository, questionsRepository and blocksRepository.
+// AppCtx is an instance of the AppCtx struct, which contains the fiber application and configuration.
+// usersRepository is an instance of the UsersRepository struct, which is used to access and modify user data.
+// questionsRepository is an instance of the QuestionsRepository struct, which is used to access and modify question data.
+// blocksRepository is an instance of the BlocksRepository struct, which is used to access and modify blocked user data.
 func LoadRoutes(AppCtx *configs.AppCtx, usersRepository *users.UsersRepository, questionsRepository *QuestionsRepository, blocksRepository *blocks.BlocksRepository) {
 	g := AppCtx.App.Group("/questions", middlewares.JWTMiddleware(AppCtx.App, AppCtx.Cfg))
 

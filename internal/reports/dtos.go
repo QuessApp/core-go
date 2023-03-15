@@ -1,12 +1,11 @@
 package reports
 
 import (
-	"github.com/quessapp/core-go/pkg/errors"
-
 	validation "github.com/go-ozzo/ozzo-validation"
-	"github.com/quessapp/toolkit/validations"
 
+	"github.com/quessapp/core-go/pkg/errors"
 	toolkitEntities "github.com/quessapp/toolkit/entities"
+	"github.com/quessapp/toolkit/validations"
 )
 
 // CreateReportDTO is DTO for payload for create report handler.

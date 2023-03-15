@@ -2,20 +2,19 @@ package users
 
 import (
 	"fmt"
+	"log"
 	"mime/multipart"
 	"os"
 	"strings"
-
-	"github.com/quessapp/core-go/configs"
-
-	"log"
 	"time"
 
-	"github.com/gofiber/fiber/v2"
-	"github.com/golang-jwt/jwt/v4"
+	"github.com/quessapp/core-go/configs"
 	date "github.com/quessapp/toolkit/constants"
 	toolkitEntities "github.com/quessapp/toolkit/entities"
 	toolkitS3 "github.com/quessapp/toolkit/s3"
+
+	"github.com/gofiber/fiber/v2"
+	"github.com/golang-jwt/jwt/v4"
 )
 
 var (

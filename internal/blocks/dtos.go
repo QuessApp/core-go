@@ -1,11 +1,9 @@
 package blocks
 
 import (
-	toolkitEntities "github.com/quessapp/toolkit/entities"
-
-	"github.com/quessapp/toolkit/validations"
-
 	"github.com/quessapp/core-go/pkg/errors"
+	toolkitEntities "github.com/quessapp/toolkit/entities"
+	"github.com/quessapp/toolkit/validations"
 
 	validation "github.com/go-ozzo/ozzo-validation"
 )

@@ -5,7 +5,6 @@ import (
 	"time"
 
 	collections "github.com/quessapp/toolkit/constants"
-
 	toolkitEntities "github.com/quessapp/toolkit/entities"
 
 	"go.mongodb.org/mongo-driver/bson"

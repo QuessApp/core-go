@@ -4,7 +4,6 @@ import (
 	"errors"
 
 	pkgErrors "github.com/quessapp/core-go/pkg/errors"
-
 	toolkitEntities "github.com/quessapp/toolkit/entities"
 )
 

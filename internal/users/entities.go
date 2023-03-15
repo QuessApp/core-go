@@ -5,9 +5,8 @@ import (
 	"strings"
 	"time"
 
-	regexes "github.com/quessapp/toolkit/regexes"
-
 	toolkitEntities "github.com/quessapp/toolkit/entities"
+	regexes "github.com/quessapp/toolkit/regexes"
 )
 
 // BlockedUser is a model for each blocked user in app.

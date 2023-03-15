@@ -4,7 +4,6 @@ import (
 	"net/http"
 
 	"github.com/quessapp/core-go/configs"
-
 	"github.com/quessapp/toolkit/responses"
 
 	"github.com/gofiber/fiber/v2"

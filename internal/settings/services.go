@@ -2,9 +2,7 @@ package settings
 
 import (
 	"github.com/quessapp/core-go/configs"
-
 	"github.com/quessapp/core-go/internal/users"
-
 	toolkitEntities "github.com/quessapp/toolkit/entities"
 )
 
