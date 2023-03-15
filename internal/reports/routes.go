@@ -20,8 +20,10 @@ func LoadRoutes(AppCtx *configs.AppCtx, questionsRepository *questions.Questions
 	g.Post("/", func(c *fiber.Ctx) error {
 		return CreateReportHandler(&configs.HandlersCtx{C: c, AppCtx: *AppCtx}, questionsRepository, usersRepository, reportsRepository)
 	})
-
-	// g.Delete("/:id", func(c *fiber.Ctx) error {
-	// 	return DeleteQuestionHandler(&configs.HandlersCtx{C: c, AppCtx: *AppCtx}, questionsRepository)
-	// })
+	g.Get("/:id", func(c *fiber.Ctx) error {
+		return FindReportByIDHandler(&configs.HandlersCtx{C: c, AppCtx: *AppCtx}, reportsRepository)
+	})
+	g.Delete("/:id", func(c *fiber.Ctx) error {
+		return DeleteReportHandler(&configs.HandlersCtx{C: c, AppCtx: *AppCtx}, reportsRepository)
+	})
 }

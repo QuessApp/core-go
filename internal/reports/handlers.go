@@ -6,6 +6,7 @@ import (
 	"github.com/quessapp/core-go/configs"
 	"github.com/quessapp/core-go/internal/questions"
 	"github.com/quessapp/core-go/internal/users"
+	toolkitEntities "github.com/quessapp/toolkit/entities"
 	"github.com/quessapp/toolkit/responses"
 )
 
@@ -29,6 +30,55 @@ func CreateReportHandler(handlerCtx *configs.HandlersCtx, questionsRepository *q
 	payload.SentBy = authenticatedUserID
 
 	if err := CreateReport(handlerCtx, &payload, authenticatedUserID, questionsRepository, usersRepository, reportsRepository); err != nil {
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
+	}
+
+	return responses.ParseSuccessful(handlerCtx.C, http.StatusCreated, nil)
+}
+
+// FindReportByIDHandler is responsible for handling requests to retrieve a report by its ID.
+// It receives two parameters: handlerCtx and reportsRepository.
+// handlerCtx is an instance of the HandlersCtx struct, which contains the fiber context and other data.
+// reportsRepository is an instance of the ReportsRepository struct, which is used to access and modify report data.
+// The function first parses the report ID from the request parameters and the authenticated user ID from the request context.
+// It then calls the FindReportByID function to retrieve the report with the given ID, and checks if the user is authorized to view the report.
+// Finally, it returns the report data in a successful response or an error response in case of failures.
+func FindReportByIDHandler(handlerCtx *configs.HandlersCtx, reportsRepository *ReportsRepository) error {
+	ID, err := toolkitEntities.ParseID(handlerCtx.C.Params("id"))
+
+	if err != nil {
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
+	}
+
+	authenticatedUserID := users.GetUserByToken(handlerCtx.C).ID
+
+	r, err := FindReportByID(handlerCtx, ID, authenticatedUserID, reportsRepository)
+
+	if err != nil {
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
+	}
+
+	return responses.ParseSuccessful(handlerCtx.C, http.StatusCreated, r)
+}
+
+// DeleteReportHandler is a function responsible for handling HTTP requests to delete a report.
+// It receives two parameters: handlerCtx and reportsRepository.
+// handlerCtx is an instance of the HandlersCtx struct, which contains the fiber.Ctx and other context information.
+// reportsRepository is an instance of the ReportsRepository struct, which is used to access and modify report data.
+// It parses the ID parameter from the request context and the authenticated user ID from the token.
+// It calls the DeleteReport function passing the handlerCtx, report ID, authenticated user ID and reportsRepository as parameters.
+// If the DeleteReport function returns an error, it returns a bad request response.
+// Otherwise, it returns a successful response with status code 201.
+func DeleteReportHandler(handlerCtx *configs.HandlersCtx, reportsRepository *ReportsRepository) error {
+	ID, err := toolkitEntities.ParseID(handlerCtx.C.Params("id"))
+
+	if err != nil {
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
+	}
+
+	authenticatedUserID := users.GetUserByToken(handlerCtx.C).ID
+
+	if err := DeleteReport(handlerCtx, ID, authenticatedUserID, reportsRepository); err != nil {
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 

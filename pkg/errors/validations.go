@@ -76,6 +76,10 @@ const (
 )
 
 const (
+	REPORT_NOT_FOUND                   = "a denúncia com o id informado não existe"
+	REPORT_NOT_AUTHORIZED              = "você não possui acesso à essa denúncia"
+	CANT_DELETE_REPORT_NOT_SENT_BY_YOU = "você não pode deletar esta denúncia, pois ela não foi enviada por você"
+
 	CANT_REPORT_ALREADY_SENT = "você não pode enviar essa denúncia, pois já enviou uma semelhante anteriormente"
 	CANT_REPORT_YOURSELF     = "você não pode enviar uma denúncia para si mesmo"
 )

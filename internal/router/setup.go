@@ -1,6 +1,8 @@
 package router
 
 import (
+	"log"
+
 	"github.com/quessapp/core-go/configs"
 	"github.com/quessapp/core-go/docs"
 	"github.com/quessapp/core-go/internal/auth"
@@ -26,4 +28,5 @@ func Setup(AppCtx *configs.AppCtx, authRepository *auth.AuthRepository, usersRep
 	reports.LoadRoutes(AppCtx, questionsRepository, usersRepository, reportsRepository)
 	docs.LoadRoutes(AppCtx)
 
+	log.Fatal(AppCtx.App.Listen(AppCtx.Cfg.ServerPort))
 }

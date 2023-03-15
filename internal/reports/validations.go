@@ -29,3 +29,30 @@ func IsReportingYourself(authenticatedUserID toolkitEntities.ID, sendTo toolkitE
 
 	return nil
 }
+
+// ReportExists validates whether a report exists or not based on its ID.
+func ReportExists(r *Report) error {
+	if toolkitEntities.IsZeroID(r.ID) {
+		return errors.New(pkgErrors.REPORT_NOT_FOUND)
+	}
+
+	return nil
+}
+
+// CanUserDeleteReport validates whether the user who is trying to delete the report is the report owner.
+func CanUserDeleteReport(r *Report, authenticatedUserID toolkitEntities.ID) error {
+	if r.SentBy != authenticatedUserID {
+		return errors.New(pkgErrors.CANT_DELETE_REPORT_NOT_SENT_BY_YOU)
+	}
+
+	return nil
+}
+
+// CanViewReport validates whether the authenticated user is authorized to view the report.
+func CanViewReport(r *Report, authenticatedUserID toolkitEntities.ID) error {
+	if r.SentBy != authenticatedUserID {
+		return errors.New(pkgErrors.REPORT_NOT_AUTHORIZED)
+	}
+
+	return nil
+}

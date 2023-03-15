@@ -72,3 +72,27 @@ func (r *ReportsRepository) AlreadySent(payload *CreateReportDTO) bool {
 
 	return !toolkitEntities.IsZeroID(foundRegistry.ID)
 }
+
+// Delete removes a report with the given reportID from the database.
+// It returns an error if the operation fails.
+func (r *ReportsRepository) Delete(reportID toolkitEntities.ID) error {
+	coll := r.db.Collection(collections.REPORTS)
+
+	filter := bson.D{{Key: "_id", Value: reportID}}
+
+	_, err := coll.DeleteOne(context.Background(), filter)
+
+	return err
+}
+
+func (r *ReportsRepository) FindByID(reportID toolkitEntities.ID) (*Report, error) {
+	coll := r.db.Collection(collections.REPORTS)
+
+	filter := bson.D{{Key: "_id", Value: reportID}}
+
+	foundRegistry := Report{}
+
+	err := coll.FindOne(context.Background(), filter).Decode(&foundRegistry)
+
+	return &foundRegistry, err
+}
