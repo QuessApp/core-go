@@ -4,11 +4,13 @@ import (
 	"log"
 
 	"github.com/aws/aws-sdk-go/service/s3"
+	"github.com/coreos/go-oidc/v3/oidc"
 	"github.com/go-chi/jwtauth"
 	"github.com/gofiber/fiber/v2"
 	"github.com/spf13/viper"
 	"github.com/streadway/amqp"
 	"go.mongodb.org/mongo-driver/mongo"
+	"golang.org/x/oauth2"
 )
 
 // TODO: separate in unique struct. eg: one struct for DB Config, one for Queues, etc.
@@ -30,6 +32,14 @@ type Conf struct {
 	DBUser     string `mapstructure:"DB_USER"`
 	DBPassword string `mapstructure:"DB_PASSWORD"`
 	DBName     string `mapstructure:"DB_NAME"`
+
+	// Open ID Connect
+	OpenIDClientID     string `mapstructure:"OPEN_ID_CLIENT_ID"`
+	OpenIDClientSecret string `mapstructure:"OPEN_ID_CLIENT_SECRET"`
+
+	// Keycloak
+	KeycloakRealmURI string `mapstructure:"KEYCLOAK_REALM_URI"`
+	OauthCallbackURI string `mapstructure:"OAUTH_CALLBACK_URI"`
 
 	// CORS
 	CORSOrigins string `mapstructure:"ALLOW_ORIGINS"`
@@ -68,6 +78,8 @@ type AppCtx struct {
 	MessageQueueCh  *amqp.Channel
 	SendEmailsQueue *amqp.Queue
 	S3Client        *s3.S3
+	OpenIDClient    *oidc.Provider
+	OAuth           *oauth2.Config
 }
 
 // HandlersCtx is a global model for handlers. It defines the fiber context, app context, etc..

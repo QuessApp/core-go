@@ -14,8 +14,12 @@ import (
 func LoadRoutes(AppCtx *configs.AppCtx, authRepository *AuthRepository, usersRepository *users.UsersRepository) {
 	g := AppCtx.App.Group("/auth")
 
-	g.Post("/signup", func(c *fiber.Ctx) error {
-		return SignUpUserHandler(&configs.HandlersCtx{C: c, AppCtx: *AppCtx}, authRepository, usersRepository)
+	g.Get("/", func(c *fiber.Ctx) error {
+		return RedirectToAuthPageHandler(&configs.HandlersCtx{C: c, AppCtx: *AppCtx})
+	})
+
+	g.Get("/callback", func(c *fiber.Ctx) error {
+		return AuthenticateHandler(&configs.HandlersCtx{C: c, AppCtx: *AppCtx})
 	})
 	g.Post("/signin", func(c *fiber.Ctx) error {
 		return SignInUserHandler(&configs.HandlersCtx{C: c, AppCtx: *AppCtx}, authRepository, usersRepository)

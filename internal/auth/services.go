@@ -1,12 +1,50 @@
 package auth
 
 import (
+	"context"
+	"errors"
+
+	"golang.org/x/oauth2"
+
 	"github.com/quessapp/core-go/configs"
 
 	"github.com/quessapp/core-go/internal/users"
 
 	"golang.org/x/crypto/bcrypt"
 )
+
+func AuthenticateUser(handlerCtx *configs.HandlersCtx, code string) (*ResponseWithAuthenticatedUserData, error) {
+	t, err := handlerCtx.OAuth.Exchange(context.Background(), code)
+
+	if err != nil {
+		return nil, err
+	}
+
+	IDToken, ok := t.Extra("id_token").(string)
+
+	if !ok {
+		return nil, errors.New("foo")
+	}
+
+	userInfo, err := handlerCtx.OpenIDClient.UserInfo(context.Background(), oauth2.StaticTokenSource(t))
+
+	if err != nil {
+		return nil, err
+	}
+
+	data := &ResponseWithAuthenticatedUserData{
+		Tokens: Tokens{
+			AccessToken:  t.AccessToken,
+			RefreshToken: t.RefreshToken,
+			Expiry:       t.Expiry.String(),
+			TokenType:    t.TokenType,
+			IDToken:      IDToken,
+		},
+		User: userInfo,
+	}
+
+	return data, nil
+}
 
 // SignUp is a function for signing up a user. It takes in several parameters, including a HandlersCtx struct, a SignUpUserDTO payload, an AuthRepository, and a UsersRepository.
 // The function first formats the payload using the Format() method defined in the SignUpUserDTO struct. It then validates the payload using the Validate() method also defined in the SignUpUserDTO struct.

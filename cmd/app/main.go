@@ -1,8 +1,9 @@
 package main
 
 import (
-	"github.com/quessapp/core-go/configs"
+	"context"
 
+	"github.com/quessapp/core-go/configs"
 	"github.com/quessapp/core-go/internal/auth"
 	"github.com/quessapp/core-go/internal/blocks"
 	"github.com/quessapp/core-go/internal/database"
@@ -11,14 +12,15 @@ import (
 	"github.com/quessapp/core-go/internal/reports"
 	"github.com/quessapp/core-go/internal/router"
 	"github.com/quessapp/core-go/internal/users"
+	"github.com/quessapp/toolkit/queue"
+	"github.com/quessapp/toolkit/s3"
+	"golang.org/x/oauth2"
+
+	"github.com/coreos/go-oidc/v3/oidc"
+	"github.com/gofiber/fiber/v2"
 
 	"fmt"
 	"log"
-
-	"github.com/quessapp/toolkit/queue"
-	"github.com/quessapp/toolkit/s3"
-
-	"github.com/gofiber/fiber/v2"
 )
 
 func main() {
@@ -57,12 +59,28 @@ func main() {
 		log.Fatalf("failed to configure S3 client: %s", err)
 	}
 
+	provider, err := oidc.NewProvider(context.Background(), config.KeycloakRealmURI)
+
+	if err != nil {
+		log.Fatalf("failed to configure OpenID client: %s", err)
+	}
+
+	oauthConfig := &oauth2.Config{
+		ClientID:     config.OpenIDClientID,
+		ClientSecret: config.OpenIDClientSecret,
+		Endpoint:     provider.Endpoint(),
+		RedirectURL:  config.OauthCallbackURI,
+		Scopes:       []string{oidc.ScopeOpenID, "profile", "email"},
+	}
+
 	AppCtx := &configs.AppCtx{
 		App:            app,
 		DB:             db,
 		Cfg:            config,
 		MessageQueueCh: ch,
 		S3Client:       S3Client,
+		OpenIDClient:   provider,
+		OAuth:          oauthConfig,
 	}
 
 	q, err := emails.DeclareQueue(AppCtx)

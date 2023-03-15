@@ -10,6 +10,26 @@ import (
 	"github.com/quessapp/toolkit/responses"
 )
 
+func RedirectToAuthPageHandler(handlerCtx *configs.HandlersCtx) error {
+	if err := handlerCtx.C.Redirect(handlerCtx.AppCtx.OAuth.AuthCodeURL("123"), http.StatusTemporaryRedirect); err != nil {
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
+	}
+
+	return nil
+}
+
+func AuthenticateHandler(handlerCtx *configs.HandlersCtx) error {
+	code := handlerCtx.C.Query("code")
+
+	d, err := AuthenticateUser(handlerCtx, code)
+
+	if err != nil {
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
+	}
+
+	return responses.ParseSuccessful(handlerCtx.C, http.StatusOK, d)
+}
+
 // SignUpUserHandler is an HTTP handler function that handles requests for user sign-up.
 // It receives a HandlersCtx containing the HTTP request context, an AuthRepository for authentication,
 // and a UsersRepository for user data access. It parses the request body into a SignUpUserDTO,

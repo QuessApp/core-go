@@ -38,6 +38,7 @@ func SendEmailNewQuestionReceived(cfg *configs.Conf, ch *amqp.Channel, q *amqp.Q
 		log.Fatalf("fail to marshal %s", err)
 	}
 
+	// TODO: encrypt the info in toolkit side.
 	encryptedMsg, err := crypto.Encrypt(string(emailParsed), cfg.CipherKey)
 
 	if err != nil {
