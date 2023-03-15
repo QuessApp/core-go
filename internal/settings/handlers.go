@@ -4,9 +4,7 @@ import (
 	"net/http"
 
 	"github.com/quessapp/core-go/configs"
-
 	"github.com/quessapp/core-go/internal/users"
-
 	"github.com/quessapp/toolkit/responses"
 )
 

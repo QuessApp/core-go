@@ -2,7 +2,6 @@ package main
 
 import (
 	"github.com/quessapp/core-go/configs"
-
 	"github.com/quessapp/core-go/internal/auth"
 	"github.com/quessapp/core-go/internal/blocks"
 	"github.com/quessapp/core-go/internal/database"
@@ -11,7 +10,6 @@ import (
 	"github.com/quessapp/core-go/internal/reports"
 	"github.com/quessapp/core-go/internal/router"
 	"github.com/quessapp/core-go/internal/users"
-
 	"github.com/quessapp/toolkit/queue"
 	"github.com/quessapp/toolkit/s3"
 

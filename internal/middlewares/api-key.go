@@ -5,7 +5,6 @@ import (
 	"net/http"
 
 	"github.com/quessapp/core-go/configs"
-
 	"github.com/quessapp/toolkit/middlewares"
 	"github.com/quessapp/toolkit/responses"
 

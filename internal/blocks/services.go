@@ -2,7 +2,6 @@ package blocks
 
 import (
 	"github.com/quessapp/core-go/internal/users"
-
 	toolkitEntities "github.com/quessapp/toolkit/entities"
 )
 

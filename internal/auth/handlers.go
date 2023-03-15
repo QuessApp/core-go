@@ -2,12 +2,10 @@ package auth
 
 import (
 	"github.com/quessapp/core-go/configs"
-
 	"github.com/quessapp/core-go/internal/users"
+	"github.com/quessapp/toolkit/responses"
 
 	"net/http"
-
-	"github.com/quessapp/toolkit/responses"
 )
 
 // SignUpUserHandler is an HTTP handler function that handles requests for user sign-up.

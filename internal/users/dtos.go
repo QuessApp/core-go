@@ -4,13 +4,11 @@ import (
 	"regexp"
 
 	"github.com/quessapp/core-go/pkg/errors"
-
 	"github.com/quessapp/toolkit/regexes"
-
-	"github.com/go-ozzo/ozzo-validation/is"
 	"github.com/quessapp/toolkit/validations"
 
 	validation "github.com/go-ozzo/ozzo-validation"
+	"github.com/go-ozzo/ozzo-validation/is"
 )
 
 // UpdateProfileDTO is DTO for payload for update user profile handler.

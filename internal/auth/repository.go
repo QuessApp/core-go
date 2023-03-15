@@ -4,9 +4,7 @@ import (
 	"context"
 
 	"github.com/quessapp/core-go/internal/users"
-
 	collections "github.com/quessapp/toolkit/constants"
-
 	toolkitEntities "github.com/quessapp/toolkit/entities"
 
 	"time"

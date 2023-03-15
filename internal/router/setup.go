@@ -1,10 +1,8 @@
 package router
 
 import (
-	"github.com/quessapp/core-go/docs"
-
 	"github.com/quessapp/core-go/configs"
-
+	"github.com/quessapp/core-go/docs"
 	"github.com/quessapp/core-go/internal/auth"
 	"github.com/quessapp/core-go/internal/blocks"
 	"github.com/quessapp/core-go/internal/middlewares"

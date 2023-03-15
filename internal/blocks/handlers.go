@@ -2,14 +2,11 @@ package blocks
 
 import (
 	"github.com/quessapp/core-go/configs"
-
 	"github.com/quessapp/core-go/internal/users"
-
-	"net/http"
-
+	"github.com/quessapp/toolkit/responses"
 	toolkitEntities "github.com/quessapp/toolkit/entities"
 
-	"github.com/quessapp/toolkit/responses"
+	"net/http"
 )
 
 // BlockUserHandler is a handler function that blocks a user given their ID.
