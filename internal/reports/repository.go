@@ -9,6 +9,7 @@ import (
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 // ReportsRepository represents reports repository.
@@ -85,6 +86,58 @@ func (r *ReportsRepository) Delete(reportID toolkitEntities.ID) error {
 	_, err := coll.DeleteOne(context.Background(), filter)
 
 	return err
+}
+
+// FindAllSentReports retrieves all reports sent by the given user from the reports repository, using pagination and sorting parameters.
+// It returns a PaginatedReports struct, containing a list of Report objects and the total count of reports found.
+// It returns an error if there's a problem with the database operation.
+func (r *ReportsRepository) FindAllSentReports(userID toolkitEntities.ID, page *int64, sort *string) (*PaginatedReports, error) {
+	var LIMIT int64 = 30
+
+	coll := r.db.Collection(collections.REPORTS)
+
+	findOptions := options.Find().SetSort(bson.D{{Key: "createdAt", Value: 1}})
+
+	if *sort == "desc" {
+		findOptions = options.Find().SetSort(bson.D{{Key: "createdAt", Value: -1}})
+	}
+
+	findOptions.SetSkip((*page - 1) * LIMIT)
+	findOptions.SetLimit(LIMIT)
+
+	countOptions := options.Count()
+
+	countOptions.SetSkip((*page - 1) * LIMIT)
+	countOptions.SetLimit(LIMIT)
+
+	findFilterOptions := bson.D{
+		{Key: "sentBy", Value: userID},
+	}
+
+	reports := []Report{}
+
+	cursor, err := coll.Find(context.Background(), findFilterOptions, findOptions)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if err = cursor.All(context.Background(), &reports); err != nil {
+		return nil, err
+	}
+
+	totalCount, err := coll.CountDocuments(context.Background(), findFilterOptions, countOptions)
+
+	if err != nil {
+		return nil, err
+	}
+
+	result := PaginatedReports{
+		TotalCount: totalCount,
+		Reports:    &reports,
+	}
+
+	return &result, nil
 }
 
 // FindByID finds a report in the database by its ID.

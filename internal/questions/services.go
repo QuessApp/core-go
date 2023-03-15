@@ -161,7 +161,7 @@ func GetAllQuestions(handlerCtx *configs.HandlersCtx, page *int64, sort, filter 
 		TotalCount: questions.TotalCount,
 	}
 
-	return &result, err
+	return &result, nil
 }
 
 // DeleteQuestion retrieves the question with the provided ID from the questions repository and checks if it exists.

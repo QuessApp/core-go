@@ -2,6 +2,7 @@ package reports
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/quessapp/core-go/configs"
 	"github.com/quessapp/core-go/internal/questions"
@@ -43,7 +44,7 @@ func CreateReportHandler(handlerCtx *configs.HandlersCtx, questionsRepository *q
 // The function first parses the report ID from the request parameters and the authenticated user ID from the request context.
 // It then calls the FindReportByID function to retrieve the report with the given ID, and checks if the user is authorized to view the report.
 // Finally, it returns the report data in a successful response or an error response in case of failures.
-func FindReportByIDHandler(handlerCtx *configs.HandlersCtx, reportsRepository *ReportsRepository) error {
+func FindReportByIDHandler(handlerCtx *configs.HandlersCtx, reportsRepository *ReportsRepository, usersRepository *users.UsersRepository, questionsRepository *questions.QuestionsRepository) error {
 	ID, err := toolkitEntities.ParseID(handlerCtx.C.Params("id"))
 
 	if err != nil {
@@ -52,7 +53,7 @@ func FindReportByIDHandler(handlerCtx *configs.HandlersCtx, reportsRepository *R
 
 	authenticatedUserID := users.GetUserByToken(handlerCtx.C).ID
 
-	r, err := FindReportByID(handlerCtx, ID, authenticatedUserID, reportsRepository)
+	r, err := FindReportByID(handlerCtx, ID, authenticatedUserID, reportsRepository, usersRepository, questionsRepository)
 
 	if err != nil {
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
@@ -83,4 +84,31 @@ func DeleteReportHandler(handlerCtx *configs.HandlersCtx, reportsRepository *Rep
 	}
 
 	return responses.ParseSuccessful(handlerCtx.C, http.StatusCreated, nil)
+}
+
+// FindAllSentReportsHandler handles the HTTP request to get all sent reports from a given user.
+// It reads the authenticated user ID from the token, parses the "page" query parameter,
+// and calls the FindAllSent function passing the necessary parameters to retrieve and sort the reports.
+// If an error occurs during parsing or retrieving the reports, it returns an HTTP response with the error message.
+// Otherwise, it returns an HTTP response with the retrieved reports.
+func FindAllSentReportsHandler(handlerCtx *configs.HandlersCtx, reportsRepository *ReportsRepository, usersRepository *users.UsersRepository, questionsRepository *questions.QuestionsRepository) error {
+	authenticatedUserID := users.GetUserByToken(handlerCtx.C).ID
+
+	p, err := strconv.Atoi(handlerCtx.C.Query("page"))
+
+	page := int64(p)
+
+	if err != nil {
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
+	}
+
+	sort := handlerCtx.C.Query("sort")
+
+	reports, err := FindAllSent(handlerCtx, &page, &sort, authenticatedUserID, reportsRepository, usersRepository, questionsRepository)
+
+	if err != nil {
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
+	}
+
+	return responses.ParseSuccessful(handlerCtx.C, http.StatusOK, reports)
 }
