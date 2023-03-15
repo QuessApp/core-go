@@ -13,4 +13,5 @@ func ApplyMiddlewares(app *fiber.App, cfg *configs.Conf) {
 	ApplyLoggerMiddleware(app)
 	ApplyRecoverMiddleware(app, cfg)
 	ApplyRateLimitMiddleware(app)
+	ApplyHelmetMiddleware(app)
 }
