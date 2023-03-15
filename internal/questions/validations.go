@@ -17,8 +17,8 @@ func QuestionExists(q *Question) error {
 	return nil
 }
 
-// QuestionCanViewQuestion validates whether the authenticated user is authorized to view the question.
-func QuestionCanViewQuestion(q *Question, authenticatedUserID toolkitEntities.ID) error {
+// CanViewQuestion validates whether the authenticated user is authorized to view the question.
+func CanViewQuestion(q *Question, authenticatedUserID toolkitEntities.ID) error {
 	if q.SendTo != authenticatedUserID && q.SentBy != authenticatedUserID {
 		return errors.New(pkgErrors.QUESTION_NOT_AUTHORIZED)
 	}

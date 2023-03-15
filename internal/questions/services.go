@@ -83,7 +83,7 @@ func FindQuestionByID(handlerCtx *configs.HandlersCtx, id, authenticatedUserID t
 		return nil, err
 	}
 
-	if err := QuestionCanViewQuestion(q, authenticatedUserID); err != nil {
+	if err := CanViewQuestion(q, authenticatedUserID); err != nil {
 		return nil, err
 	}
 
@@ -201,7 +201,7 @@ func HideQuestion(handlerCtx *configs.HandlersCtx, ID, authenticatedUserID toolk
 		return err
 	}
 
-	if err := QuestionCanViewQuestion(q, authenticatedUserID); err != nil {
+	if err := CanViewQuestion(q, authenticatedUserID); err != nil {
 		return err
 	}
 
@@ -231,7 +231,7 @@ func ReplyQuestion(handlerCtx *configs.HandlersCtx, payload *ReplyQuestionDTO, a
 		return err
 	}
 
-	if err := QuestionCanViewQuestion(q, authenticatedUserID); err != nil {
+	if err := CanViewQuestion(q, authenticatedUserID); err != nil {
 		return err
 	}
 
@@ -265,7 +265,7 @@ func EditQuestionReply(handlerCtx *configs.HandlersCtx, payload *EditQuestionRep
 		return err
 	}
 
-	if err := QuestionCanViewQuestion(q, authenticatedUserID); err != nil {
+	if err := CanViewQuestion(q, authenticatedUserID); err != nil {
 		return err
 	}
 
@@ -304,7 +304,7 @@ func RemoveQuestionReply(handlerCtx *configs.HandlersCtx, ID, authenticatedUserI
 		return err
 	}
 
-	if err := QuestionCanViewQuestion(q, authenticatedUserID); err != nil {
+	if err := CanViewQuestion(q, authenticatedUserID); err != nil {
 		return err
 	}
 

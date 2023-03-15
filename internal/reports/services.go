@@ -43,7 +43,7 @@ func CreateReport(handlerCtx *configs.HandlersCtx, payload *CreateReportDTO, aut
 			return err
 		}
 
-		if err := questions.QuestionCanViewQuestion(q, authenticatedUserID); err != nil {
+		if err := questions.CanViewQuestion(q, authenticatedUserID); err != nil {
 			return err
 		}
 
@@ -56,5 +56,67 @@ func CreateReport(handlerCtx *configs.HandlersCtx, payload *CreateReportDTO, aut
 		return err
 	}
 
+	// TODO: send an email thanking you for reporting
+
 	return nil
 }
+
+// FindReportByID retrieves a report with the given ID and verifies whether the authenticated user is authorized to view it.
+// It takes four parameters: handlerCtx, reportID, authenticatedUserID, and reportsRepository.
+// handlerCtx is an instance of the HandlersCtx struct, which contains the fiber context and application context.
+// reportID is the ID of the report to retrieve.
+// authenticatedUserID is the ID of the authenticated user.
+// reportsRepository is an instance of the ReportsRepository struct, which is used to access and modify report data.
+// It returns a pointer to the Report struct and an error.
+func FindReportByID(handlerCtx *configs.HandlersCtx, reportID, authenticatedUserID toolkitEntities.ID, reportsRepository *ReportsRepository) (*Report, error) {
+	r, err := reportsRepository.FindByID(reportID)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if err := ReportExists(r); err != nil {
+		return nil, err
+	}
+
+	if err := CanViewReport(r, authenticatedUserID); err != nil {
+		return nil, err
+	}
+
+	return r, nil
+}
+
+// DeleteReport is responsible for deleting a report.
+// It receives four parameters: handlerCtx, reportID, authenticatedUserID, and reportsRepository.
+// handlerCtx is an instance of the HandlersCtx struct, which contains the request context and other useful information.
+// reportID is an instance of the toolkitEntities.ID struct, which represents the ID of the report to be deleted.
+// authenticatedUserID is an instance of the toolkitEntities.ID struct, which represents the ID of the user making the request.
+// reportsRepository is an instance of the ReportsRepository struct, which is used to access and modify report data.
+// It returns an error if there was an issue deleting the report or if the user is not authorized to perform this action.
+func DeleteReport(handlerCtx *configs.HandlersCtx, reportID, authenticatedUserID toolkitEntities.ID, reportsRepository *ReportsRepository) error {
+	r, err := reportsRepository.FindByID(reportID)
+
+	if err != nil {
+		return err
+	}
+
+	if err := ReportExists(r); err != nil {
+		return err
+	}
+
+	if err := CanUserDeleteReport(r, authenticatedUserID); err != nil {
+		return err
+	}
+
+	if err := CanViewReport(r, authenticatedUserID); err != nil {
+		return err
+	}
+
+	if err := reportsRepository.Delete(reportID); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// TODO: edit report service

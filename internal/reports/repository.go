@@ -72,3 +72,34 @@ func (r *ReportsRepository) AlreadySent(payload *CreateReportDTO) bool {
 
 	return !toolkitEntities.IsZeroID(foundRegistry.ID)
 }
+
+// Delete is a method of the ReportsRepository struct that receives a toolkitEntities.ID parameter, which represents the ID of the report that will be deleted.
+// It deletes a report from the database by querying the "reports" collection and searching for the report with the given ID.
+// If the report is found, it is deleted from the database. If not, the function returns an error.
+// The function returns an error indicating whether the operation was successful or not.
+func (r *ReportsRepository) Delete(reportID toolkitEntities.ID) error {
+	coll := r.db.Collection(collections.REPORTS)
+
+	filter := bson.D{{Key: "_id", Value: reportID}}
+
+	_, err := coll.DeleteOne(context.Background(), filter)
+
+	return err
+}
+
+// FindByID finds a report in the database by its ID.
+// It receives a reportID parameter that represents the ID of the report to be found.
+// It returns a pointer to a Report and an error, where the Report pointer will contain the report found or nil if it wasn't found.
+// If an error occurs during the search, it will be returned in the error parameter.
+// This function is a method of the ReportsRepository struct, which is responsible for accessing and modifying report data in the database.
+func (r *ReportsRepository) FindByID(reportID toolkitEntities.ID) (*Report, error) {
+	coll := r.db.Collection(collections.REPORTS)
+
+	filter := bson.D{{Key: "_id", Value: reportID}}
+
+	foundRegistry := Report{}
+
+	err := coll.FindOne(context.Background(), filter).Decode(&foundRegistry)
+
+	return &foundRegistry, err
+}

@@ -19,6 +19,8 @@ import (
 func SendEmailNewQuestionReceived(cfg *configs.Conf, ch *amqp.Channel, q *amqp.Queue, content string, isAnonymous bool, userToSendQuestion *users.User, userThatIsSendingQuestion *users.User) {
 	var subject string
 
+	// TODO: use AWS SQS instead of rabbitmq.
+
 	if isAnonymous {
 		subject = "Você recebeu uma pergunta anônima"
 	} else {
