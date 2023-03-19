@@ -1,6 +1,7 @@
 package api
 
 import (
+	"context"
 	"fmt"
 	"log"
 
@@ -117,6 +118,13 @@ func initServer(cfg *configs.Conf, messageBrokerChannel *amqp.Channel, S3Client 
 func Setup() {
 	cfg := loadConfig()
 	db := initDatabase(cfg)
+
+	defer func() {
+		if err := db.Client().Disconnect(context.Background()); err != nil {
+			panic(err)
+		}
+	}()
+
 	conn, ch := initMessageBroker(cfg)
 	defer conn.Close()
 
