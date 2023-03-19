@@ -7,9 +7,8 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-// LoadRoutes loads all auth routes of app.
-//
-// It create routes and assign handlers to each route.
+// LoadRoutes is a function that sets up the routes for the auth API.
+// It takes in an AppCtx, a AuthRepository, and a UserRepository.
 func LoadRoutes(AppCtx *configs.AppCtx, authRepository *AuthRepository, usersRepository *users.UsersRepository) {
 	g := AppCtx.App.Group("/auth")
 

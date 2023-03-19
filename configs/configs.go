@@ -70,7 +70,7 @@ type AppCtx struct {
 	S3Client       *s3.S3
 }
 
-// HandlersCtx is a global model for handlers. It defines the fiber context, app context, etc..
+// HandlersCtx is a global model for handlers. It defines the fiber context, app context, etc.
 // Use HandlersCtx to avoid long function params.
 type HandlersCtx struct {
 	// Context from fiber.
