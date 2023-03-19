@@ -65,7 +65,7 @@ var SwaggerInfo = &swag.Spec{
 	BasePath:         "/",
 	Schemes:          []string{},
 	Title:            "Questions App API",
-	Description:      "This is the docs for REST API of Questions App.",
+	Description:      "This is the docs for Quess Rest API",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 }
