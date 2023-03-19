@@ -142,17 +142,26 @@ func GetAllQuestions(handlerCtx *configs.HandlersCtx, page *int64, sort, filter 
 	for _, q := range *questions.Questions {
 		if q.IsAnonymous {
 			q.SentBy = nil
-		} else {
-			u := usersRepository.FindUserByID(q.SentBy.(toolkitEntities.ID))
-
-			q.SentBy = users.User{
-				ID:        u.ID,
-				Nick:      u.Nick,
-				Name:      u.Name,
-				AvatarURL: u.AvatarURL,
-			}
 		}
 
+		if !q.IsAnonymous {
+			u := usersRepository.FindUserByID(q.SentBy.(toolkitEntities.ID))
+
+			userExists := !u.ID.IsZero()
+
+			if userExists {
+				q.SentBy = users.User{
+					ID:        u.ID,
+					Nick:      u.Nick,
+					Name:      u.Name,
+					AvatarURL: u.AvatarURL,
+				}
+			}
+
+			if !userExists {
+				q.SentBy = nil
+			}
+		}
 		allQuestions = append(allQuestions, q)
 	}
 
