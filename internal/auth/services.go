@@ -3,6 +3,7 @@ package auth
 import (
 	"github.com/quessapp/core-go/configs"
 	"github.com/quessapp/core-go/internal/users"
+	toolkitEntities "github.com/quessapp/toolkit/entities"
 
 	"golang.org/x/crypto/bcrypt"
 )
@@ -43,13 +44,7 @@ func SignUp(handlerCtx *configs.HandlersCtx, payload *SignUpUserDTO, authReposit
 		return nil, err
 	}
 
-	accessToken, err := users.CreateAccessToken(u, handlerCtx.Cfg)
-
-	if err != nil {
-		return nil, err
-	}
-
-	refreshToken, err := users.CreateRefreshToken(u, handlerCtx.Cfg)
+	authTokens, err := authRepository.CreateAuthTokens(u.ID, handlerCtx.Cfg.JWTSecret)
 
 	if err != nil {
 		return nil, err
@@ -63,8 +58,8 @@ func SignUp(handlerCtx *configs.HandlersCtx, payload *SignUpUserDTO, authReposit
 			Email:     u.Email,
 			Locale:    u.Locale,
 		},
-		AccessToken:  accessToken,
-		RefreshToken: refreshToken,
+		AccessToken:  authTokens.AccessToken,
+		RefreshToken: authTokens.RefreshToken,
 	}
 
 	return data, nil
@@ -79,7 +74,7 @@ func SignUp(handlerCtx *configs.HandlersCtx, payload *SignUpUserDTO, authReposit
 // It returns a ResponseWithUser struct containing the authenticated user's information,
 // an access token and a refresh token if the authentication was successful.
 // Otherwise, it returns an error.
-func SignIn(handlerCtx *configs.HandlersCtx, payload *SignInUserDTO, usersRepository *users.UsersRepository) (*users.ResponseWithUser, error) {
+func SignIn(handlerCtx *configs.HandlersCtx, payload *SignInUserDTO, authRepository *AuthRepository, usersRepository *users.UsersRepository) (*users.ResponseWithUser, error) {
 	if err := payload.Validate(); err != nil {
 		return nil, err
 	}
@@ -94,13 +89,7 @@ func SignIn(handlerCtx *configs.HandlersCtx, payload *SignInUserDTO, usersReposi
 		return nil, err
 	}
 
-	accessToken, err := users.CreateAccessToken(u, handlerCtx.Cfg)
-
-	if err != nil {
-		return nil, err
-	}
-
-	refreshToken, err := users.CreateRefreshToken(u, handlerCtx.Cfg)
+	authTokens, err := authRepository.CreateAuthTokens(u.ID, handlerCtx.Cfg.JWTSecret)
 
 	if err != nil {
 		return nil, err
@@ -117,9 +106,44 @@ func SignIn(handlerCtx *configs.HandlersCtx, payload *SignInUserDTO, usersReposi
 			EnableAPPEmails: u.EnableAPPEmails,
 			Locale:          u.Locale,
 		},
-		AccessToken:  accessToken,
-		RefreshToken: refreshToken,
+		AccessToken:  authTokens.AccessToken,
+		RefreshToken: authTokens.RefreshToken,
 	}
 
 	return data, nil
+}
+
+// RefreshToken generates a new access token and refresh token pair for the authenticated user
+// identified by the given userID and refresh token. It first checks if the token exists in the
+// database using the AuthRepository's FindTokenByUserIDAndRefreshToken function. If the token
+// doesn't exist, it returns an error. Otherwise, it deletes the existing token using the
+// AuthRepository's DeleteByID function and creates a new token pair using the CreateAuthTokens
+// function. It returns the new token pair or an error if there was an issue.
+func RefreshToken(handlerCtx *configs.HandlersCtx, authenticatedUserID toolkitEntities.ID, refreshToken string, authRepository *AuthRepository) (*Token, error) {
+	t := authRepository.FindTokenByUserIDAndRefreshToken(authenticatedUserID, refreshToken)
+
+	if err := TokenExists(t); err != nil {
+		return nil, err
+	}
+
+	err := authRepository.DeleteByID(t.ID)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return authRepository.CreateAuthTokens(*t.CreatedBy, handlerCtx.Cfg.JWTSecret)
+}
+
+// Logout deletes all the tokens associated with the authenticated user identified by the given userID.
+// It returns an error if there was an issue.
+// Otherwise, it returns nil.
+func Logout(handlerCtx *configs.HandlersCtx, authenticatedUserID toolkitEntities.ID, authRepository *AuthRepository) error {
+	err := authRepository.DeleteAllUserTokens(authenticatedUserID)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
