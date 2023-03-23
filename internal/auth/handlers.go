@@ -87,3 +87,25 @@ func LogoutHandler(handlerCtx *configs.HandlersCtx, authRepository *AuthReposito
 
 	return responses.ParseSuccessful(handlerCtx.C, http.StatusOK, nil)
 }
+
+// ForgotPasswordHandler function is an HTTP request handler that handles the password reset process.
+// It takes a HandlersCtx, an AuthRepository, and a UsersRepository as arguments.
+// First, it extracts the ForgotPasswordDTO from the request body using the HandlersCtx.
+// Then, it calls the ForgotPassword function passing the extracted DTO and repositories.
+// If the ForgotPassword function returns an error, the function returns an HTTP response with a status code of 400 and the error message.
+// If the ForgotPassword function does not return an error, the function returns an HTTP response with a status code of 200 and a null body.
+func ForgotPasswordHandler(handlerCtx *configs.HandlersCtx, authRepository *AuthRepository, usersRepository *users.UsersRepository) error {
+	payload := ForgotPasswordDTO{}
+
+	if err := handlerCtx.C.BodyParser(&payload); err != nil {
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
+	}
+
+	err := ForgotPassword(handlerCtx, payload, authRepository, usersRepository)
+
+	if err != nil {
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
+	}
+
+	return responses.ParseSuccessful(handlerCtx.C, http.StatusOK, nil)
+}

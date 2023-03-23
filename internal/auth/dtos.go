@@ -25,6 +25,11 @@ type SignUpUserDTO struct {
 	Locale    string
 }
 
+// ForgotPasswordDTO is DTO for payload for forgot-password handler.
+type ForgotPasswordDTO struct {
+	Email string
+}
+
 // SignInUserDTO is DTO for payload for signin handler.
 type SignInUserDTO struct {
 	ID       toolkitEntities.ID

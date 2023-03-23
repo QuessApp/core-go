@@ -28,12 +28,23 @@ func TokenExists(t *Token) error {
 	return nil
 }
 
-// TokenExpired checks if the given token has expired. It returns an error if the token's
+// IsTokenExpired checks if the given token has expired. It returns an error if the token's
 // expiration date is before the current date, indicating that the token has expired, or nil
 // if the token has not expired.
-func TokenExpired(t *Token) error {
+func IsTokenExpired(t *Token) error {
 	if t.ExpiresAt.Before(time.Now()) {
 		return errors.New(pkgErrors.TOKEN_EXPIRED)
+	}
+
+	return nil
+}
+
+// IsCodeExpired checks if the given code has expired. It returns an error if the code's
+// expiration date is before the current date, indicating that the code has expired, or nil
+// if the code has not expired.
+func IsCodeExpired(c *Token) error {
+	if c.ExpiresAt.Before(time.Now()) {
+		return errors.New(pkgErrors.CODE_EXPIRED)
 	}
 
 	return nil

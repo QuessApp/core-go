@@ -85,6 +85,10 @@ const (
 )
 
 const (
-	TOKEN_NOT_FOUND = "o token não existe"
-	TOKEN_EXPIRED   = "o token expirou"
+	TOKEN_NOT_FOUND = "o token fornecido não existe"
+	TOKEN_EXPIRED   = "o token fornecido expirou"
+)
+
+const (
+	CODE_EXPIRED = "o código fornecido expirou"
 )
