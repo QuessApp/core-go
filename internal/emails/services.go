@@ -146,3 +146,41 @@ func SendEmailPasswordChanged(cfg *configs.Conf, ch *amqp.Channel, q *amqp.Queue
 
 	return nil
 }
+
+func SendEmailThanksForReporting(cfg *configs.Conf, ch *amqp.Channel, q *amqp.Queue, userToSendEmail *users.User) {
+	email := toolkitEntities.Email{
+		To:      userToSendEmail.Email,
+		Subject: "Denúncia enviada",
+		Body:    "Agradecemos por nos ajudar a manter a comunidade segura. Sua denúncia será analisada e, se necessário, tomaremos as devidas providências.",
+	}
+
+	emailParsed, err := json.Marshal(email)
+
+	if err != nil {
+		log.Fatalf("fail to marshal %s", err)
+		return
+	}
+
+	encryptedMsg, err := crypto.Encrypt(string(emailParsed), cfg.CipherKey)
+
+	if err != nil {
+		log.Fatalf("fail to encrypt email email to user %s \n", err)
+		return
+	}
+
+	err = ch.Publish(
+		"",
+		q.Name,
+		false,
+		false,
+		amqp.Publishing{
+			ContentType: "text/plain",
+			Body:        []byte(encryptedMsg),
+		})
+
+	if err != nil {
+		log.Fatalf("fail to send email to user %s \n", err)
+		return
+	}
+
+}
