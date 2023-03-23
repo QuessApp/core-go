@@ -7,8 +7,9 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-// LoadRoutes loads all users routes of app.
-// It create a group of routes called "users" and assign it the handlers and paths.
+// LoadRoutes is responsible for setting up the users related to settings in the Fiber app.
+// AppCtx is the application context.
+// usersRepository is the repository for users.
 func LoadRoutes(AppCtx *configs.AppCtx, usersRepository *UsersRepository) {
 	g := AppCtx.App.Group("/users", middlewares.JWTMiddleware(AppCtx.App, AppCtx.Cfg))
 

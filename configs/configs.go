@@ -4,7 +4,6 @@ import (
 	"log"
 
 	"github.com/aws/aws-sdk-go/service/s3"
-	"github.com/go-chi/jwtauth"
 	"github.com/gofiber/fiber/v2"
 	"github.com/spf13/viper"
 	"github.com/streadway/amqp"
@@ -37,7 +36,6 @@ type Conf struct {
 	// JWT config
 	JWTSecret    string `mapstructure:"JWT_SECRET"`
 	JWTExpiresIn int    `mapstructure:"JWT_EXPIRES_IN"`
-	JWTToken     *jwtauth.JWTAuth
 
 	// Queues
 	MessageBrokerURI    string `mapstructure:"MESSAGE_BROKER_URI"`
@@ -99,8 +97,6 @@ func LoadConfig(path string) (*Conf, error) {
 	log.Printf("PORT: %s", cfg.ServerPort)
 	log.Printf("ENV: %s", cfg.Env)
 	log.Println("===============================")
-
-	cfg.JWTToken = jwtauth.New("HS256", []byte(cfg.JWTSecret), nil)
 
 	return cfg, nil
 }

@@ -83,3 +83,7 @@ const (
 	CANT_REPORT_ALREADY_SENT = "você não pode enviar essa denúncia, pois já enviou uma semelhante anteriormente"
 	CANT_REPORT_YOURSELF     = "você não pode enviar uma denúncia para si mesmo"
 )
+
+const (
+	TOKEN_NOT_FOUND = "o token não existe"
+)

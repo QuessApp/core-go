@@ -24,7 +24,7 @@ func SearchUserHandler(handlerCtx *configs.HandlersCtx, usersRepository *UsersRe
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
-	authenticatedUserID := GetUserByToken(handlerCtx.C).ID
+	authenticatedUserID := GetUserByToken(handlerCtx).ID
 
 	users, err := SearchUser(handlerCtx, value, &page, authenticatedUserID, usersRepository)
 
@@ -39,7 +39,7 @@ func SearchUserHandler(handlerCtx *configs.HandlersCtx, usersRepository *UsersRe
 // It returns a successful HTTP response with the authenticated user's data if the user is found.
 // Otherwise, it returns a Bad Request HTTP response with an error message.
 func GetAuthenticatedUserHandler(handlerCtx *configs.HandlersCtx, usersRepository *UsersRepository) error {
-	authenticatedUserID := GetUserByToken(handlerCtx.C).ID
+	authenticatedUserID := GetUserByToken(handlerCtx).ID
 
 	user, err := GetAuthenticatedUser(handlerCtx, authenticatedUserID, usersRepository)
 
@@ -70,7 +70,7 @@ func FindUserByNickHandler(handlerCtx *configs.HandlersCtx, usersRepository *Use
 // It also takes a `usersRepository` parameter of type `*UsersRepository`, which is used to interact with the database.
 // It returns an error if the upload was unsuccessful or if the request parameters were invalid, otherwise it returns nil.
 func UpdateUserAvatarHandler(handlerCtx *configs.HandlersCtx, usersRepository *UsersRepository) error {
-	authenticatedUserID := GetUserByToken(handlerCtx.C).ID
+	authenticatedUserID := GetUserByToken(handlerCtx).ID
 	form, err := handlerCtx.C.FormFile("avatar")
 
 	if err != nil {
@@ -87,7 +87,7 @@ func UpdateUserAvatarHandler(handlerCtx *configs.HandlersCtx, usersRepository *U
 // UpdateUserProfileHandler updates the authenticated user's profile using the provided payload.
 // It takes two parameters, a HandlerCtx and a UsersRepository, and returns an error if the update is unsuccessful.
 func UpdateUserProfileHandler(handlerCtx *configs.HandlersCtx, usersRepository *UsersRepository) error {
-	authenticatedUserID := GetUserByToken(handlerCtx.C).ID
+	authenticatedUserID := GetUserByToken(handlerCtx).ID
 	payload := UpdateProfileDTO{}
 
 	if err := handlerCtx.C.BodyParser(&payload); err != nil {

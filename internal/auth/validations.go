@@ -4,12 +4,24 @@ import (
 	"errors"
 
 	pkgErrors "github.com/quessapp/core-go/pkg/errors"
+	toolkitEntities "github.com/quessapp/toolkit/entities"
 )
 
-// IsPasswordCorrect returns an error if hashed password don't match.
+// IsPasswordCorrect checks if the given hash result is nil. If it is, it means that the
+// password is correct, and it returns nil. Otherwise, it returns an error.
 func IsPasswordCorrect(hashResult error) error {
 	if hashResult != nil {
 		return errors.New(pkgErrors.INCORRECT_SIGNIN_DATA)
+	}
+
+	return nil
+}
+
+// TokenExists checks if the given token exists in the database. It returns an error if the
+// token's ID is zero, indicating that the token does not exist, or nil if the token exists.
+func TokenExists(t *Token) error {
+	if toolkitEntities.IsZeroID(t.ID) {
+		return errors.New(pkgErrors.TOKEN_NOT_FOUND)
 	}
 
 	return nil
