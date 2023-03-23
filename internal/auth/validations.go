@@ -2,6 +2,7 @@ package auth
 
 import (
 	"errors"
+	"time"
 
 	pkgErrors "github.com/quessapp/core-go/pkg/errors"
 	toolkitEntities "github.com/quessapp/toolkit/entities"
@@ -22,6 +23,17 @@ func IsPasswordCorrect(hashResult error) error {
 func TokenExists(t *Token) error {
 	if toolkitEntities.IsZeroID(t.ID) {
 		return errors.New(pkgErrors.TOKEN_NOT_FOUND)
+	}
+
+	return nil
+}
+
+// TokenExpired checks if the given token has expired. It returns an error if the token's
+// expiration date is before the current date, indicating that the token has expired, or nil
+// if the token has not expired.
+func TokenExpired(t *Token) error {
+	if t.ExpiresAt.Before(time.Now()) {
+		return errors.New(pkgErrors.TOKEN_EXPIRED)
 	}
 
 	return nil

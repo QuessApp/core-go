@@ -86,4 +86,5 @@ const (
 
 const (
 	TOKEN_NOT_FOUND = "o token não existe"
+	TOKEN_EXPIRED   = "o token expirou"
 )

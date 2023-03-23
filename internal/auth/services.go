@@ -122,6 +122,10 @@ func SignIn(handlerCtx *configs.HandlersCtx, payload *SignInUserDTO, authReposit
 func RefreshToken(handlerCtx *configs.HandlersCtx, authenticatedUserID toolkitEntities.ID, refreshToken string, authRepository *AuthRepository) (*Token, error) {
 	t := authRepository.FindTokenByUserIDAndRefreshToken(authenticatedUserID, refreshToken)
 
+	if err := TokenExpired(t); err != nil {
+		return nil, err
+	}
+
 	if err := TokenExists(t); err != nil {
 		return nil, err
 	}
