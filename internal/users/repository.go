@@ -243,7 +243,6 @@ func (u *UsersRepository) UpdateProfile(userID toolkitEntities.ID, payload *Upda
 
 	filter := bson.D{{Key: "_id", Value: userID}}
 
-	// TODO: also update password
 	update := bson.D{{Key: "$set", Value: bson.D{
 		{
 			Key: "nick", Value: payload.Nick,

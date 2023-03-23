@@ -2,6 +2,7 @@ package reports
 
 import (
 	"github.com/quessapp/core-go/configs"
+	"github.com/quessapp/core-go/internal/emails"
 	"github.com/quessapp/core-go/internal/questions"
 	"github.com/quessapp/core-go/internal/users"
 	toolkitEntities "github.com/quessapp/toolkit/entities"
@@ -56,7 +57,8 @@ func CreateReport(handlerCtx *configs.HandlersCtx, payload *CreateReportDTO, aut
 		return err
 	}
 
-	// TODO: send an email thanking you for reporting
+	u := usersRepository.FindUserByID(authenticatedUserID)
+	go emails.SendEmailThanksForReporting(handlerCtx.Cfg, handlerCtx.MessageQueueCh, handlerCtx.EmailsQueue, u)
 
 	return nil
 }

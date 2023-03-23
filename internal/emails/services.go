@@ -146,3 +146,46 @@ func SendEmailPasswordChanged(cfg *configs.Conf, ch *amqp.Channel, q *amqp.Queue
 
 	return nil
 }
+
+// SendEmailThanksForReporting sends an email to the user that reported a question.
+// It takes in the configuration object cfg, the message queue channel ch, and the email queue q.
+// It also takes in the userToSendEmail object which contains the email address of the user.
+// It constructs an email object with the To field set to the email of the userToSendEmail.
+// It encrypts the email using the encryption key in cfg.CipherKey and sends it to the email queue q using the message queue channel ch.
+// It returns an error if there was a problem marshaling, encrypting, or sending the email.
+func SendEmailThanksForReporting(cfg *configs.Conf, ch *amqp.Channel, q *amqp.Queue, userToSendEmail *users.User) {
+	email := toolkitEntities.Email{
+		To:      userToSendEmail.Email,
+		Subject: "Denúncia enviada",
+		Body:    "Agradecemos por nos ajudar a manter a comunidade segura. Sua denúncia será analisada e, se necessário, tomaremos as devidas providências.",
+	}
+
+	emailParsed, err := json.Marshal(email)
+
+	if err != nil {
+		log.Fatalf("fail to marshal %s", err)
+		return
+	}
+
+	encryptedMsg, err := crypto.Encrypt(string(emailParsed), cfg.CipherKey)
+
+	if err != nil {
+		log.Fatalf("fail to encrypt email email to user %s \n", err)
+		return
+	}
+
+	err = ch.Publish(
+		"",
+		q.Name,
+		false,
+		false,
+		amqp.Publishing{
+			ContentType: "text/plain",
+			Body:        []byte(encryptedMsg),
+		})
+
+	if err != nil {
+		log.Fatalf("fail to send email to user %s \n", err)
+		return
+	}
+}
