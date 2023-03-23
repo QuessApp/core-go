@@ -124,6 +124,10 @@ func RefreshToken(handlerCtx *configs.HandlersCtx, authenticatedUserID toolkitEn
 	t := authRepository.FindTokenByUserIDAndRefreshToken(authenticatedUserID, refreshToken)
 
 	if err := IsTokenExpired(t); err != nil {
+		if err := authRepository.DeleteTokenByID(t.ID); err != nil {
+			return nil, err
+		}
+
 		return nil, err
 	}
 
@@ -131,9 +135,7 @@ func RefreshToken(handlerCtx *configs.HandlersCtx, authenticatedUserID toolkitEn
 		return nil, err
 	}
 
-	err := authRepository.DeleteByID(t.ID)
-
-	if err != nil {
+	if err := authRepository.DeleteTokenByID(t.ID); err != nil {
 		return nil, err
 	}
 
@@ -189,6 +191,72 @@ func ForgotPassword(handlerCtx *configs.HandlersCtx, payload ForgotPasswordDTO, 
 	if err := emails.SendEmailForgotPassword(handlerCtx.Cfg, handlerCtx.MessageQueueCh, handlerCtx.EmailsQueue, t.Code, u); err != nil {
 		return err
 	}
+
+	return nil
+}
+
+// ResetPassword resets a user's password based on the provided ResetPasswordDTO.
+// It takes in the HandlerCtx, ResetPasswordDTO, AuthRepository, and UsersRepository as parameters,
+// and returns an error if any of the operations fail.
+// The function first checks if the code exists in the database using the AuthRepository's FindTokenByCode function.
+// If the code does not exist, it returns an error.
+// If the code exists, the function checks if the code is expired using the IsCodeExpired function.
+// If the code is expired, it deletes the code token from the database using the AuthRepository's DeleteTokenByID function.
+// Then, it returns an error.
+// If the code is not expired, the function generates a new hashed password using the bcrypt package.
+// Then, it finds the user associated with the code token using the UsersRepository's FindUserByID function.
+// If the user does not exist, it returns an error.
+// If the user exists, the function updates the user's password using the UsersRepository's UpdateUserPassword function.
+// Then, it deletes the code token from the database using the AuthRepository's DeleteTokenByID function.
+// Finally, it returns nil.
+func ResetPassword(handlerCtx *configs.HandlersCtx, payload ResetPasswordDTO, authRepository *AuthRepository, usersRepository *users.UsersRepository) error {
+	if err := payload.Validate(); err != nil {
+		return err
+	}
+
+	t := authRepository.FindTokenByCode(payload.Code)
+
+	if err := CodeExists(t); err != nil {
+		return err
+	}
+
+	if err := IsCodeExpired(t); err != nil {
+		if err := authRepository.DeleteTokenByID(t.ID); err != nil {
+			return err
+		}
+
+		return err
+	}
+
+	newHashedPassword, err := bcrypt.GenerateFromPassword([]byte(payload.Password), bcrypt.DefaultCost)
+
+	if err != nil {
+		return err
+	}
+
+	u := usersRepository.FindUserByID(*t.CreatedBy)
+
+	if err := users.UserExists(u); err != nil {
+		return err
+	}
+
+	if err := authRepository.UpdateUserPassword(u.ID, newHashedPassword); err != nil {
+		return err
+	}
+
+	if payload.LogoutFromAllDevices {
+		tokenType := "Bearer"
+
+		if err := authRepository.DeleteAllUserTokens(u.ID, &tokenType); err != nil {
+			return err
+		}
+	}
+
+	if err := authRepository.DeleteTokenByID(t.ID); err != nil {
+		return err
+	}
+
+	go emails.SendEmailPasswordChanged(handlerCtx.Cfg, handlerCtx.MessageQueueCh, handlerCtx.EmailsQueue, u)
 
 	return nil
 }

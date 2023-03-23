@@ -27,4 +27,7 @@ func LoadRoutes(AppCtx *configs.AppCtx, authRepository *AuthRepository, usersRep
 	g.Post("/forgot-password", func(c *fiber.Ctx) error {
 		return ForgotPasswordHandler(&configs.HandlersCtx{C: c, AppCtx: *AppCtx}, authRepository, usersRepository)
 	})
+	g.Put("/reset-password", func(c *fiber.Ctx) error {
+		return ResetPasswordHandler(&configs.HandlersCtx{C: c, AppCtx: *AppCtx}, authRepository, usersRepository)
+	})
 }

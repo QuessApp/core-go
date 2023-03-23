@@ -101,3 +101,42 @@ func SendEmailForgotPassword(cfg *configs.Conf, ch *amqp.Channel, q *amqp.Queue,
 
 	return nil
 }
+
+func SendEmailPasswordChanged(cfg *configs.Conf, ch *amqp.Channel, q *amqp.Queue, userToSendEmail *users.User) error {
+	email := toolkitEntities.Email{
+		To:      userToSendEmail.Email,
+		Subject: "Senha alterada",
+		Body:    "Sua senha foi alterada com sucesso. Se você não solicitou essa alteração ou acha que é um engano, entre em contato com o suporte.",
+	}
+
+	emailParsed, err := json.Marshal(email)
+
+	if err != nil {
+		log.Fatalf("fail to marshal %s", err)
+		return err
+	}
+
+	encryptedMsg, err := crypto.Encrypt(string(emailParsed), cfg.CipherKey)
+
+	if err != nil {
+		log.Fatalf("fail to encrypt email email to user %s \n", err)
+		return err
+	}
+
+	err = ch.Publish(
+		"",
+		q.Name,
+		false,
+		false,
+		amqp.Publishing{
+			ContentType: "text/plain",
+			Body:        []byte(encryptedMsg),
+		})
+
+	if err != nil {
+		log.Fatalf("fail to send email to user %s \n", err)
+		return err
+	}
+
+	return nil
+}

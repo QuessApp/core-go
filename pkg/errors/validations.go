@@ -19,6 +19,9 @@ const (
 	EMAIL_IN_USE = "email já em uso"
 	NICK_IN_USE  = "nome de usuário já em uso"
 
+	LOGOUT_FROM_ALL_DEVICES_REQUIRED = "campo de logout de todos os dispositivos é obrigatório"
+	LOGOUT_FROM_ALL_DEVICES_INVALID  = "campo de logout de todos os dispositivos contém valor inesperado"
+
 	CONTENT_REQUIRED = "campo de conteúdo é obrigatório"
 	CONTENT_LENGTH   = "campo de conteúdo deve conter entre 1 a 250 caracteres"
 
@@ -90,5 +93,7 @@ const (
 )
 
 const (
-	CODE_EXPIRED = "o código fornecido expirou"
+	CODE_NOT_FOUND = "o código fornecido não existe"
+	CODE_REQUIRED  = "campo de código é obrigatório"
+	CODE_EXPIRED   = "o código fornecido expirou"
 )
