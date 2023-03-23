@@ -30,6 +30,16 @@ type ForgotPasswordDTO struct {
 	Email string
 }
 
+// ResetPasswordDTO is DTO for payload for reset-password handler.
+type ResetPasswordDTO struct {
+	// The verification code sent to the user's email.
+	Code string
+	// The new password.
+	Password string
+	// If true, the user will be logged out from all devices.
+	LogoutFromAllDevices bool
+}
+
 // SignInUserDTO is DTO for payload for signin handler.
 type SignInUserDTO struct {
 	ID       toolkitEntities.ID
@@ -86,6 +96,23 @@ func (d SignInUserDTO) Validate() error {
 func (d ForgotPasswordDTO) Validate() error {
 	validationResult := validation.ValidateStruct(&d,
 		validation.Field(&d.Email, validation.Required.Error(errors.EMAIL_FIELD_REQUIRED), validation.Length(5, 200).Error(errors.EMAIL_FIELD_LENGTH), is.Email.Error(errors.EMAIL_FORMAT_INVALID)),
+	)
+
+	return validations.GetValidationError(validationResult)
+}
+
+// Validate validates the ResetPasswordDTO object and returns an error if it is invalid.
+// It takes in no parameters and returns an error if the password, code, or logoutFromAllDevices fields are missing or invalid.
+// The password field is required and must have a length between 6 and 200 characters.
+// The code field is required.
+// The logoutFromAllDevices field is required and must be either true or false.
+// The method then returns the validation error, if any, using the validations.GetValidationError method.
+// If there are no validation errors, the method returns nil.
+func (d ResetPasswordDTO) Validate() error {
+	validationResult := validation.ValidateStruct(&d,
+		validation.Field(&d.Password, validation.Required.Error(errors.PASSWORD_FIELD_REQUIRED), validation.Length(6, 200).Error(errors.PASSWORD_FIELD_LENGTH)),
+		validation.Field(&d.Code, validation.Required.Error(errors.CODE_REQUIRED)),
+		validation.Field(&d.LogoutFromAllDevices, validation.Required.Error(errors.LOGOUT_FROM_ALL_DEVICES_REQUIRED), validation.In(true, false).Error(errors.LOGOUT_FROM_ALL_DEVICES_INVALID)),
 	)
 
 	return validations.GetValidationError(validationResult)

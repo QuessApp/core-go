@@ -101,3 +101,48 @@ func SendEmailForgotPassword(cfg *configs.Conf, ch *amqp.Channel, q *amqp.Queue,
 
 	return nil
 }
+
+// SendEmailPasswordChanged sends an email to the user with the new password.
+// It takes in the configuration object cfg, the message queue channel ch, and the email queue q.
+// It also takes in the userToSendEmail object which contains the email address of the user.
+// It constructs an email object with the To field set to the email of the userToSendEmail.
+// It encrypts the email using the encryption key in cfg.CipherKey and sends it to the email queue q using the message queue channel ch.
+// It returns an error if there was a problem marshaling, encrypting, or sending the email.
+func SendEmailPasswordChanged(cfg *configs.Conf, ch *amqp.Channel, q *amqp.Queue, userToSendEmail *users.User) error {
+	email := toolkitEntities.Email{
+		To:      userToSendEmail.Email,
+		Subject: "Senha alterada",
+		Body:    "Sua senha foi alterada com sucesso. Se você não solicitou essa alteração ou acha que é um engano, entre em contato com o suporte.",
+	}
+
+	emailParsed, err := json.Marshal(email)
+
+	if err != nil {
+		log.Fatalf("fail to marshal %s", err)
+		return err
+	}
+
+	encryptedMsg, err := crypto.Encrypt(string(emailParsed), cfg.CipherKey)
+
+	if err != nil {
+		log.Fatalf("fail to encrypt email email to user %s \n", err)
+		return err
+	}
+
+	err = ch.Publish(
+		"",
+		q.Name,
+		false,
+		false,
+		amqp.Publishing{
+			ContentType: "text/plain",
+			Body:        []byte(encryptedMsg),
+		})
+
+	if err != nil {
+		log.Fatalf("fail to send email to user %s \n", err)
+		return err
+	}
+
+	return nil
+}

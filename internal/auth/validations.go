@@ -28,6 +28,16 @@ func TokenExists(t *Token) error {
 	return nil
 }
 
+// CodeExists checks if the given code exists in the database. It returns an error if the
+// code's ID is zero, indicating that the code does not exist, or nil if the code exists.
+func CodeExists(t *Token) error {
+	if toolkitEntities.IsZeroID(t.ID) {
+		return errors.New(pkgErrors.CODE_NOT_FOUND)
+	}
+
+	return nil
+}
+
 // IsTokenExpired checks if the given token has expired. It returns an error if the token's
 // expiration date is before the current date, indicating that the token has expired, or nil
 // if the token has not expired.

@@ -27,6 +27,60 @@ func NewAuthRepository(db *mongo.Database) *AuthRepository {
 	return &AuthRepository{db}
 }
 
+// SignUp is a method of AuthRepository that creates a new user in the database.
+// The method receives a SignUpUserDTO as input, which contains the user's information to be stored.
+// The method generates a new ID for the user using the toolkitEntities.NewID method and sets the CreatedAt field to the current time.
+// The method then creates a new users.User object with the provided data and default values for fields such as PostsLimit, EnableAPPEmails, IsShadowBanned, IsPRO, AvatarURL, CustomerID, LastPublishAt, SubscriptionID and ProExpiresAt.
+// Finally, the method inserts the user in the database using the InsertOne method from the mongo-go-driver library and returns the inserted user and any error that may have occurred during the insertion.
+func (a AuthRepository) SignUp(payload *SignUpUserDTO) (*users.User, error) {
+	coll := a.db.Collection(toolkitConstants.USERS)
+
+	payload.ID = toolkitEntities.NewID()
+	payload.CreatedAt = time.Now()
+
+	user := users.User{
+		ID:              payload.ID,
+		Nick:            payload.Nick,
+		Name:            payload.Name,
+		Email:           payload.Email,
+		Password:        payload.Password,
+		PostsLimit:      30,
+		EnableAPPEmails: true,
+		IsShadowBanned:  false,
+		IsPRO:           false,
+		CreatedAt:       &payload.CreatedAt,
+		AvatarURL:       "",
+		CustomerID:      nil,
+		LastPublishAt:   nil,
+		SubscriptionID:  nil,
+		ProExpiresAt:    nil,
+		Locale:          payload.Locale,
+	}
+
+	_, err := coll.InsertOne(context.Background(), user)
+
+	return &user, err
+}
+
+// UpdateUserPassword updates the password for a user with the given userID.
+// It takes in the userID and the newHashedPassword as parameters and updates the password
+// of the user in the database with the newHashedPassword.
+// It returns an error if the update fails.
+func (a AuthRepository) UpdateUserPassword(userID toolkitEntities.ID, newHashedPassword []byte) error {
+	coll := a.db.Collection(toolkitConstants.USERS)
+
+	update := bson.D{
+		{
+			Key:   "$set",
+			Value: bson.D{{Key: "password", Value: string(newHashedPassword)}},
+		},
+	}
+
+	_, err := coll.UpdateByID(context.Background(), userID, update)
+
+	return err
+}
+
 // CreateUserToken function creates a new JWT token with a given user ID, expiration time and secret key and returns it as a signed string.
 // It takes a user ID, an expiration time and a secret string as arguments.
 // The function first creates a MapClaims object with "id" and "exp" fields set to the provided user ID and expiration time, respectively.
@@ -132,41 +186,6 @@ func (a *AuthRepository) CreateAuthTokens(userID toolkitEntities.ID, secret stri
 	return &tokens, nil
 }
 
-// SignUp is a method of AuthRepository that creates a new user in the database.
-// The method receives a SignUpUserDTO as input, which contains the user's information to be stored.
-// The method generates a new ID for the user using the toolkitEntities.NewID method and sets the CreatedAt field to the current time.
-// The method then creates a new users.User object with the provided data and default values for fields such as PostsLimit, EnableAPPEmails, IsShadowBanned, IsPRO, AvatarURL, CustomerID, LastPublishAt, SubscriptionID and ProExpiresAt.
-// Finally, the method inserts the user in the database using the InsertOne method from the mongo-go-driver library and returns the inserted user and any error that may have occurred during the insertion.
-func (a AuthRepository) SignUp(payload *SignUpUserDTO) (*users.User, error) {
-	coll := a.db.Collection(toolkitConstants.USERS)
-
-	payload.ID = toolkitEntities.NewID()
-	payload.CreatedAt = time.Now()
-
-	user := users.User{
-		ID:              payload.ID,
-		Nick:            payload.Nick,
-		Name:            payload.Name,
-		Email:           payload.Email,
-		Password:        payload.Password,
-		PostsLimit:      30,
-		EnableAPPEmails: true,
-		IsShadowBanned:  false,
-		IsPRO:           false,
-		CreatedAt:       &payload.CreatedAt,
-		AvatarURL:       "",
-		CustomerID:      nil,
-		LastPublishAt:   nil,
-		SubscriptionID:  nil,
-		ProExpiresAt:    nil,
-		Locale:          payload.Locale,
-	}
-
-	_, err := coll.InsertOne(context.Background(), user)
-
-	return &user, err
-}
-
 // FindTokenByUserIDAndRefreshToken searches for a token in the database collection "tokens"
 // that matches the given userID and refreshToken. It returns a pointer to the matching Token
 // if one is found, or nil if no such token exists.
@@ -190,9 +209,32 @@ func (a AuthRepository) FindTokenByUserIDAndRefreshToken(userID toolkitEntities.
 	return &t
 }
 
+// FindTokenByCode finds a token in the database that matches the given code.
+// It takes in the code as a parameter and returns a pointer to a Token object if it exists,
+// or nil if it does not exist.
+func (a AuthRepository) FindTokenByCode(code string) *Token {
+	coll := a.db.Collection(toolkitConstants.TOKENS)
+
+	filter := bson.D{
+		{
+			Key: "type", Value: "Code",
+		},
+		{
+			Key:   "code",
+			Value: code,
+		},
+	}
+
+	t := Token{}
+
+	coll.FindOne(context.Background(), filter).Decode(&t)
+
+	return &t
+}
+
 // DeleteByID removes a token from the database collection "tokens" that matches the given ID.
 // It returns an error if there was a problem deleting the token, or nil if the token was deleted successfully.
-func (a AuthRepository) DeleteByID(ID toolkitEntities.ID) error {
+func (a AuthRepository) DeleteTokenByID(ID toolkitEntities.ID) error {
 	coll := a.db.Collection(toolkitConstants.TOKENS)
 
 	filter := bson.D{
