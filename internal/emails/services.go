@@ -102,6 +102,12 @@ func SendEmailForgotPassword(cfg *configs.Conf, ch *amqp.Channel, q *amqp.Queue,
 	return nil
 }
 
+// SendEmailPasswordChanged sends an email to the user with the new password.
+// It takes in the configuration object cfg, the message queue channel ch, and the email queue q.
+// It also takes in the userToSendEmail object which contains the email address of the user.
+// It constructs an email object with the To field set to the email of the userToSendEmail.
+// It encrypts the email using the encryption key in cfg.CipherKey and sends it to the email queue q using the message queue channel ch.
+// It returns an error if there was a problem marshaling, encrypting, or sending the email.
 func SendEmailPasswordChanged(cfg *configs.Conf, ch *amqp.Channel, q *amqp.Queue, userToSendEmail *users.User) error {
 	email := toolkitEntities.Email{
 		To:      userToSendEmail.Email,
