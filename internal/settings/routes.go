@@ -10,7 +10,7 @@ import (
 
 // LoadRoutes is responsible for setting up the routes related to settings in the Fiber app.
 // AppCtx is the application context.
-// usersRepository is the repository for users.
+// UsersRepository is the repository for users.
 func LoadRoutes(AppCtx *configs.AppCtx, usersRepository *users.UsersRepository) {
 	g := AppCtx.App.Group("/settings", middlewares.JWTMiddleware(AppCtx.App, AppCtx.Cfg))
 
