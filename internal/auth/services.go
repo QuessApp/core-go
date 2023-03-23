@@ -163,6 +163,10 @@ func Logout(handlerCtx *configs.HandlersCtx, authenticatedUserID toolkitEntities
 // Finally, it sends an email to the user with the code token using the EmailsQueue and the Emails package.
 // If any error occurs, the function returns the error. Otherwise, it returns nil.
 func ForgotPassword(handlerCtx *configs.HandlersCtx, payload ForgotPasswordDTO, authRepository *AuthRepository, usersRepository *users.UsersRepository) error {
+	if err := payload.Validate(); err != nil {
+		return err
+	}
+
 	u := usersRepository.FindUserByEmail(payload.Email)
 
 	if err := users.UserExists(u); err != nil {

@@ -78,3 +78,15 @@ func (d SignInUserDTO) Validate() error {
 
 	return validations.GetValidationError(validationResult)
 }
+
+// Validate is a method of ForgotPasswordDTO that validates the fields of the struct.
+// The Email field must also match a valid email format using the is.Email method.
+// The method then returns the validation error, if any, using the validations.GetValidationError method.
+// If there are no validation errors, the method returns nil.
+func (d ForgotPasswordDTO) Validate() error {
+	validationResult := validation.ValidateStruct(&d,
+		validation.Field(&d.Email, validation.Required.Error(errors.EMAIL_FIELD_REQUIRED), validation.Length(5, 200).Error(errors.EMAIL_FIELD_LENGTH), is.Email.Error(errors.EMAIL_FORMAT_INVALID)),
+	)
+
+	return validations.GetValidationError(validationResult)
+}
