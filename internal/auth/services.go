@@ -2,6 +2,7 @@ package auth
 
 import (
 	"github.com/quessapp/core-go/configs"
+	"github.com/quessapp/core-go/internal/emails"
 	"github.com/quessapp/core-go/internal/users"
 	toolkitEntities "github.com/quessapp/toolkit/entities"
 
@@ -122,7 +123,7 @@ func SignIn(handlerCtx *configs.HandlersCtx, payload *SignInUserDTO, authReposit
 func RefreshToken(handlerCtx *configs.HandlersCtx, authenticatedUserID toolkitEntities.ID, refreshToken string, authRepository *AuthRepository) (*Token, error) {
 	t := authRepository.FindTokenByUserIDAndRefreshToken(authenticatedUserID, refreshToken)
 
-	if err := TokenExpired(t); err != nil {
+	if err := IsTokenExpired(t); err != nil {
 		return nil, err
 	}
 
@@ -143,9 +144,49 @@ func RefreshToken(handlerCtx *configs.HandlersCtx, authenticatedUserID toolkitEn
 // It returns an error if there was an issue.
 // Otherwise, it returns nil.
 func Logout(handlerCtx *configs.HandlersCtx, authenticatedUserID toolkitEntities.ID, authRepository *AuthRepository) error {
-	err := authRepository.DeleteAllUserTokens(authenticatedUserID)
+	tokenType := "Bearer"
+	err := authRepository.DeleteAllUserTokens(authenticatedUserID, &tokenType)
 
 	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// ForgotPassword function handles the password reset process.
+// It takes a HandlersCtx, a ForgotPasswordDTO, an AuthRepository, and a UsersRepository as arguments.
+// The function first finds the user with the given email address using the UsersRepository.
+// If the user does not exist, it returns an error.
+// If the user exists, the function deletes all of the user's tokens of type "Code" using the AuthRepository.
+// Then, it creates a new code token for the user using the AuthRepository.
+// Finally, it sends an email to the user with the code token using the EmailsQueue and the Emails package.
+// If any error occurs, the function returns the error. Otherwise, it returns nil.
+func ForgotPassword(handlerCtx *configs.HandlersCtx, payload ForgotPasswordDTO, authRepository *AuthRepository, usersRepository *users.UsersRepository) error {
+	if err := payload.Validate(); err != nil {
+		return err
+	}
+
+	u := usersRepository.FindUserByEmail(payload.Email)
+
+	if err := users.UserExists(u); err != nil {
+		return err
+	}
+
+	tokenType := "Code"
+	err := authRepository.DeleteAllUserTokens(u.ID, &tokenType)
+
+	if err != nil {
+		return err
+	}
+
+	t, err := authRepository.CreateCodeToken(u.ID)
+
+	if err != nil {
+		return err
+	}
+
+	if err := emails.SendEmailForgotPassword(handlerCtx.Cfg, handlerCtx.MessageQueueCh, handlerCtx.EmailsQueue, t.Code, u); err != nil {
 		return err
 	}
 

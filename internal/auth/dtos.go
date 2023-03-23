@@ -25,6 +25,11 @@ type SignUpUserDTO struct {
 	Locale    string
 }
 
+// ForgotPasswordDTO is DTO for payload for forgot-password handler.
+type ForgotPasswordDTO struct {
+	Email string
+}
+
 // SignInUserDTO is DTO for payload for signin handler.
 type SignInUserDTO struct {
 	ID       toolkitEntities.ID
@@ -69,6 +74,18 @@ func (d SignInUserDTO) Validate() error {
 	validationResult := validation.ValidateStruct(&d,
 		validation.Field(&d.Nick, validation.Required.Error(errors.NICK_FIELD_REQUIRED), validation.Length(3, 50).Error(errors.NICK_FIELD_LENGTH)),
 		validation.Field(&d.Password, validation.Required.Error(errors.PASSWORD_FIELD_REQUIRED), validation.Length(6, 200).Error(errors.PASSWORD_FIELD_LENGTH)),
+	)
+
+	return validations.GetValidationError(validationResult)
+}
+
+// Validate is a method of ForgotPasswordDTO that validates the fields of the struct.
+// The Email field must also match a valid email format using the is.Email method.
+// The method then returns the validation error, if any, using the validations.GetValidationError method.
+// If there are no validation errors, the method returns nil.
+func (d ForgotPasswordDTO) Validate() error {
+	validationResult := validation.ValidateStruct(&d,
+		validation.Field(&d.Email, validation.Required.Error(errors.EMAIL_FIELD_REQUIRED), validation.Length(5, 200).Error(errors.EMAIL_FIELD_LENGTH), is.Email.Error(errors.EMAIL_FORMAT_INVALID)),
 	)
 
 	return validations.GetValidationError(validationResult)

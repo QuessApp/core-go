@@ -24,4 +24,7 @@ func LoadRoutes(AppCtx *configs.AppCtx, authRepository *AuthRepository, usersRep
 	g.Delete("/logout", func(c *fiber.Ctx) error {
 		return LogoutHandler(&configs.HandlersCtx{C: c, AppCtx: *AppCtx}, authRepository, usersRepository)
 	})
+	g.Post("/forgot-password", func(c *fiber.Ctx) error {
+		return ForgotPasswordHandler(&configs.HandlersCtx{C: c, AppCtx: *AppCtx}, authRepository, usersRepository)
+	})
 }
