@@ -3,8 +3,8 @@ package blocks
 import (
 	"github.com/quessapp/core-go/configs"
 	"github.com/quessapp/core-go/internal/users"
-	"github.com/quessapp/toolkit/responses"
 	toolkitEntities "github.com/quessapp/toolkit/entities"
+	"github.com/quessapp/toolkit/responses"
 
 	"net/http"
 )
@@ -19,7 +19,7 @@ func BlockUserHandler(handlerCtx *configs.HandlersCtx, usersRepository *users.Us
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
-	payload.BlockedBy = users.GetUserByToken(handlerCtx.C).ID
+	payload.BlockedBy = users.GetUserByToken(handlerCtx).ID
 	payload.UserToBlock = ID
 
 	if err := BlockUser(&payload, usersRepository, blocksRepository); err != nil {

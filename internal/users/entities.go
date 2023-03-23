@@ -50,8 +50,8 @@ type User struct {
 // It can be returned like: { ..., message: null, data: { user: { ... } }}
 type ResponseWithUser struct {
 	User         *User  `json:"user"`
-	AccessToken  string `json:"accessToken"`
-	RefreshToken string `json:"refreshToken"`
+	AccessToken  string `json:"accessToken,omitempty"`
+	RefreshToken string `json:"refreshToken,omitempty"`
 }
 
 // PaginatedUsers is a model for paginated users in app.

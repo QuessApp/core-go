@@ -9,11 +9,9 @@ import (
 	"time"
 
 	"github.com/quessapp/core-go/configs"
-	date "github.com/quessapp/toolkit/constants"
 	toolkitEntities "github.com/quessapp/toolkit/entities"
 	toolkitS3 "github.com/quessapp/toolkit/s3"
 
-	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v4"
 )
 
@@ -34,41 +32,25 @@ func SearchUser(handlerCtx *configs.HandlersCtx, value string, page *int64, auth
 	return usersRepository.Search(value, page)
 }
 
-// GetAuthenticatedUser retrieves the authenticated user's data, generates access and refresh tokens for them, and returns a ResponseWithUser struct containing the user's data and tokens.
+// GetAuthenticatedUser retrieves the authenticated user's data and returns a ResponseWithUser struct containing the user's data and tokens.
 // The authenticatedUserID argument is used to retrieve the user's data from the usersRepository argument.
-// The function returns a pointer to a ResponseWithUser struct representing the user's data and tokens, and an error, if any occurred during the process.
-func GetAuthenticatedUser(handlerCtx *configs.HandlersCtx, authenticatedUserID toolkitEntities.ID, usersRepository *UsersRepository) (*ResponseWithUser, error) {
+// The function returns a pointer to a ResponseWithUser struct representing the user's data and an error, if any occurred during the process.
+func GetAuthenticatedUser(handlerCtx *configs.HandlersCtx, authenticatedUserID toolkitEntities.ID, usersRepository *UsersRepository) (*User, error) {
 	u := usersRepository.FindUserByID(authenticatedUserID)
 
 	if err := UserExists(u); err != nil {
 		return nil, err
 	}
 
-	accessToken, err := CreateAccessToken(u, handlerCtx.Cfg)
-
-	if err != nil {
-		return nil, err
-	}
-
-	refreshToken, err := CreateRefreshToken(u, handlerCtx.Cfg)
-
-	if err != nil {
-		return nil, err
-	}
-
-	user := &ResponseWithUser{
-		User: &User{
-			ID:         u.ID,
-			Nick:       u.Nick,
-			Name:       u.Name,
-			AvatarURL:  u.AvatarURL,
-			Email:      u.Email,
-			IsPRO:      u.IsPRO,
-			PostsLimit: u.PostsLimit,
-			Locale:     u.Locale,
-		},
-		AccessToken:  accessToken,
-		RefreshToken: refreshToken,
+	user := &User{
+		ID:         u.ID,
+		Nick:       u.Nick,
+		Name:       u.Name,
+		AvatarURL:  u.AvatarURL,
+		Email:      u.Email,
+		IsPRO:      u.IsPRO,
+		PostsLimit: u.PostsLimit,
+		Locale:     u.Locale,
 	}
 
 	return user, nil
@@ -286,51 +268,30 @@ func UpdateUserProfile(handlerCtx *configs.HandlersCtx, payload *UpdateProfileDT
 	return nil
 }
 
-// CreateUserToken creates an user JWT token with followed fields:
-// id, name, email, exp. It returns string and error.
-func CreateUserToken(u *User, expiresIn int64, secret string) (string, error) {
-	claims := jwt.MapClaims{
-		"id":    u.ID,
-		"name":  u.Name,
-		"email": u.Email,
-		"exp":   expiresIn,
+// DecodeUserToken decodes an user JWT token and returns user's ID.
+func DecodeUserToken(cfg *configs.HandlersCtx) toolkitEntities.DecodeUserTokenResult {
+	claims := jwt.MapClaims{}
+
+	t := strings.Split(cfg.C.Get("Authorization"), "Bearer ")
+
+	if len(t) == 1 {
+		return toolkitEntities.DecodeUserTokenResult{}
 	}
 
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-
-	return token.SignedString([]byte(secret))
-}
-
-// CreateAccessToken creates an user JWT token with followed fields:
-// id, name, email, exp. It returns string and error.
-func CreateAccessToken(u *User, cfg *configs.Conf) (string, error) {
-	return CreateUserToken(u, time.Now().Add(date.ONE_DAY_IN_HOURS).Unix(), cfg.JWTSecret)
-}
-
-// CreateRefreshToken creates an user JWT token with followed fields:
-// id, name, email, exp. It returns string and error.
-func CreateRefreshToken(u *User, cfg *configs.Conf) (string, error) {
-	return CreateUserToken(u, time.Now().Add(date.THIRTY_DAYS_IN_HOURS).Unix(), cfg.JWTSecret)
-}
-
-// DecodeUserToken decodes an user JWT token with followed fields:
-// id, name and email.
-func DecodeUserToken(c *fiber.Ctx) toolkitEntities.DecodeUserTokenResult {
-	user := c.Locals("user").(*jwt.Token)
-	claims := user.Claims.(jwt.MapClaims)
+	jwt.ParseWithClaims(t[1], &claims, func(token *jwt.Token) (interface{}, error) {
+		return cfg.Cfg.JWTSecret, nil
+	})
 
 	parsedID, _ := toolkitEntities.ParseID(claims["id"].(string))
 
 	u := toolkitEntities.DecodeUserTokenResult{
-		ID:    parsedID,
-		Name:  claims["name"].(string),
-		Email: claims["email"].(string),
+		ID: parsedID,
 	}
 
 	return u
 }
 
 // GetUserByToken decodes a token and get user info from token.
-func GetUserByToken(c *fiber.Ctx) toolkitEntities.DecodeUserTokenResult {
-	return DecodeUserToken(c)
+func GetUserByToken(cfg *configs.HandlersCtx) toolkitEntities.DecodeUserTokenResult {
+	return DecodeUserToken(cfg)
 }

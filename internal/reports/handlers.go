@@ -26,7 +26,7 @@ func CreateReportHandler(handlerCtx *configs.HandlersCtx, questionsRepository *q
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
-	authenticatedUserID := users.GetUserByToken(handlerCtx.C).ID
+	authenticatedUserID := users.GetUserByToken(handlerCtx).ID
 
 	payload.SentBy = authenticatedUserID
 
@@ -51,7 +51,7 @@ func FindReportByIDHandler(handlerCtx *configs.HandlersCtx, reportsRepository *R
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
-	authenticatedUserID := users.GetUserByToken(handlerCtx.C).ID
+	authenticatedUserID := users.GetUserByToken(handlerCtx).ID
 
 	r, err := FindReportByID(handlerCtx, ID, authenticatedUserID, reportsRepository, usersRepository, questionsRepository)
 
@@ -77,7 +77,7 @@ func DeleteReportHandler(handlerCtx *configs.HandlersCtx, reportsRepository *Rep
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
-	authenticatedUserID := users.GetUserByToken(handlerCtx.C).ID
+	authenticatedUserID := users.GetUserByToken(handlerCtx).ID
 
 	if err := DeleteReport(handlerCtx, ID, authenticatedUserID, reportsRepository); err != nil {
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
@@ -92,7 +92,7 @@ func DeleteReportHandler(handlerCtx *configs.HandlersCtx, reportsRepository *Rep
 // If an error occurs during parsing or retrieving the reports, it returns an HTTP response with the error message.
 // Otherwise, it returns an HTTP response with the retrieved reports.
 func FindAllSentReportsHandler(handlerCtx *configs.HandlersCtx, reportsRepository *ReportsRepository, usersRepository *users.UsersRepository, questionsRepository *questions.QuestionsRepository) error {
-	authenticatedUserID := users.GetUserByToken(handlerCtx.C).ID
+	authenticatedUserID := users.GetUserByToken(handlerCtx).ID
 
 	p, err := strconv.Atoi(handlerCtx.C.Query("page"))
 

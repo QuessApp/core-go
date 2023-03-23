@@ -21,7 +21,7 @@ func CreateQuestionHandler(handlerCtx *configs.HandlersCtx, questionsRepository 
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
-	authenticatedUserID := users.GetUserByToken(handlerCtx.C).ID
+	authenticatedUserID := users.GetUserByToken(handlerCtx).ID
 
 	payload.SentBy = authenticatedUserID
 
@@ -36,7 +36,7 @@ func CreateQuestionHandler(handlerCtx *configs.HandlersCtx, questionsRepository 
 // It takes three parameters, a HandlerCtx, a UsersRepository, and a QuestionsRepository.
 // It returns an error if the retrieval is unsuccessful.
 func GetAllQuestionsHandler(handlerCtx *configs.HandlersCtx, usersRepository *users.UsersRepository, questionsRepository *QuestionsRepository) error {
-	authenticatedUserID := users.GetUserByToken(handlerCtx.C).ID
+	authenticatedUserID := users.GetUserByToken(handlerCtx).ID
 
 	p, err := strconv.Atoi(handlerCtx.C.Query("page"))
 
@@ -68,7 +68,7 @@ func FindQuestionByIDHandler(handlerCtx *configs.HandlersCtx, usersRepository *u
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
-	authenticatedUserID := users.GetUserByToken(handlerCtx.C).ID
+	authenticatedUserID := users.GetUserByToken(handlerCtx).ID
 
 	question, err := FindQuestionByID(handlerCtx, ID, authenticatedUserID, questionsRepository, usersRepository)
 
@@ -89,7 +89,7 @@ func DeleteQuestionHandler(handlerCtx *configs.HandlersCtx, questionsRepository 
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
-	authenticatedUserID := users.GetUserByToken(handlerCtx.C).ID
+	authenticatedUserID := users.GetUserByToken(handlerCtx).ID
 
 	if err := DeleteQuestion(handlerCtx, ID, authenticatedUserID, questionsRepository); err != nil {
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
@@ -108,7 +108,7 @@ func HideQuestionHandler(handlerCtx *configs.HandlersCtx, questionsRepository *Q
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
-	authenticatedUserID := users.GetUserByToken(handlerCtx.C).ID
+	authenticatedUserID := users.GetUserByToken(handlerCtx).ID
 
 	if err := HideQuestion(handlerCtx, ID, authenticatedUserID, questionsRepository); err != nil {
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
@@ -133,7 +133,7 @@ func ReplyQuestionHandler(handlerCtx *configs.HandlersCtx, questionsRepository *
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
-	authenticatedUserID := users.GetUserByToken(handlerCtx.C).ID
+	authenticatedUserID := users.GetUserByToken(handlerCtx).ID
 
 	payload.ID = ID
 
@@ -160,7 +160,7 @@ func EditReplyQuestionHandler(handlerCtx *configs.HandlersCtx, questionsReposito
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
-	authenticatedUserID := users.GetUserByToken(handlerCtx.C).ID
+	authenticatedUserID := users.GetUserByToken(handlerCtx).ID
 
 	payload.ID = ID
 
@@ -181,7 +181,7 @@ func RemoveQuestionReplyHandler(handlerCtx *configs.HandlersCtx, questionsReposi
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
 	}
 
-	authenticatedUserID := users.GetUserByToken(handlerCtx.C).ID
+	authenticatedUserID := users.GetUserByToken(handlerCtx).ID
 
 	if err := RemoveQuestionReply(handlerCtx, ID, authenticatedUserID, questionsRepository); err != nil {
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
