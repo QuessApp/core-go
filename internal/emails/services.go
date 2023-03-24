@@ -7,13 +7,11 @@ import (
 
 	"github.com/quessapp/core-go/configs"
 	"github.com/quessapp/core-go/internal/users"
-	"github.com/quessapp/toolkit/crypto"
 	toolkitEntities "github.com/quessapp/toolkit/entities"
+	"github.com/quessapp/toolkit/queue"
 
 	"github.com/streadway/amqp"
 )
-
-// TODO: use AWS SQS instead of rabbitmq.
 
 // SendEmailNewQuestionReceived sends an email notification to the user that receives a new question.
 // The email contains the content of the question, the sender's name, and whether the question is anonymous or not.
@@ -39,23 +37,11 @@ func SendEmailNewQuestionReceived(cfg *configs.Conf, ch *amqp.Channel, q *amqp.Q
 		log.Fatalf("fail to marshal %s", err)
 	}
 
-	encryptedMsg, err := crypto.Encrypt(string(emailParsed), cfg.CipherKey)
-
 	if err != nil {
 		log.Fatalf("fail to encrypt email email to user %s \n", err)
 	}
 
-	err = ch.Publish(
-		"",
-		q.Name,
-		false,
-		false,
-		amqp.Publishing{
-			ContentType: "text/plain",
-			Body:        []byte(encryptedMsg),
-		})
-
-	if err != nil {
+	if err := queue.Publish(ch, q.Name, cfg.CipherKey, emailParsed); err != nil {
 		log.Fatalf("fail to send email to user %s \n", err)
 	}
 }
@@ -77,24 +63,12 @@ func SendEmailForgotPassword(cfg *configs.Conf, ch *amqp.Channel, q *amqp.Queue,
 		return err
 	}
 
-	encryptedMsg, err := crypto.Encrypt(string(emailParsed), cfg.CipherKey)
-
 	if err != nil {
 		log.Fatalf("fail to encrypt email email to user %s \n", err)
 		return err
 	}
 
-	err = ch.Publish(
-		"",
-		q.Name,
-		false,
-		false,
-		amqp.Publishing{
-			ContentType: "text/plain",
-			Body:        []byte(encryptedMsg),
-		})
-
-	if err != nil {
+	if err := queue.Publish(ch, q.Name, cfg.CipherKey, emailParsed); err != nil {
 		log.Fatalf("fail to send email to user %s \n", err)
 		return err
 	}
@@ -122,24 +96,12 @@ func SendEmailPasswordChanged(cfg *configs.Conf, ch *amqp.Channel, q *amqp.Queue
 		return err
 	}
 
-	encryptedMsg, err := crypto.Encrypt(string(emailParsed), cfg.CipherKey)
-
 	if err != nil {
 		log.Fatalf("fail to encrypt email email to user %s \n", err)
 		return err
 	}
 
-	err = ch.Publish(
-		"",
-		q.Name,
-		false,
-		false,
-		amqp.Publishing{
-			ContentType: "text/plain",
-			Body:        []byte(encryptedMsg),
-		})
-
-	if err != nil {
+	if err := queue.Publish(ch, q.Name, cfg.CipherKey, emailParsed); err != nil {
 		log.Fatalf("fail to send email to user %s \n", err)
 		return err
 	}
@@ -167,24 +129,12 @@ func SendEmailThanksForReporting(cfg *configs.Conf, ch *amqp.Channel, q *amqp.Qu
 		return
 	}
 
-	encryptedMsg, err := crypto.Encrypt(string(emailParsed), cfg.CipherKey)
-
 	if err != nil {
 		log.Fatalf("fail to encrypt email email to user %s \n", err)
 		return
 	}
 
-	err = ch.Publish(
-		"",
-		q.Name,
-		false,
-		false,
-		amqp.Publishing{
-			ContentType: "text/plain",
-			Body:        []byte(encryptedMsg),
-		})
-
-	if err != nil {
+	if err := queue.Publish(ch, q.Name, cfg.CipherKey, emailParsed); err != nil {
 		log.Fatalf("fail to send email to user %s \n", err)
 		return
 	}

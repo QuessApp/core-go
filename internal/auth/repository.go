@@ -128,7 +128,7 @@ func (a *AuthRepository) CreateCodeToken(userID toolkitEntities.ID) (*Token, err
 	code := Token{
 		ID:        toolkitEntities.NewID(),
 		Type:      "Code",
-		ExpiresAt: time.Now().Add(toolkitConstants.FIVE_MINUTES),
+		ExpiresAt: time.Now().Add(time.Minute * 10),
 		CreatedAt: time.Now(),
 		CreatedBy: &userID,
 		Code:      uuid.New().String()[0:5],

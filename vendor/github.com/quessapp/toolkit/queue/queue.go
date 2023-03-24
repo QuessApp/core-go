@@ -3,6 +3,7 @@ package queue
 import (
 	"log"
 
+	"github.com/quessapp/toolkit/crypto"
 	"github.com/streadway/amqp"
 )
 
@@ -38,4 +39,25 @@ func Consume(ch *amqp.Channel, queueName string) (<-chan amqp.Delivery, error) {
 	)
 
 	return msgs, err
+}
+
+// Publish publishes a message to a specif queue.
+func Publish(ch *amqp.Channel, queueName, cipher string, msg []byte) error {
+	encryptedMsg, err := crypto.Encrypt(string(msg), cipher)
+
+	if err != nil {
+		return err
+	}
+
+	err = ch.Publish(
+		"",
+		queueName,
+		false,
+		false,
+		amqp.Publishing{
+			ContentType: "text/plain",
+			Body:        []byte(encryptedMsg),
+		})
+
+	return err
 }
