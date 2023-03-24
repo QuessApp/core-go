@@ -245,6 +245,10 @@ func ResetPassword(handlerCtx *configs.HandlersCtx, payload ResetPasswordDTO, au
 	}
 
 	if payload.LogoutFromAllDevices {
+		// Bearer is the token type used for auth
+		// We want to delete all access tokens (logout user)
+		// if we remove all tokens, user can not refresh the token
+		// and will be logged out from all devices
 		tokenType := "Bearer"
 
 		if err := authRepository.DeleteAllUserTokens(u.ID, &tokenType); err != nil {
