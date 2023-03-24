@@ -1,19 +1,19 @@
-## Up the containers
+## Run containers
 
 ```bash
 $ docker-compose up -d
 ```
 
-## Run in watch mode
+## Run project locally
 
 ```bash
-$ air
+$ ./scripts/start.sh
 ```
 
-## Run the APP
+## Destroy project locally
 
 ```bash
-$ go run cmd/app/main.go
+$ ./scripts/destroy.sh
 ```
 
 ## Install dependencies from toolkit (private repo)
