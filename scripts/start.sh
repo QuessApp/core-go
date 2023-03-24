@@ -39,5 +39,3 @@ start_containers() {
 check_if_env_file_exists
 start_containers
 start_based_on_environment
-
-
