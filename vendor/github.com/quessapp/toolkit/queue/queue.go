@@ -42,7 +42,7 @@ func Consume(ch *amqp.Channel, queueName string) (<-chan amqp.Delivery, error) {
 }
 
 // Publish publishes a message to a specif queue.
-func Publish(ch *amqp.Channel, queueName, cipher, msg string) error {
+func Publish(ch *amqp.Channel, queueName, cipher string, msg []byte) error {
 	encryptedMsg, err := crypto.Encrypt(string(msg), cipher)
 
 	if err != nil {
