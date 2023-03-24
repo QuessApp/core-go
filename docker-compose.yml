@@ -11,6 +11,7 @@ services:
       - "mongodb-data:/data/db"
     ports:
       - "27017:27017"
+
   rabbitmq:
     image: "rabbitmq:3-management"
     container_name: rabbitmq
