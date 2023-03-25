@@ -7,10 +7,20 @@ $ docker-compose up -d
 ## Run project locally
 
 ```bash
+$ make start
+```
+
+or
+
+```bash
 $ ./scripts/start.sh
 ```
 
 ## Destroy project locally
+
+```bash
+$ make destroy
+```
 
 ```bash
 $ ./scripts/destroy.sh
