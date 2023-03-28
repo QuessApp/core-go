@@ -142,12 +142,12 @@ func RefreshToken(handlerCtx *configs.HandlersCtx, authenticatedUserID toolkitEn
 	return authRepository.CreateAuthTokens(*t.CreatedBy, handlerCtx.Cfg.JWTSecret)
 }
 
-// Logout deletes all the tokens associated with the authenticated user identified by the given userID.
-// It returns an error if there was an issue.
-// Otherwise, it returns nil.
-func Logout(handlerCtx *configs.HandlersCtx, authenticatedUserID toolkitEntities.ID, authRepository *AuthRepository) error {
-	tokenType := "Bearer"
-	err := authRepository.DeleteAllUserTokens(authenticatedUserID, &tokenType)
+// Logout deletes the refresh token from the database.
+// It takes a HandlersCtx, an authenticatedUserID, a token, and an AuthRepository as arguments.
+// The function first deletes the token from the database using the AuthRepository's DeleteRefreshToken function.
+// If any error occurs, the function returns the error. Otherwise, it returns nil.
+func Logout(handlerCtx *configs.HandlersCtx, authenticatedUserID toolkitEntities.ID, token string, authRepository *AuthRepository) error {
+	err := authRepository.DeleteRefreshToken(token)
 
 	if err != nil {
 		return err
