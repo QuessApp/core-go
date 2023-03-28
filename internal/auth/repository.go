@@ -209,6 +209,22 @@ func (a AuthRepository) FindTokenByUserIDAndRefreshToken(userID toolkitEntities.
 	return &t
 }
 
+// DeleteRefreshToken deletes a refresh token from the database.
+// It takes in the refresh token as a parameter and returns an error if one occurs.
+func (a AuthRepository) DeleteRefreshToken(token string) error {
+	coll := a.db.Collection(toolkitConstants.TOKENS)
+
+	filter := bson.D{
+		{
+			Key: "refreshToken", Value: token,
+		},
+	}
+
+	_, err := coll.DeleteOne(context.Background(), filter)
+
+	return err
+}
+
 // FindTokenByCode finds a token in the database that matches the given code.
 // It takes in the code as a parameter and returns a pointer to a Token object if it exists,
 // or nil if it does not exist.

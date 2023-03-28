@@ -78,8 +78,9 @@ func RefreshTokenHandler(handlerCtx *configs.HandlersCtx, authRepository *AuthRe
 // Otherwise, it returns a Success response.
 func LogoutHandler(handlerCtx *configs.HandlersCtx, authRepository *AuthRepository, usersRepository *users.UsersRepository) error {
 	authenticatedUserID := users.GetUserByToken(handlerCtx).ID
+	oldToken := strings.Split(handlerCtx.C.Get("Authorization"), "Bearer ")[1]
 
-	err := Logout(handlerCtx, authenticatedUserID, authRepository)
+	err := Logout(handlerCtx, authenticatedUserID, oldToken, authRepository)
 
 	if err != nil {
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
