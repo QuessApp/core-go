@@ -85,7 +85,7 @@ func (d SignInUserDTO) Validate() error {
 	validationResult := validation.ValidateStruct(&d,
 		validation.Field(&d.Nick, validation.Required.Error(errors.NICK_FIELD_REQUIRED), validation.Length(3, 50).Error(errors.NICK_FIELD_LENGTH)),
 		validation.Field(&d.Password, validation.Required.Error(errors.PASSWORD_FIELD_REQUIRED), validation.Length(6, 200).Error(errors.PASSWORD_FIELD_LENGTH)),
-		validation.Field(&d.TrustIP, validation.In(true, false).Error(errors.TRUST_IP_FIELD_REQUIRED)),
+		validation.Field(&d.TrustIP, validation.Required.Error(errors.TRUST_IP_FIELD_REQUIRED), validation.In(true, false).Error(errors.TRUST_IP_FIELD_REQUIRED)),
 	)
 
 	return validations.GetValidationError(validationResult)
