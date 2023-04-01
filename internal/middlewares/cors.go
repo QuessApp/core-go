@@ -10,6 +10,6 @@ import (
 // ApplyCORSMiddleware applies CORS middleware for all routes.
 func ApplyCORSMiddleware(app *fiber.App, cfg *configs.Conf) {
 	app.Use(cors.New(cors.Config{
-		AllowOrigins: cfg.CORSOrigins,
+		AllowOrigins: cfg.CORS.Origins,
 	}))
 }

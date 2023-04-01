@@ -102,7 +102,7 @@ func DecrementUserLimit(userID toolkitEntities.ID, usersRepository *UsersReposit
 
 // DeleteUserAvatar deletes a user's avatar image from S3.
 func DeleteUserAvatar(handlerCtx *configs.HandlersCtx, fileName string) error {
-	_, err := toolkitS3.DeleteFile(handlerCtx.S3Client, handlerCtx.Cfg.S3BucketName, fileName)
+	_, err := toolkitS3.DeleteFile(handlerCtx.S3Client, handlerCtx.Cfg.S3.BucketName, fileName)
 
 	return err
 }
@@ -149,14 +149,14 @@ func UpdateUserAvatar(handlerCtx *configs.HandlersCtx, form *multipart.FileHeade
 	defer os.Remove(fileDir)
 	defer f.Close()
 
-	newAvatarURI := fmt.Sprintf("%s%s", handlerCtx.Cfg.CDN_URI, fileName)
+	newAvatarURI := fmt.Sprintf("%s%s", handlerCtx.Cfg.CDN.URI, fileName)
 
 	if err := usersRepository.UpdateAvatar(authenticatedUserID, newAvatarURI); err != nil {
 		return err
 	}
 
 	if u.AvatarURL != "" {
-		oldAvatarFileName := strings.Split(u.AvatarURL, handlerCtx.Cfg.CDN_URI)
+		oldAvatarFileName := strings.Split(u.AvatarURL, handlerCtx.Cfg.CDN.URI)
 
 		if len(oldAvatarFileName) < 1 {
 			return nil
@@ -169,7 +169,7 @@ func UpdateUserAvatar(handlerCtx *configs.HandlersCtx, form *multipart.FileHeade
 		}
 	}
 
-	_, err = toolkitS3.UploadFile(handlerCtx.S3Client, handlerCtx.Cfg.S3BucketName, fileName, f, &ACL)
+	_, err = toolkitS3.UploadFile(handlerCtx.S3Client, handlerCtx.Cfg.S3.BucketName, fileName, f, &ACL)
 
 	if err != nil {
 		return err
@@ -279,7 +279,7 @@ func DecodeUserToken(cfg *configs.HandlersCtx) toolkitEntities.DecodeUserTokenRe
 	}
 
 	jwt.ParseWithClaims(t[1], &claims, func(token *jwt.Token) (interface{}, error) {
-		return cfg.Cfg.JWTSecret, nil
+		return cfg.Cfg.JWT.Secret, nil
 	})
 
 	parsedID, _ := toolkitEntities.ParseID(claims["id"].(string))

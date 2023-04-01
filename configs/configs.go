@@ -10,50 +10,72 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-// TODO: separate in unique struct. eg: one struct for DB Config, one for Queues, etc.
-
-// Conf is a model for app config. Like the app name, app port.
-// Also it can initialize DB configs, JWT, etc.
-type Conf struct {
-	// App Config
+// AppConfig holds the application configuration.
+type AppConfig struct {
 	APPName    string `mapstructure:"APP_NAME"`
 	ServerPort string `mapstructure:"SERVER_PORT"`
 	ServerHost string `mapstructure:"SERVER_HOST"`
 	Env        string `mapstructure:"ENV"`
 	APIKey     string `mapstructure:"API_KEY"`
+}
 
-	// Database Config
-	DBDriver   string `mapstructure:"DB_DRIVER"`
-	DBHost     string `mapstructure:"DB_HOST"`
-	DBPort     string `mapstructure:"DB_PORT"`
-	DBUser     string `mapstructure:"DB_USER"`
-	DBPassword string `mapstructure:"DB_PASSWORD"`
-	DBName     string `mapstructure:"DB_NAME"`
+// DBConfig holds the database configuration.
+type DBConfig struct {
+	Driver   string `mapstructure:"DB_DRIVER"`
+	Host     string `mapstructure:"DB_HOST"`
+	Port     string `mapstructure:"DB_PORT"`
+	User     string `mapstructure:"DB_USER"`
+	Password string `mapstructure:"DB_PASSWORD"`
+	Name     string `mapstructure:"DB_NAME"`
+}
 
-	// CORS
-	CORSOrigins string `mapstructure:"ALLOW_ORIGINS"`
+// CORSConfig holds the CORS configuration.
+type CORSConfig struct {
+	Origins string `mapstructure:"ALLOW_ORIGINS"`
+}
 
-	// JWT config
-	JWTSecret    string `mapstructure:"JWT_SECRET"`
-	JWTExpiresIn int    `mapstructure:"JWT_EXPIRES_IN"`
+type JWTConfig struct {
+	Secret    string `mapstructure:"JWT_SECRET"`
+	ExpiresIn int    `mapstructure:"JWT_EXPIRES_IN"`
+}
 
-	// Queues
-	MessageBrokerURI         string `mapstructure:"MESSAGE_BROKER_URI"`
+// QueueConfig holds the message broker configuration.
+type QueueConfig struct {
+	URI                      string `mapstructure:"MESSAGE_BROKER_URI"`
 	SendEmailsQueueName      string `mapstructure:"SEND_EMAILS_QUEUE_NAME"`
 	CheckTrustedIPsQueueName string `mapstructure:"CHECK_TRUSTED_IPS_QUEUE_NAME"`
+}
 
-	// Crypto
-	CipherKey string `mapstructure:"CIPHER_KEY"`
+// CryptoConfig holds the crypto configuration.
+type CryptoConfig struct {
+	Key string `mapstructure:"CIPHER_KEY"`
+}
 
-	// S3 Uploader
-	S3Region     string `mapstructure:"S3_REGION"`
-	S3BucketName string `mapstructure:"S3_BUCKET_NAME"`
-	S3AccessKey  string `mapstructure:"S3_ACCESS_KEY"`
-	S3Secret     string `mapstructure:"S3_SECRET"`
-	S3Token      string `mapstructure:"S3_TOKEN"`
+// S3Config holds the S3 configuration.
+type S3Config struct {
+	Region     string `mapstructure:"S3_REGION"`
+	BucketName string `mapstructure:"S3_BUCKET_NAME"`
+	AccessKey  string `mapstructure:"S3_ACCESS_KEY"`
+	Secret     string `mapstructure:"S3_SECRET"`
+	Token      string `mapstructure:"S3_TOKEN"`
+}
 
-	// Cloudfront
-	CDN_URI string `mapstructure:"CDN_URI"`
+// CDNConfig holds the CDN configuration.
+type CDNConfig struct {
+	URI string `mapstructure:"CDN_URI"`
+}
+
+// Conf is a model for app config. Like the app name, app port.
+// Also it can initialize DB configs, JWT, etc.
+type Conf struct {
+	App    AppConfig    `mapstructure:",squash"`
+	DB     DBConfig     `mapstructure:",squash"`
+	CORS   CORSConfig   `mapstructure:",squash"`
+	JWT    JWTConfig    `mapstructure:",squash"`
+	Queue  QueueConfig  `mapstructure:",squash"`
+	Crypto CryptoConfig `mapstructure:",squash"`
+	S3     S3Config     `mapstructure:",squash"`
+	CDN    CDNConfig    `mapstructure:",squash"`
 }
 
 var cfg *Conf
@@ -95,9 +117,9 @@ func LoadConfig(path string) (*Conf, error) {
 		panic(err)
 	}
 
-	log.Printf("======= %s ======= \n", cfg.APPName)
-	log.Printf("PORT: %s", cfg.ServerPort)
-	log.Printf("ENV: %s", cfg.Env)
+	log.Printf("======= %s ======= \n", cfg.App.APPName)
+	log.Printf("PORT: %s", cfg.App.ServerPort)
+	log.Printf("ENV: %s", cfg.App.Env)
 	log.Println("===============================")
 
 	return cfg, nil

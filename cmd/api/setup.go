@@ -37,9 +37,9 @@ func loadConfig() *configs.Conf {
 }
 
 func initDatabase(cfg *configs.Conf) *mongo.Database {
-	connURI := fmt.Sprintf("%s:%s", cfg.DBHost, cfg.DBPort)
+	connURI := fmt.Sprintf("%s:%s", cfg.DB.Host, cfg.DB.Port)
 
-	db, err := database.Connect(connURI, cfg.DBName)
+	db, err := database.Connect(connURI, cfg.DB.Name)
 
 	if err != nil {
 		log.Fatalf("failed to connect to database: %s", err)
@@ -49,7 +49,7 @@ func initDatabase(cfg *configs.Conf) *mongo.Database {
 }
 
 func initMessageBroker(cfg *configs.Conf) (*amqp.Connection, *amqp.Channel) {
-	return queue.Connect(cfg.MessageBrokerURI)
+	return queue.Connect(cfg.Queue.URI)
 }
 
 func initEmailsQueue(ch *amqp.Channel, queueName string) *amqp.Queue {
@@ -73,10 +73,10 @@ func initTrustedIPsQueue(ch *amqp.Channel, queueName string) *amqp.Queue {
 }
 
 func initS3(cfg *configs.Conf) *AWS_S3.S3 {
-	S3Client, err := s3.Configure(&cfg.S3Region, &s3.S3Credentials{
-		AccessKey: cfg.S3AccessKey,
-		Secret:    cfg.S3Secret,
-		Token:     cfg.S3Token,
+	S3Client, err := s3.Configure(&cfg.S3.Region, &s3.S3Credentials{
+		AccessKey: cfg.S3.AccessKey,
+		Secret:    cfg.S3.Secret,
+		Token:     cfg.S3.Token,
 	})
 
 	if err != nil {
@@ -109,8 +109,8 @@ func initServer(cfg *configs.Conf, messageBrokerChannel *amqp.Channel, S3Client 
 		Cfg:             cfg,
 		MessageQueueCh:  messageBrokerChannel,
 		S3Client:        S3Client,
-		EmailsQueue:     initEmailsQueue(messageBrokerChannel, cfg.SendEmailsQueueName),
-		TrustedIPsQueue: initTrustedIPsQueue(messageBrokerChannel, cfg.CheckTrustedIPsQueueName),
+		EmailsQueue:     initEmailsQueue(messageBrokerChannel, cfg.Queue.SendEmailsQueueName),
+		TrustedIPsQueue: initTrustedIPsQueue(messageBrokerChannel, cfg.Queue.CheckTrustedIPsQueueName),
 	}
 
 	middlewares.ApplyMiddlewares(AppCtx.App, AppCtx.Cfg)
@@ -118,7 +118,7 @@ func initServer(cfg *configs.Conf, messageBrokerChannel *amqp.Channel, S3Client 
 	authRepository, usersRepository, questionsRepository, blocksRepository, reportsRepository := initRepositories(db)
 	initRoutes(AppCtx, authRepository, usersRepository, questionsRepository, blocksRepository, reportsRepository)
 
-	log.Fatal(AppCtx.App.Listen(AppCtx.Cfg.ServerPort))
+	log.Fatal(AppCtx.App.Listen(AppCtx.Cfg.App.ServerPort))
 }
 
 // Setup inits the application by loading the configuration, connecting to the database and message broker, and initializing the S3 client.
