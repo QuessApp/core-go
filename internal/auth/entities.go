@@ -21,5 +21,5 @@ type Token struct {
 	AccessToken  string `json:"accessToken,omitempty" bson:"accessToken,omitempty"`
 	RefreshToken string `json:"refreshToken,omitempty" bson:"refreshToken,omitempty"`
 	// It can be a code because it can be used for email verification like reset password.
-	Code string `json:"code,omitempty" bson:"code,omitempty"`
+	Code string `json:"-" bson:"code,omitempty"`
 }
