@@ -21,7 +21,7 @@ func SendIPToQueue(cfg *configs.Conf, ch *amqp.Channel, q *amqp.Queue, ip, sendT
 	normalizedIP := strings.ReplaceAll(ip, ".", "")
 	message := fmt.Sprintf("%s-%s", sendTo, normalizedIP)
 
-	if err := queue.Publish(ch, q.Name, cfg.CipherKey, []byte(message)); err != nil {
+	if err := queue.Publish(ch, q.Name, cfg.Crypto.Key, []byte(message)); err != nil {
 		log.Fatalf("fail to send email to user %s \n", err)
 	}
 }

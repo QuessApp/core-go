@@ -15,7 +15,7 @@ import (
 func ApplyAPIKeyMiddleware(app *fiber.App, cfg *configs.Conf) {
 	app.Use(middlewares.New(middlewares.Config{
 		Next: func(c *fiber.Ctx) bool {
-			isDev := cfg.Env == "development"
+			isDev := cfg.App.Env == "development"
 
 			if isDev {
 				log.Println("[DEV] For development purposes like debugging the API key middleware is disabled.")
@@ -26,6 +26,6 @@ func ApplyAPIKeyMiddleware(app *fiber.App, cfg *configs.Conf) {
 		ErrorHandler: func(c *fiber.Ctx, err error) error {
 			return responses.ParseUnsuccesfull(c, http.StatusForbidden, err.Error())
 		},
-		Key: cfg.APIKey,
+		Key: cfg.App.APIKey,
 	}))
 }

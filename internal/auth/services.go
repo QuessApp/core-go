@@ -54,7 +54,7 @@ func SignUp(handlerCtx *configs.HandlersCtx, payload *SignUpUserDTO, authReposit
 		log.Printf("Error adding new trusted IP: %v for user %v-%v", err, u.ID, u.Nick)
 	}
 
-	authTokens, err := authRepository.CreateAuthTokens(u.ID, handlerCtx.Cfg.JWTSecret)
+	authTokens, err := authRepository.CreateAuthTokens(u.ID, handlerCtx.Cfg.JWT.Secret)
 
 	if err != nil {
 		return nil, err
@@ -105,7 +105,7 @@ func SignIn(handlerCtx *configs.HandlersCtx, payload *SignInUserDTO, authReposit
 		return nil, err
 	}
 
-	authTokens, err := authRepository.CreateAuthTokens(u.ID, handlerCtx.Cfg.JWTSecret)
+	authTokens, err := authRepository.CreateAuthTokens(u.ID, handlerCtx.Cfg.JWT.Secret)
 
 	if err != nil {
 		return nil, err
@@ -160,7 +160,7 @@ func RefreshToken(handlerCtx *configs.HandlersCtx, authenticatedUserID toolkitEn
 		return nil, err
 	}
 
-	return authRepository.CreateAuthTokens(*t.CreatedBy, handlerCtx.Cfg.JWTSecret)
+	return authRepository.CreateAuthTokens(*t.CreatedBy, handlerCtx.Cfg.JWT.Secret)
 }
 
 // Logout deletes the refresh token from the database.
