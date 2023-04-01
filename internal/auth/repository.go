@@ -55,6 +55,7 @@ func (a AuthRepository) SignUp(payload *SignUpUserDTO) (*users.User, error) {
 		SubscriptionID:  nil,
 		ProExpiresAt:    nil,
 		Locale:          payload.Locale,
+		TrustedIPs:      []string{},
 	}
 
 	_, err := coll.InsertOne(context.Background(), user)
@@ -221,6 +222,52 @@ func (a AuthRepository) DeleteRefreshToken(token string) error {
 	}
 
 	_, err := coll.DeleteOne(context.Background(), filter)
+
+	return err
+}
+
+// CheckIfTrustedIPExists checks if a given IP address exists in the user's trusted IPs list.
+// It takes in the user ID and the IP address as parameters and returns true if the IP address exists in the list.
+// Otherwise, it returns false.
+func (a AuthRepository) CheckIfTrustedIPExists(userID toolkitEntities.ID, ip string) bool {
+	coll := a.db.Collection(toolkitConstants.USERS)
+
+	filter := bson.D{
+		{
+			Key: "id", Value: userID,
+		},
+		{
+			Key: "trustedIps", Value: ip,
+		},
+	}
+
+	count, _ := coll.CountDocuments(context.Background(), filter)
+
+	return count > 0
+}
+
+// AddNewTrustedIPIfDontExists adds a new trusted IP to the user's trusted IPs list if it does not already exist.
+// It takes in the user ID and the IP address as parameters and returns an error if one occurs.
+func (a AuthRepository) AddNewTrustedIPIfDontExists(userID toolkitEntities.ID, ip string) error {
+	coll := a.db.Collection(toolkitConstants.USERS)
+
+	filter := bson.D{
+		{
+			Key: "_id", Value: userID,
+		},
+	}
+
+	update := bson.D{
+		{
+			Key: "$addToSet", Value: bson.D{
+				{Key: "trustedIps", Value: bson.D{
+					{Key: "$each", Value: []string{ip}}},
+				},
+			},
+		},
+	}
+
+	_, err := coll.UpdateOne(context.Background(), filter, update)
 
 	return err
 }
