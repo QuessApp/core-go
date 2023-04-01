@@ -112,3 +112,10 @@ func FindAllSentReportsHandler(handlerCtx *configs.HandlersCtx, reportsRepositor
 
 	return responses.ParseSuccessful(handlerCtx.C, http.StatusOK, reports)
 }
+
+// ListAllKindReasonsOfReportsHandler is a function that handles the HTTP request to list all the reasons of reports.
+// It receives the handlerCtx as a parameter, which contains the fiber.Ctx and other context information.
+// It returns a successful response with status code 200 and the list of reasons of reports.
+func ListAllKindReasonsOfReportsHandler(handlerCtx *configs.HandlersCtx) error {
+	return responses.ParseSuccessful(handlerCtx.C, http.StatusOK, ListAllKindReasonsOfReports())
+}

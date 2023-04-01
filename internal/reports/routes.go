@@ -17,14 +17,17 @@ import (
 func LoadRoutes(AppCtx *configs.AppCtx, questionsRepository *questions.QuestionsRepository, usersRepository *users.UsersRepository, reportsRepository *ReportsRepository) {
 	g := AppCtx.App.Group("/reports", middlewares.JWTMiddleware(AppCtx.App, AppCtx.Cfg))
 
-	g.Post("/", func(c *fiber.Ctx) error {
+	g.Post("/send", func(c *fiber.Ctx) error {
 		return CreateReportHandler(&configs.HandlersCtx{C: c, AppCtx: *AppCtx}, questionsRepository, usersRepository, reportsRepository)
 	})
-	g.Get("/", func(c *fiber.Ctx) error {
+	g.Get("/list/all", func(c *fiber.Ctx) error {
 		return FindAllSentReportsHandler(&configs.HandlersCtx{C: c, AppCtx: *AppCtx}, reportsRepository, usersRepository, questionsRepository)
 	})
-	g.Get("/:id", func(c *fiber.Ctx) error {
+	g.Get("/list/:id", func(c *fiber.Ctx) error {
 		return FindReportByIDHandler(&configs.HandlersCtx{C: c, AppCtx: *AppCtx}, reportsRepository, usersRepository, questionsRepository)
+	})
+	g.Get("/reasons", func(c *fiber.Ctx) error {
+		return ListAllKindReasonsOfReportsHandler(&configs.HandlersCtx{C: c, AppCtx: *AppCtx})
 	})
 	g.Delete("/:id", func(c *fiber.Ctx) error {
 		return DeleteReportHandler(&configs.HandlersCtx{C: c, AppCtx: *AppCtx}, reportsRepository)

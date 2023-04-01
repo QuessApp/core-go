@@ -1,10 +1,13 @@
 package reports
 
 import (
+	"strings"
+
 	"github.com/quessapp/core-go/configs"
-	"github.com/quessapp/core-go/internal/emails"
 	"github.com/quessapp/core-go/internal/questions"
+	"github.com/quessapp/core-go/internal/queues/emails"
 	"github.com/quessapp/core-go/internal/users"
+	pkgReports "github.com/quessapp/core-go/pkg/reports"
 	toolkitEntities "github.com/quessapp/toolkit/entities"
 )
 
@@ -175,6 +178,11 @@ func FindAllSent(handlerCtx *configs.HandlersCtx, page *int64, sort *string, aut
 		if r.Type == "question" {
 			q := questionsRepository.FindQuestionByID(r.SendTo.(toolkitEntities.ID))
 
+			// id is zero, means that the question was deleted
+			if toolkitEntities.IsZeroID(q.ID) {
+				return nil, nil
+			}
+
 			// get sender question data
 			u := usersRepository.FindUserByID(q.SentBy.(toolkitEntities.ID))
 
@@ -237,4 +245,8 @@ func DeleteReport(handlerCtx *configs.HandlersCtx, reportID, authenticatedUserID
 	}
 
 	return nil
+}
+
+func ListAllKindReasonsOfReports() []string {
+	return strings.Split(pkgReports.REASONS, ", ")
 }
