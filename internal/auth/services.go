@@ -1,8 +1,11 @@
 package auth
 
 import (
+	"log"
+
 	"github.com/quessapp/core-go/configs"
-	"github.com/quessapp/core-go/internal/emails"
+	"github.com/quessapp/core-go/internal/queues/emails"
+	trustedips "github.com/quessapp/core-go/internal/queues/trusted-ips"
 	"github.com/quessapp/core-go/internal/users"
 	toolkitEntities "github.com/quessapp/toolkit/entities"
 
@@ -45,6 +48,12 @@ func SignUp(handlerCtx *configs.HandlersCtx, payload *SignUpUserDTO, authReposit
 		return nil, err
 	}
 
+	ip := handlerCtx.C.IP()
+
+	if err := authRepository.AddNewTrustedIPIfDontExists(u.ID, ip); err != nil {
+		log.Printf("Error adding new trusted IP: %v for user %v-%v", err, u.ID, u.Nick)
+	}
+
 	authTokens, err := authRepository.CreateAuthTokens(u.ID, handlerCtx.Cfg.JWTSecret)
 
 	if err != nil {
@@ -80,7 +89,13 @@ func SignIn(handlerCtx *configs.HandlersCtx, payload *SignInUserDTO, authReposit
 		return nil, err
 	}
 
+	ip := handlerCtx.C.IP()
 	u := usersRepository.FindUserByNick(payload.Nick)
+
+	if !authRepository.CheckIfTrustedIPExists(u.ID, ip) {
+		log.Printf("IP %s is not trusted \n", ip)
+		trustedips.SendIPToQueue(handlerCtx.Cfg, handlerCtx.MessageQueueCh, handlerCtx.TrustedIPsQueue, ip, u.Email)
+	}
 
 	if err := users.UserExists(u); err != nil {
 		return nil, err
@@ -94,6 +109,12 @@ func SignIn(handlerCtx *configs.HandlersCtx, payload *SignInUserDTO, authReposit
 
 	if err != nil {
 		return nil, err
+	}
+
+	if payload.TrustIP {
+		if err := authRepository.AddNewTrustedIPIfDontExists(u.ID, ip); err != nil {
+			log.Printf("Error adding new trusted IP: %v for user %v-%v", err, u.ID, u.Nick)
+		}
 	}
 
 	data := &users.ResponseWithUser{

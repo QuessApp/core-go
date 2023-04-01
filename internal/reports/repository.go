@@ -156,3 +156,17 @@ func (r *ReportsRepository) FindByID(reportID toolkitEntities.ID) (*Report, erro
 
 	return &foundRegistry, err
 }
+
+// DeleteReportsForQuestion is a method of the ReportsRepository struct that receives a toolkitEntities.ID parameter, which represents the ID of the question that will be deleted.
+// It deletes all reports for the given question from the database by querying the "reports" collection and searching for the reports with the given question ID.
+// If the reports are found, they are deleted from the database. If not, the function returns an error.
+// The function returns an error indicating whether the operation was successful or not.
+func (r *ReportsRepository) DeleteReportsForQuestion(questionID toolkitEntities.ID) error {
+	coll := r.db.Collection(collections.REPORTS)
+
+	filter := bson.D{{Key: "sendTo", Value: questionID}}
+
+	_, err := coll.DeleteMany(context.Background(), filter)
+
+	return err
+}

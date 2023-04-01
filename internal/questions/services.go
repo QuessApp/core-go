@@ -5,7 +5,7 @@ import (
 
 	"github.com/quessapp/core-go/configs"
 	"github.com/quessapp/core-go/internal/blocks"
-	"github.com/quessapp/core-go/internal/emails"
+	"github.com/quessapp/core-go/internal/queues/emails"
 	"github.com/quessapp/core-go/internal/users"
 	toolkitEntities "github.com/quessapp/toolkit/entities"
 )
@@ -191,6 +191,10 @@ func DeleteQuestion(handlerCtx *configs.HandlersCtx, id, authenticatedUserID too
 	if err := questionsRepository.Delete(id); err != nil {
 		return err
 	}
+
+	// if err := reportsRepository.DeleteReportsForQuestion(id); err != nil {
+	// 	return err
+	// }
 
 	return nil
 }

@@ -10,9 +10,9 @@ import (
 	"github.com/quessapp/core-go/internal/auth"
 	"github.com/quessapp/core-go/internal/blocks"
 	"github.com/quessapp/core-go/internal/database"
-	"github.com/quessapp/core-go/internal/emails"
 	"github.com/quessapp/core-go/internal/middlewares"
 	"github.com/quessapp/core-go/internal/questions"
+	"github.com/quessapp/core-go/internal/queues"
 	"github.com/quessapp/core-go/internal/reports"
 	"github.com/quessapp/core-go/internal/settings"
 	"github.com/quessapp/core-go/internal/users"
@@ -53,10 +53,20 @@ func initMessageBroker(cfg *configs.Conf) (*amqp.Connection, *amqp.Channel) {
 }
 
 func initEmailsQueue(ch *amqp.Channel, queueName string) *amqp.Queue {
-	q, err := emails.DeclareQueue(ch, queueName)
+	q, err := queues.DeclareQueue(ch, queueName)
 
 	if err != nil {
 		log.Fatalf("failed to declare emails queue: %s", err)
+	}
+
+	return q
+}
+
+func initTrustedIPsQueue(ch *amqp.Channel, queueName string) *amqp.Queue {
+	q, err := queues.DeclareQueue(ch, queueName)
+
+	if err != nil {
+		log.Fatalf("failed to declare trusted IPs queue: %s", err)
 	}
 
 	return q
@@ -94,12 +104,13 @@ func initServer(cfg *configs.Conf, messageBrokerChannel *amqp.Channel, S3Client 
 	app := fiber.New()
 
 	AppCtx := &configs.AppCtx{
-		App:            app,
-		DB:             db,
-		Cfg:            cfg,
-		MessageQueueCh: messageBrokerChannel,
-		S3Client:       S3Client,
-		EmailsQueue:    initEmailsQueue(messageBrokerChannel, cfg.SendEmailsQueueName),
+		App:             app,
+		DB:              db,
+		Cfg:             cfg,
+		MessageQueueCh:  messageBrokerChannel,
+		S3Client:        S3Client,
+		EmailsQueue:     initEmailsQueue(messageBrokerChannel, cfg.SendEmailsQueueName),
+		TrustedIPsQueue: initTrustedIPsQueue(messageBrokerChannel, cfg.CheckTrustedIPsQueueName),
 	}
 
 	middlewares.ApplyMiddlewares(AppCtx.App, AppCtx.Cfg)

@@ -1,8 +1,6 @@
-package emails
+package queues
 
-import (
-	"github.com/streadway/amqp"
-)
+import "github.com/streadway/amqp"
 
 // DeclareQueue declares an AMQP queue on the provided channel with the specified queueName.
 // It takes a pointer to an AMQP channel object (ch) and a string (queueName) representing the name of the queue.

@@ -37,10 +37,6 @@ func SendEmailNewQuestionReceived(cfg *configs.Conf, ch *amqp.Channel, q *amqp.Q
 		log.Fatalf("fail to marshal %s", err)
 	}
 
-	if err != nil {
-		log.Fatalf("fail to encrypt email email to user %s \n", err)
-	}
-
 	if err := queue.Publish(ch, q.Name, cfg.CipherKey, emailParsed); err != nil {
 		log.Fatalf("fail to send email to user %s \n", err)
 	}
@@ -60,11 +56,6 @@ func SendEmailForgotPassword(cfg *configs.Conf, ch *amqp.Channel, q *amqp.Queue,
 
 	if err != nil {
 		log.Fatalf("fail to marshal %s", err)
-		return err
-	}
-
-	if err != nil {
-		log.Fatalf("fail to encrypt email email to user %s \n", err)
 		return err
 	}
 
@@ -96,11 +87,6 @@ func SendEmailPasswordChanged(cfg *configs.Conf, ch *amqp.Channel, q *amqp.Queue
 		return err
 	}
 
-	if err != nil {
-		log.Fatalf("fail to encrypt email email to user %s \n", err)
-		return err
-	}
-
 	if err := queue.Publish(ch, q.Name, cfg.CipherKey, emailParsed); err != nil {
 		log.Fatalf("fail to send email to user %s \n", err)
 		return err
@@ -126,11 +112,6 @@ func SendEmailThanksForReporting(cfg *configs.Conf, ch *amqp.Channel, q *amqp.Qu
 
 	if err != nil {
 		log.Fatalf("fail to marshal %s", err)
-		return
-	}
-
-	if err != nil {
-		log.Fatalf("fail to encrypt email email to user %s \n", err)
 		return
 	}
 
