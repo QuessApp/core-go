@@ -38,8 +38,9 @@ type Conf struct {
 	JWTExpiresIn int    `mapstructure:"JWT_EXPIRES_IN"`
 
 	// Queues
-	MessageBrokerURI    string `mapstructure:"MESSAGE_BROKER_URI"`
-	SendEmailsQueueName string `mapstructure:"SEND_EMAILS_QUEUE_NAME"`
+	MessageBrokerURI         string `mapstructure:"MESSAGE_BROKER_URI"`
+	SendEmailsQueueName      string `mapstructure:"SEND_EMAILS_QUEUE_NAME"`
+	CheckTrustedIPsQueueName string `mapstructure:"CHECK_TRUSTED_IPS_QUEUE_NAME"`
 
 	// Crypto
 	CipherKey string `mapstructure:"CIPHER_KEY"`
@@ -60,12 +61,13 @@ var cfg *Conf
 // AppCtx is a global model for app. It defines the router, db, config, repositories, etc.
 // Use AppCtx to avoid long function params.
 type AppCtx struct {
-	App            *fiber.App
-	DB             *mongo.Database
-	Cfg            *Conf
-	MessageQueueCh *amqp.Channel
-	EmailsQueue    *amqp.Queue
-	S3Client       *s3.S3
+	App             *fiber.App
+	DB              *mongo.Database
+	Cfg             *Conf
+	MessageQueueCh  *amqp.Channel
+	EmailsQueue     *amqp.Queue
+	TrustedIPsQueue *amqp.Queue
+	S3Client        *s3.S3
 }
 
 // HandlersCtx is a global model for handlers. It defines the fiber context, app context, etc.
