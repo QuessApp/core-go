@@ -23,14 +23,14 @@ type User struct {
 	Name      string             `json:"name,omitempty"`
 	AvatarURL string             `json:"avatarUrl" bson:"avatarUrl"`
 
-	Password string `json:"password,omitempty"`
+	Password string `json:"-"`
 	Email    string `json:"email,omitempty"`
 
 	// EnanbleAPPPushNotifications is a bool value to verify if user can push notifications (received questions, etc.)
 	EnanbleAPPPushNotifications bool `json:"enableAppPushNotifications,omitempty" bson:"enableAppPushNotifications"`
 	// EnableAPPEmails is a bool value to verify if user can receive emails (received questions, etc.)
 	EnableAPPEmails bool `json:"enableAppEmails,omitempty" bson:"enableAppEmails"`
-	IsShadowBanned  bool `json:"isShadowBanned,omitempty" bson:"isShadowBanned"`
+	IsShadowBanned  bool `json:"-" bson:"isShadowBanned"`
 	PostsLimit      int  `json:"postsLimit,omitempty" bson:"postsLimit"`
 	// CustomerId of Stripe. Type must be String or nil.
 	CustomerID *string `json:"customerId,omitempty" bson:"customerId"`
@@ -42,8 +42,9 @@ type User struct {
 	// LastPublishAt is the last published post of user. Type must be Time.time or nil.
 	LastPublishAt *time.Time `json:"lastPublishAt,omitempty" bson:"lastPublishAt"`
 	// CreatedAt is the date that user is created. Type must be Time.time or nil.
-	CreatedAt *time.Time `json:"createdAt,omitempty" bson:"createdAt"`
-	Locale    string     `json:"locale,omitempty" bson:"locale"`
+	CreatedAt  *time.Time `json:"createdAt,omitempty" bson:"createdAt"`
+	Locale     string     `json:"locale,omitempty" bson:"locale"`
+	TrustedIPs []string   `json:"-" bson:"trustedIps"`
 }
 
 // ResponseWithUser is a model to use with Response model.
