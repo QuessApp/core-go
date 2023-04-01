@@ -97,3 +97,7 @@ const (
 	CODE_REQUIRED  = "campo de código é obrigatório"
 	CODE_EXPIRED   = "o código fornecido expirou"
 )
+
+const (
+	TRUST_IP_FIELD_REQUIRED = "campo de confiança sessão é obrigatório"
+)
