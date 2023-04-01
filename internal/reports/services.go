@@ -247,6 +247,7 @@ func DeleteReport(handlerCtx *configs.HandlersCtx, reportID, authenticatedUserID
 	return nil
 }
 
+// ListAllKindReasonsOfReports returns a list of all allowed reasons of reports.
 func ListAllKindReasonsOfReports() []string {
 	return strings.Split(pkgReports.REASONS, ", ")
 }
