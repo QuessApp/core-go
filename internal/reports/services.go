@@ -162,6 +162,11 @@ func FindAllSent(handlerCtx *configs.HandlersCtx, page *int64, sort *string, aut
 		if r.Type == "user" {
 			u := usersRepository.FindUserByID(r.SendTo.(toolkitEntities.ID))
 
+			// id is zero, means that the user was deleted
+			if toolkitEntities.IsZeroID(u.ID) {
+				return nil, nil
+			}
+
 			// if the user reported an user
 			// we would like to show who is the reported user
 			// this will help to show in UI
