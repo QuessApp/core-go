@@ -7,6 +7,7 @@ import (
 	"github.com/quessapp/core-go/configs"
 	"github.com/quessapp/core-go/internal/questions"
 	"github.com/quessapp/core-go/internal/users"
+	pkgErrors "github.com/quessapp/core-go/pkg/errors"
 	toolkitEntities "github.com/quessapp/toolkit/entities"
 	"github.com/quessapp/toolkit/responses"
 )
@@ -23,7 +24,7 @@ func CreateReportHandler(handlerCtx *configs.HandlersCtx, questionsRepository *q
 	payload := CreateReportDTO{}
 
 	if err := handlerCtx.C.BodyParser(&payload); err != nil {
-		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, pkgErrors.Translate(handlerCtx, err))
 	}
 
 	authenticatedUserID := users.GetUserByToken(handlerCtx).ID
@@ -31,7 +32,7 @@ func CreateReportHandler(handlerCtx *configs.HandlersCtx, questionsRepository *q
 	payload.SentBy = authenticatedUserID
 
 	if err := CreateReport(handlerCtx, &payload, authenticatedUserID, questionsRepository, usersRepository, reportsRepository); err != nil {
-		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, pkgErrors.Translate(handlerCtx, err))
 	}
 
 	return responses.ParseSuccessful(handlerCtx.C, http.StatusCreated, nil)
@@ -48,7 +49,7 @@ func FindReportByIDHandler(handlerCtx *configs.HandlersCtx, reportsRepository *R
 	ID, err := toolkitEntities.ParseID(handlerCtx.C.Params("id"))
 
 	if err != nil {
-		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, pkgErrors.Translate(handlerCtx, err))
 	}
 
 	authenticatedUserID := users.GetUserByToken(handlerCtx).ID
@@ -56,7 +57,7 @@ func FindReportByIDHandler(handlerCtx *configs.HandlersCtx, reportsRepository *R
 	r, err := FindReportByID(handlerCtx, ID, authenticatedUserID, reportsRepository, usersRepository, questionsRepository)
 
 	if err != nil {
-		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, pkgErrors.Translate(handlerCtx, err))
 	}
 
 	return responses.ParseSuccessful(handlerCtx.C, http.StatusCreated, r)
@@ -74,13 +75,13 @@ func DeleteReportHandler(handlerCtx *configs.HandlersCtx, reportsRepository *Rep
 	ID, err := toolkitEntities.ParseID(handlerCtx.C.Params("id"))
 
 	if err != nil {
-		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, pkgErrors.Translate(handlerCtx, err))
 	}
 
 	authenticatedUserID := users.GetUserByToken(handlerCtx).ID
 
 	if err := DeleteReport(handlerCtx, ID, authenticatedUserID, reportsRepository); err != nil {
-		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, pkgErrors.Translate(handlerCtx, err))
 	}
 
 	return responses.ParseSuccessful(handlerCtx.C, http.StatusCreated, nil)
@@ -99,7 +100,7 @@ func FindAllSentReportsHandler(handlerCtx *configs.HandlersCtx, reportsRepositor
 	page := int64(p)
 
 	if err != nil {
-		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, pkgErrors.Translate(handlerCtx, err))
 	}
 
 	sort := handlerCtx.C.Query("sort")
@@ -107,7 +108,7 @@ func FindAllSentReportsHandler(handlerCtx *configs.HandlersCtx, reportsRepositor
 	reports, err := FindAllSent(handlerCtx, &page, &sort, authenticatedUserID, reportsRepository, usersRepository, questionsRepository)
 
 	if err != nil {
-		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, pkgErrors.Translate(handlerCtx, err))
 	}
 
 	return responses.ParseSuccessful(handlerCtx.C, http.StatusOK, reports)

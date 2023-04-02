@@ -5,6 +5,7 @@ import (
 
 	"github.com/quessapp/core-go/configs"
 	"github.com/quessapp/core-go/internal/users"
+	pkgErrors "github.com/quessapp/core-go/pkg/errors"
 	"github.com/quessapp/toolkit/responses"
 )
 
@@ -18,13 +19,13 @@ func UpdatePreferencesHandler(handlerCtx *configs.HandlersCtx, usersRepository *
 	payload := users.UpdatePreferencesDTO{}
 
 	if err := handlerCtx.C.BodyParser(&payload); err != nil {
-		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, pkgErrors.Translate(handlerCtx, err))
 	}
 
 	authenticatedUserID := users.GetUserByToken(handlerCtx).ID
 
 	if err := UpdatePreferences(handlerCtx, &payload, authenticatedUserID, usersRepository); err != nil {
-		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, pkgErrors.Translate(handlerCtx, err))
 	}
 
 	return responses.ParseSuccessful(handlerCtx.C, http.StatusCreated, nil)

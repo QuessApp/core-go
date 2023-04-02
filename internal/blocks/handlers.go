@@ -3,6 +3,7 @@ package blocks
 import (
 	"github.com/quessapp/core-go/configs"
 	"github.com/quessapp/core-go/internal/users"
+	pkgErrors "github.com/quessapp/core-go/pkg/errors"
 	toolkitEntities "github.com/quessapp/toolkit/entities"
 	"github.com/quessapp/toolkit/responses"
 
@@ -16,14 +17,14 @@ func BlockUserHandler(handlerCtx *configs.HandlersCtx, usersRepository *users.Us
 	ID, err := toolkitEntities.ParseID(handlerCtx.C.Params("id"))
 
 	if err != nil {
-		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, pkgErrors.Translate(handlerCtx, err))
 	}
 
 	payload.BlockedBy = users.GetUserByToken(handlerCtx).ID
 	payload.UserToBlock = ID
 
 	if err := BlockUser(&payload, usersRepository, blocksRepository); err != nil {
-		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, pkgErrors.Translate(handlerCtx, err))
 	}
 
 	return responses.ParseSuccessful(handlerCtx.C, http.StatusCreated, nil)
@@ -35,11 +36,11 @@ func UnblockUserHandler(handlerCtx *configs.HandlersCtx, usersRepository *users.
 	id, err := toolkitEntities.ParseID(handlerCtx.C.Params("id"))
 
 	if err != nil {
-		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, pkgErrors.Translate(handlerCtx, err))
 	}
 
 	if err := UnblockUser(id, usersRepository, blocksRepository); err != nil {
-		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, pkgErrors.Translate(handlerCtx, err))
 	}
 
 	return responses.ParseSuccessful(handlerCtx.C, http.StatusCreated, nil)

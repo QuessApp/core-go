@@ -5,6 +5,7 @@ import (
 
 	"github.com/quessapp/core-go/configs"
 	"github.com/quessapp/core-go/internal/users"
+	pkgErrors "github.com/quessapp/core-go/pkg/errors"
 	"github.com/quessapp/toolkit/responses"
 
 	"net/http"
@@ -18,13 +19,13 @@ func SignUpUserHandler(handlerCtx *configs.HandlersCtx, authRepository *AuthRepo
 	payload := SignUpUserDTO{}
 
 	if err := handlerCtx.C.BodyParser(&payload); err != nil {
-		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, pkgErrors.Translate(handlerCtx, err))
 	}
 
 	u, err := SignUp(handlerCtx, &payload, authRepository, usersRepository)
 
 	if err != nil {
-		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, pkgErrors.Translate(handlerCtx, err))
 	}
 
 	return responses.ParseSuccessful(handlerCtx.C, http.StatusCreated, u)
@@ -38,13 +39,13 @@ func SignInUserHandler(handlerCtx *configs.HandlersCtx, authRepository *AuthRepo
 	payload := SignInUserDTO{}
 
 	if err := handlerCtx.C.BodyParser(&payload); err != nil {
-		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, pkgErrors.Translate(handlerCtx, err))
 	}
 
 	u, err := SignIn(handlerCtx, &payload, authRepository, usersRepository)
 
 	if err != nil {
-		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, pkgErrors.Translate(handlerCtx, err))
 	}
 
 	return responses.ParseSuccessful(handlerCtx.C, http.StatusOK, u)
@@ -65,7 +66,7 @@ func RefreshTokenHandler(handlerCtx *configs.HandlersCtx, authRepository *AuthRe
 	t, err := RefreshToken(handlerCtx, authenticatedUserID, refreshToken, authRepository)
 
 	if err != nil {
-		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, pkgErrors.Translate(handlerCtx, err))
 	}
 
 	return responses.ParseSuccessful(handlerCtx.C, http.StatusOK, t)
@@ -80,10 +81,8 @@ func LogoutHandler(handlerCtx *configs.HandlersCtx, authRepository *AuthReposito
 	authenticatedUserID := users.GetUserByToken(handlerCtx).ID
 	oldToken := strings.Split(handlerCtx.C.Get("Authorization"), "Bearer ")[1]
 
-	err := Logout(handlerCtx, authenticatedUserID, oldToken, authRepository)
-
-	if err != nil {
-		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
+	if err := Logout(handlerCtx, authenticatedUserID, oldToken, authRepository); err != nil {
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, pkgErrors.Translate(handlerCtx, err))
 	}
 
 	return responses.ParseSuccessful(handlerCtx.C, http.StatusOK, nil)
@@ -99,13 +98,11 @@ func ForgotPasswordHandler(handlerCtx *configs.HandlersCtx, authRepository *Auth
 	payload := ForgotPasswordDTO{}
 
 	if err := handlerCtx.C.BodyParser(&payload); err != nil {
-		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, pkgErrors.Translate(handlerCtx, err))
 	}
 
-	err := ForgotPassword(handlerCtx, payload, authRepository, usersRepository)
-
-	if err != nil {
-		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
+	if err := ForgotPassword(handlerCtx, payload, authRepository, usersRepository); err != nil {
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, pkgErrors.Translate(handlerCtx, err))
 	}
 
 	return responses.ParseSuccessful(handlerCtx.C, http.StatusOK, nil)
@@ -121,13 +118,11 @@ func ResetPasswordHandler(handlerCtx *configs.HandlersCtx, authRepository *AuthR
 	payload := ResetPasswordDTO{}
 
 	if err := handlerCtx.C.BodyParser(&payload); err != nil {
-		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, pkgErrors.Translate(handlerCtx, err))
 	}
 
-	err := ResetPassword(handlerCtx, payload, authRepository, usersRepository)
-
-	if err != nil {
-		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, err.Error())
+	if err := ResetPassword(handlerCtx, payload, authRepository, usersRepository); err != nil {
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, pkgErrors.Translate(handlerCtx, err))
 	}
 
 	return responses.ParseSuccessful(handlerCtx.C, http.StatusCreated, nil)

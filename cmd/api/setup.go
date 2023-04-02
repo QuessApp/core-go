@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/eko/gocache/lib/v4/cache"
 	"github.com/quessapp/core-go/configs"
 	"github.com/quessapp/core-go/docs"
 	"github.com/quessapp/core-go/internal/auth"
@@ -16,14 +17,18 @@ import (
 	"github.com/quessapp/core-go/internal/reports"
 	"github.com/quessapp/core-go/internal/settings"
 	"github.com/quessapp/core-go/internal/users"
+
 	"github.com/quessapp/toolkit/queue"
 	"github.com/quessapp/toolkit/s3"
+	"github.com/redis/go-redis/v9"
 
 	AWS_S3 "github.com/aws/aws-sdk-go/service/s3"
 	"github.com/gofiber/fiber/v2"
 
 	"github.com/streadway/amqp"
 	"go.mongodb.org/mongo-driver/mongo"
+
+	redis_store "github.com/eko/gocache/store/redis/v4"
 )
 
 func loadConfig() *configs.Conf {
@@ -46,6 +51,14 @@ func initDatabase(cfg *configs.Conf) *mongo.Database {
 	}
 
 	return db
+}
+
+func initCache(cfg *configs.Conf) *configs.Cache {
+	redisStore := redis_store.NewRedis(redis.NewClient(&redis.Options{
+		Addr: cfg.Cache.URI,
+	}))
+
+	return cache.New[string](redisStore)
 }
 
 func initMessageBroker(cfg *configs.Conf) (*amqp.Connection, *amqp.Channel) {
@@ -111,6 +124,7 @@ func initServer(cfg *configs.Conf, messageBrokerChannel *amqp.Channel, S3Client 
 		S3Client:        S3Client,
 		EmailsQueue:     initEmailsQueue(messageBrokerChannel, cfg.Queue.SendEmailsQueueName),
 		TrustedIPsQueue: initTrustedIPsQueue(messageBrokerChannel, cfg.Queue.CheckTrustedIPsQueueName),
+		Cache:           initCache(cfg),
 	}
 
 	middlewares.ApplyMiddlewares(AppCtx.App, AppCtx.Cfg)
