@@ -4,11 +4,15 @@ import (
 	"log"
 
 	"github.com/aws/aws-sdk-go/service/s3"
+	"github.com/eko/gocache/lib/v4/cache"
 	"github.com/gofiber/fiber/v2"
 	"github.com/spf13/viper"
 	"github.com/streadway/amqp"
 	"go.mongodb.org/mongo-driver/mongo"
 )
+
+// Cache is a type alias for cache.Cache[string].
+type Cache = cache.Cache[string]
 
 // AppConfig holds the application configuration.
 type AppConfig struct {
@@ -65,6 +69,11 @@ type CDNConfig struct {
 	URI string `mapstructure:"CDN_URI"`
 }
 
+// CacheConfig holds the cache configuration.
+type CacheConfig struct {
+	URI string `mapstructure:"CACHE_URI"`
+}
+
 // Conf is a model for app config. Like the app name, app port.
 // Also it can initialize DB configs, JWT, etc.
 type Conf struct {
@@ -76,6 +85,7 @@ type Conf struct {
 	Crypto CryptoConfig `mapstructure:",squash"`
 	S3     S3Config     `mapstructure:",squash"`
 	CDN    CDNConfig    `mapstructure:",squash"`
+	Cache  CacheConfig  `mapstructure:",squash"`
 }
 
 var cfg *Conf
@@ -90,6 +100,7 @@ type AppCtx struct {
 	EmailsQueue     *amqp.Queue
 	TrustedIPsQueue *amqp.Queue
 	S3Client        *s3.S3
+	Cache           *Cache
 }
 
 // HandlersCtx is a global model for handlers. It defines the fiber context, app context, etc.
