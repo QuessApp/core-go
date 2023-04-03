@@ -88,5 +88,17 @@ func GetBrazilianPortugueseTranslation() *map[string]string {
 		"trust_ip_field_required": "campo de confiança sessão é obrigatório",
 
 		"mongo: no documents in result": "nenhum registro encontrado",
+
+		"emails_new_question_subject": "Você recebeu uma nova pergunta",
+		"emails_new_question_body":    "Você recebeu uma pergunta de @",
+
+		"emails_forgot_password_subject": "Recuperação de senha",
+		"emails_forgot_password_body":    "Você solicitou a recuperação de senha, para alterar sua senha, use o código abaixo: ",
+
+		"emails_password_changed_subject": "Senha alterada",
+		"emails_password_changed_body":    "Sua senha foi alterada com sucesso. Se você não solicitou a alteração de senha, entre em contato conosco imediatamente",
+
+		"emails_report_sent_subject": "Denúncia enviada",
+		"emails_report_sent_body":    "A denúncia que você enviou foi recebida com sucesso. Obrigado por nos ajudar a manter a comunidade segura",
 	}
 }

@@ -61,7 +61,7 @@ func CreateReport(handlerCtx *configs.HandlersCtx, payload *CreateReportDTO, aut
 	}
 
 	u := usersRepository.FindUserByID(authenticatedUserID)
-	go emails.SendEmailThanksForReporting(handlerCtx.Cfg, handlerCtx.MessageQueueCh, handlerCtx.EmailsQueue, u)
+	go emails.SendEmailThanksForReporting(handlerCtx, u)
 
 	return nil
 }

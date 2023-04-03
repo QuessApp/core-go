@@ -89,5 +89,17 @@ func GetAmericanEnglishTranslations() *map[string]string {
 		"trust_ip_field_required": "trust ip field is required",
 
 		"mongo: no documents in result": "no record found with the provided data",
+
+		"emails_new_question_subject": "You just received a new question",
+		"emails_new_question_body":    "You just received a new question from @",
+
+		"emails_forgot_password_subject": "Recovery password",
+		"emails_forgot_password_body":    "You requested a password recovery, to do this, use the following code: ",
+
+		"emails_password_changed_subject": "Password changed",
+		"emails_password_changed_body":    "Your password was changed, if you did not request this change, please contact us immediately",
+
+		"emails_report_sent_subject": "Report sent",
+		"emails_report_sent_body":    "Thank you for sending a report, we will analyze it and take the necessary actions",
 	}
 }

@@ -1,48 +1,5 @@
 package errors
 
-import (
-	"log"
-
-	"github.com/quessapp/core-go/configs"
-	"github.com/quessapp/core-go/pkg/errors/locales"
-)
-
-type locale = string
-type errorKey = string
-type errorMessage = string
-
-var translatedErrors = map[locale]map[errorKey]errorMessage{
-	"en-US": *locales.GetAmericanEnglishTranslations(),
-	"pt-BR": *locales.GetBrazilianPortugueseTranslation(),
-}
-
-func getDefaultLang(handlerCtx *configs.HandlersCtx) string {
-	accept := handlerCtx.C.Get("Accept-Language")
-
-	if accept == "" {
-		log.Printf("[WARNING!!] Accept-Language header not found, defaulting to [en-US]")
-		accept = "en-US"
-	}
-
-	return accept
-}
-
-// Translate translates an error into a human readable message.
-// It takes two parameters, a HandlerCtx and an error.
-// It returns a string with the translated error.
-func Translate(handlerCtx *configs.HandlersCtx, err error) string {
-	lang := getDefaultLang(handlerCtx)
-
-	translatedError := translatedErrors[lang][err.Error()]
-
-	if translatedError == "" {
-		log.Printf("[WARNING!!] Error [%s] not found in locale [%s]", err.Error(), lang)
-		return err.Error()
-	}
-
-	return translatedError
-}
-
 const (
 	NICK_FIELD_REQUIRED = "nick_field_required"
 	NICK_FIELD_LENGTH   = "nick_field_length"
