@@ -18,9 +18,9 @@ type Question struct {
 	ID      toolkitEntities.ID `json:"id" bson:"_id"`
 	Content string             `json:"content"`
 
-	// SendTo represents the user that will receive the question. Type must bet Entities.ID, nill ou Entities.User
+	// SendTo represents the user that will receive the question. Type must bet Entities.ID, nil ou Entities.User
 	SendTo any `json:"sendTo,omitempty" bson:"sendTo"`
-	// SentBy represents the user who sent the question. Type must bet Entities.ID, nill ou Entities.User
+	// SentBy represents the user who sent the question. Type must bet Entities.ID, nil ou Entities.User
 	SentBy any `json:"sentBy,omitempty" bson:"sentBy"`
 	// Reply is replied content. Type must be Entities.Reply or nil.
 	Reply any `json:"repliedContent,omitempty"`
