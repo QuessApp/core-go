@@ -4,7 +4,7 @@ import (
 	"github.com/quessapp/core-go/configs"
 	"github.com/quessapp/core-go/internal/blocks"
 	"github.com/quessapp/core-go/internal/users"
-	pkgErrors "github.com/quessapp/core-go/pkg/errors"
+	i18n "github.com/quessapp/core-go/pkg/i18n"
 	toolkitEntities "github.com/quessapp/toolkit/entities"
 	"github.com/quessapp/toolkit/responses"
 
@@ -19,7 +19,7 @@ func CreateQuestionHandler(handlerCtx *configs.HandlersCtx, questionsRepository 
 	payload := CreateQuestionDTO{}
 
 	if err := handlerCtx.C.BodyParser(&payload); err != nil {
-		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, pkgErrors.Translate(handlerCtx, err))
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, i18n.Translate(handlerCtx, err.Error()))
 	}
 
 	authenticatedUserID := users.GetUserByToken(handlerCtx).ID
@@ -27,7 +27,7 @@ func CreateQuestionHandler(handlerCtx *configs.HandlersCtx, questionsRepository 
 	payload.SentBy = authenticatedUserID
 
 	if err := CreateQuestion(handlerCtx, &payload, authenticatedUserID, questionsRepository, usersRepository, blocksRepository); err != nil {
-		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, pkgErrors.Translate(handlerCtx, err))
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, i18n.Translate(handlerCtx, err.Error()))
 	}
 
 	return responses.ParseSuccessful(handlerCtx.C, http.StatusCreated, nil)
@@ -44,7 +44,7 @@ func GetAllQuestionsHandler(handlerCtx *configs.HandlersCtx, usersRepository *us
 	page := int64(p)
 
 	if err != nil {
-		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, pkgErrors.Translate(handlerCtx, err))
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, i18n.Translate(handlerCtx, err.Error()))
 	}
 
 	sort := handlerCtx.C.Query("sort")
@@ -53,7 +53,7 @@ func GetAllQuestionsHandler(handlerCtx *configs.HandlersCtx, usersRepository *us
 	questions, err := GetAllQuestions(handlerCtx, &page, &sort, &filter, authenticatedUserID, usersRepository, questionsRepository)
 
 	if err != nil {
-		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, pkgErrors.Translate(handlerCtx, err))
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, i18n.Translate(handlerCtx, err.Error()))
 	}
 
 	return responses.ParseSuccessful(handlerCtx.C, http.StatusOK, questions)
@@ -66,7 +66,7 @@ func FindQuestionByIDHandler(handlerCtx *configs.HandlersCtx, usersRepository *u
 	ID, err := toolkitEntities.ParseID(handlerCtx.C.Params("id"))
 
 	if err != nil {
-		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, pkgErrors.Translate(handlerCtx, err))
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, i18n.Translate(handlerCtx, err.Error()))
 	}
 
 	authenticatedUserID := users.GetUserByToken(handlerCtx).ID
@@ -74,7 +74,7 @@ func FindQuestionByIDHandler(handlerCtx *configs.HandlersCtx, usersRepository *u
 	question, err := FindQuestionByID(handlerCtx, ID, authenticatedUserID, questionsRepository, usersRepository)
 
 	if err != nil {
-		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, pkgErrors.Translate(handlerCtx, err))
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, i18n.Translate(handlerCtx, err.Error()))
 	}
 
 	return responses.ParseSuccessful(handlerCtx.C, http.StatusOK, question)
@@ -87,13 +87,13 @@ func DeleteQuestionHandler(handlerCtx *configs.HandlersCtx, questionsRepository 
 	ID, err := toolkitEntities.ParseID(handlerCtx.C.Params("id"))
 
 	if err != nil {
-		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, pkgErrors.Translate(handlerCtx, err))
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, i18n.Translate(handlerCtx, err.Error()))
 	}
 
 	authenticatedUserID := users.GetUserByToken(handlerCtx).ID
 
 	if err := DeleteQuestion(handlerCtx, ID, authenticatedUserID, questionsRepository); err != nil {
-		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, pkgErrors.Translate(handlerCtx, err))
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, i18n.Translate(handlerCtx, err.Error()))
 	}
 
 	return responses.ParseSuccessful(handlerCtx.C, http.StatusOK, nil)
@@ -106,13 +106,13 @@ func HideQuestionHandler(handlerCtx *configs.HandlersCtx, questionsRepository *Q
 	ID, err := toolkitEntities.ParseID(handlerCtx.C.Params("id"))
 
 	if err != nil {
-		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, pkgErrors.Translate(handlerCtx, err))
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, i18n.Translate(handlerCtx, err.Error()))
 	}
 
 	authenticatedUserID := users.GetUserByToken(handlerCtx).ID
 
 	if err := HideQuestion(handlerCtx, ID, authenticatedUserID, questionsRepository); err != nil {
-		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, pkgErrors.Translate(handlerCtx, err))
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, i18n.Translate(handlerCtx, err.Error()))
 	}
 
 	return responses.ParseSuccessful(handlerCtx.C, http.StatusOK, nil)
@@ -125,13 +125,13 @@ func ReplyQuestionHandler(handlerCtx *configs.HandlersCtx, questionsRepository *
 	payload := ReplyQuestionDTO{}
 
 	if err := handlerCtx.C.BodyParser(&payload); err != nil {
-		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, pkgErrors.Translate(handlerCtx, err))
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, i18n.Translate(handlerCtx, err.Error()))
 	}
 
 	ID, err := toolkitEntities.ParseID(handlerCtx.C.Params("id"))
 
 	if err != nil {
-		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, pkgErrors.Translate(handlerCtx, err))
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, i18n.Translate(handlerCtx, err.Error()))
 	}
 
 	authenticatedUserID := users.GetUserByToken(handlerCtx).ID
@@ -139,7 +139,7 @@ func ReplyQuestionHandler(handlerCtx *configs.HandlersCtx, questionsRepository *
 	payload.ID = ID
 
 	if err := ReplyQuestion(handlerCtx, &payload, authenticatedUserID, questionsRepository); err != nil {
-		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, pkgErrors.Translate(handlerCtx, err))
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, i18n.Translate(handlerCtx, err.Error()))
 	}
 
 	return responses.ParseSuccessful(handlerCtx.C, http.StatusCreated, nil)
@@ -152,13 +152,13 @@ func EditReplyQuestionHandler(handlerCtx *configs.HandlersCtx, questionsReposito
 	payload := EditQuestionReplyDTO{}
 
 	if err := handlerCtx.C.BodyParser(&payload); err != nil {
-		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, pkgErrors.Translate(handlerCtx, err))
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, i18n.Translate(handlerCtx, err.Error()))
 	}
 
 	ID, err := toolkitEntities.ParseID(handlerCtx.C.Params("id"))
 
 	if err != nil {
-		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, pkgErrors.Translate(handlerCtx, err))
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, i18n.Translate(handlerCtx, err.Error()))
 	}
 
 	authenticatedUserID := users.GetUserByToken(handlerCtx).ID
@@ -166,7 +166,7 @@ func EditReplyQuestionHandler(handlerCtx *configs.HandlersCtx, questionsReposito
 	payload.ID = ID
 
 	if err := EditQuestionReply(handlerCtx, &payload, authenticatedUserID, questionsRepository); err != nil {
-		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, pkgErrors.Translate(handlerCtx, err))
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, i18n.Translate(handlerCtx, err.Error()))
 	}
 
 	return responses.ParseSuccessful(handlerCtx.C, http.StatusCreated, nil)
@@ -179,13 +179,13 @@ func RemoveQuestionReplyHandler(handlerCtx *configs.HandlersCtx, questionsReposi
 	ID, err := toolkitEntities.ParseID(handlerCtx.C.Params("id"))
 
 	if err != nil {
-		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, pkgErrors.Translate(handlerCtx, err))
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, i18n.Translate(handlerCtx, err.Error()))
 	}
 
 	authenticatedUserID := users.GetUserByToken(handlerCtx).ID
 
 	if err := RemoveQuestionReply(handlerCtx, ID, authenticatedUserID, questionsRepository); err != nil {
-		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, pkgErrors.Translate(handlerCtx, err))
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, i18n.Translate(handlerCtx, err.Error()))
 	}
 
 	return responses.ParseSuccessful(handlerCtx.C, http.StatusOK, nil)

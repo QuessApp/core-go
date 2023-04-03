@@ -7,22 +7,22 @@ import (
 
 	"github.com/quessapp/core-go/configs"
 	"github.com/quessapp/core-go/internal/users"
+	"github.com/quessapp/core-go/pkg/i18n"
 	toolkitEntities "github.com/quessapp/toolkit/entities"
 	"github.com/quessapp/toolkit/queue"
-
-	"github.com/streadway/amqp"
 )
 
 // SendEmailNewQuestionReceived sends an email notification to the user that receives a new question.
 // The email contains the content of the question, the sender's name, and whether the question is anonymous or not.
 // The email is encrypted and sent using an AMQP channel and queue.
-func SendEmailNewQuestionReceived(cfg *configs.Conf, ch *amqp.Channel, q *amqp.Queue, content string, isAnonymous bool, userToSendQuestion *users.User, userThatIsSendingQuestion *users.User) {
+func SendEmailNewQuestionReceived(handlerCtx *configs.HandlersCtx, content string, isAnonymous bool, userToSendQuestion *users.User, userThatIsSendingQuestion *users.User) {
 	var subject string
 
 	if isAnonymous {
-		subject = "Você recebeu uma pergunta anônima"
+		subject = i18n.Translate(handlerCtx, "emails_new_question_subject")
 	} else {
-		subject = fmt.Sprintf("Você recebeu uma pergunta de @%s", userThatIsSendingQuestion.Nick)
+		translatedSubject := i18n.Translate(handlerCtx, "emails_new_question_subject")
+		subject = fmt.Sprintf(translatedSubject, userThatIsSendingQuestion.Nick)
 	}
 
 	email := toolkitEntities.Email{
@@ -37,7 +37,7 @@ func SendEmailNewQuestionReceived(cfg *configs.Conf, ch *amqp.Channel, q *amqp.Q
 		log.Fatalf("fail to marshal %s", err)
 	}
 
-	if err := queue.Publish(ch, q.Name, cfg.Crypto.Key, emailParsed); err != nil {
+	if err := queue.Publish(handlerCtx.MessageQueueCh, handlerCtx.EmailsQueue.Name, handlerCtx.Cfg.Crypto.Key, emailParsed); err != nil {
 		log.Fatalf("fail to send email to user %s \n", err)
 	}
 }
@@ -45,11 +45,13 @@ func SendEmailNewQuestionReceived(cfg *configs.Conf, ch *amqp.Channel, q *amqp.Q
 // SendEmailForgotPassword sends an email notification to the user that wants to reset password.
 // The email contains the code that the user will use to reset the password.
 // The email is encrypted and sent using an AMQP channel and queue.
-func SendEmailForgotPassword(cfg *configs.Conf, ch *amqp.Channel, q *amqp.Queue, code string, userToSendEmail *users.User) error {
+func SendEmailForgotPassword(handlerCtx *configs.HandlersCtx, code string, userToSendEmail *users.User) error {
+	translatedBody := i18n.Translate(handlerCtx, "emails_forgot_password_body")
+
 	email := toolkitEntities.Email{
 		To:      userToSendEmail.Email,
-		Subject: "Recuperação de senha",
-		Body:    fmt.Sprintf(`Você solicitou a recuperação de senha. Seu código é: %v`, code),
+		Subject: i18n.Translate(handlerCtx, "emails_forgot_password_subject"),
+		Body:    fmt.Sprintf(translatedBody, code),
 	}
 
 	emailParsed, err := json.Marshal(email)
@@ -59,7 +61,7 @@ func SendEmailForgotPassword(cfg *configs.Conf, ch *amqp.Channel, q *amqp.Queue,
 		return err
 	}
 
-	if err := queue.Publish(ch, q.Name, cfg.Crypto.Key, emailParsed); err != nil {
+	if err := queue.Publish(handlerCtx.MessageQueueCh, handlerCtx.EmailsQueue.Name, handlerCtx.Cfg.Crypto.Key, emailParsed); err != nil {
 		log.Fatalf("fail to send email to user %s \n", err)
 		return err
 	}
@@ -73,11 +75,11 @@ func SendEmailForgotPassword(cfg *configs.Conf, ch *amqp.Channel, q *amqp.Queue,
 // It constructs an email object with the To field set to the email of the userToSendEmail.
 // It encrypts the email using the encryption key in cfg.CipherKey and sends it to the email queue q using the message queue channel ch.
 // It returns an error if there was a problem marshaling, encrypting, or sending the email.
-func SendEmailPasswordChanged(cfg *configs.Conf, ch *amqp.Channel, q *amqp.Queue, userToSendEmail *users.User) error {
+func SendEmailPasswordChanged(handlerCtx *configs.HandlersCtx, userToSendEmail *users.User) error {
 	email := toolkitEntities.Email{
 		To:      userToSendEmail.Email,
-		Subject: "Senha alterada",
-		Body:    "Sua senha foi alterada com sucesso. Se você não solicitou essa alteração ou acha que é um engano, entre em contato com o suporte.",
+		Subject: i18n.Translate(handlerCtx, "emails_password_changed_subject"),
+		Body:    i18n.Translate(handlerCtx, "emails_password_changed_body"),
 	}
 
 	emailParsed, err := json.Marshal(email)
@@ -87,7 +89,7 @@ func SendEmailPasswordChanged(cfg *configs.Conf, ch *amqp.Channel, q *amqp.Queue
 		return err
 	}
 
-	if err := queue.Publish(ch, q.Name, cfg.Crypto.Key, emailParsed); err != nil {
+	if err := queue.Publish(handlerCtx.MessageQueueCh, handlerCtx.EmailsQueue.Name, handlerCtx.Cfg.Crypto.Key, emailParsed); err != nil {
 		log.Fatalf("fail to send email to user %s \n", err)
 		return err
 	}
@@ -101,11 +103,11 @@ func SendEmailPasswordChanged(cfg *configs.Conf, ch *amqp.Channel, q *amqp.Queue
 // It constructs an email object with the To field set to the email of the userToSendEmail.
 // It encrypts the email using the encryption key in cfg.CipherKey and sends it to the email queue q using the message queue channel ch.
 // It returns an error if there was a problem marshaling, encrypting, or sending the email.
-func SendEmailThanksForReporting(cfg *configs.Conf, ch *amqp.Channel, q *amqp.Queue, userToSendEmail *users.User) {
+func SendEmailThanksForReporting(handlerCtx *configs.HandlersCtx, userToSendEmail *users.User) {
 	email := toolkitEntities.Email{
 		To:      userToSendEmail.Email,
-		Subject: "Denúncia enviada",
-		Body:    "Agradecemos por nos ajudar a manter a comunidade segura. Sua denúncia será analisada e, se necessário, tomaremos as devidas providências.",
+		Subject: i18n.Translate(handlerCtx, "emails_report_sent_subject"),
+		Body:    i18n.Translate(handlerCtx, "emails_report_sent_body"),
 	}
 
 	emailParsed, err := json.Marshal(email)
@@ -115,7 +117,7 @@ func SendEmailThanksForReporting(cfg *configs.Conf, ch *amqp.Channel, q *amqp.Qu
 		return
 	}
 
-	if err := queue.Publish(ch, q.Name, cfg.Crypto.Key, emailParsed); err != nil {
+	if err := queue.Publish(handlerCtx.MessageQueueCh, handlerCtx.EmailsQueue.Name, handlerCtx.Cfg.Crypto.Key, emailParsed); err != nil {
 		log.Fatalf("fail to send email to user %s \n", err)
 		return
 	}

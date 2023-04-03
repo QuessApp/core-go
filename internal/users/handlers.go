@@ -5,7 +5,7 @@ import (
 	"strconv"
 
 	"github.com/quessapp/core-go/configs"
-	pkgErrors "github.com/quessapp/core-go/pkg/errors"
+	i18n "github.com/quessapp/core-go/pkg/i18n"
 	"github.com/quessapp/toolkit/responses"
 )
 
@@ -22,7 +22,7 @@ func SearchUserHandler(handlerCtx *configs.HandlersCtx, usersRepository *UsersRe
 	page := int64(p)
 
 	if err != nil {
-		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, pkgErrors.Translate(handlerCtx, err))
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, i18n.Translate(handlerCtx, err.Error()))
 	}
 
 	authenticatedUserID := GetUserByToken(handlerCtx).ID
@@ -30,7 +30,7 @@ func SearchUserHandler(handlerCtx *configs.HandlersCtx, usersRepository *UsersRe
 	users, err := SearchUser(handlerCtx, value, &page, authenticatedUserID, usersRepository)
 
 	if err != nil {
-		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, pkgErrors.Translate(handlerCtx, err))
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, i18n.Translate(handlerCtx, err.Error()))
 	}
 
 	return responses.ParseSuccessful(handlerCtx.C, http.StatusOK, users)
@@ -45,7 +45,7 @@ func GetAuthenticatedUserHandler(handlerCtx *configs.HandlersCtx, usersRepositor
 	user, err := GetAuthenticatedUser(handlerCtx, authenticatedUserID, usersRepository)
 
 	if err != nil {
-		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, pkgErrors.Translate(handlerCtx, err))
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, i18n.Translate(handlerCtx, err.Error()))
 	}
 
 	return responses.ParseSuccessful(handlerCtx.C, http.StatusOK, user)
@@ -60,7 +60,7 @@ func FindUserByNickHandler(handlerCtx *configs.HandlersCtx, usersRepository *Use
 	user, err := FindUserByNick(handlerCtx, nick, usersRepository)
 
 	if err != nil {
-		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, pkgErrors.Translate(handlerCtx, err))
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, i18n.Translate(handlerCtx, err.Error()))
 	}
 
 	return responses.ParseSuccessful(handlerCtx.C, http.StatusOK, user)
@@ -75,11 +75,11 @@ func UpdateUserAvatarHandler(handlerCtx *configs.HandlersCtx, usersRepository *U
 	form, err := handlerCtx.C.FormFile("avatar")
 
 	if err != nil {
-		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, pkgErrors.Translate(handlerCtx, err))
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, i18n.Translate(handlerCtx, err.Error()))
 	}
 
 	if err := UpdateUserAvatar(handlerCtx, form, authenticatedUserID, usersRepository); err != nil {
-		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, pkgErrors.Translate(handlerCtx, err))
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, i18n.Translate(handlerCtx, err.Error()))
 	}
 
 	return responses.ParseSuccessful(handlerCtx.C, http.StatusCreated, nil)
@@ -92,11 +92,11 @@ func UpdateUserProfileHandler(handlerCtx *configs.HandlersCtx, usersRepository *
 	payload := UpdateProfileDTO{}
 
 	if err := handlerCtx.C.BodyParser(&payload); err != nil {
-		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, pkgErrors.Translate(handlerCtx, err))
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, i18n.Translate(handlerCtx, err.Error()))
 	}
 
 	if err := UpdateUserProfile(handlerCtx, &payload, authenticatedUserID, usersRepository); err != nil {
-		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, pkgErrors.Translate(handlerCtx, err))
+		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, i18n.Translate(handlerCtx, err.Error()))
 	}
 
 	return responses.ParseSuccessful(handlerCtx.C, http.StatusCreated, nil)

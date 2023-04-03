@@ -209,7 +209,7 @@ func ForgotPassword(handlerCtx *configs.HandlersCtx, payload ForgotPasswordDTO, 
 		return err
 	}
 
-	if err := emails.SendEmailForgotPassword(handlerCtx.Cfg, handlerCtx.MessageQueueCh, handlerCtx.EmailsQueue, t.Code, u); err != nil {
+	if err := emails.SendEmailForgotPassword(handlerCtx, t.Code, u); err != nil {
 		return err
 	}
 
@@ -281,7 +281,7 @@ func ResetPassword(handlerCtx *configs.HandlersCtx, payload ResetPasswordDTO, au
 		return err
 	}
 
-	go emails.SendEmailPasswordChanged(handlerCtx.Cfg, handlerCtx.MessageQueueCh, handlerCtx.EmailsQueue, u)
+	go emails.SendEmailPasswordChanged(handlerCtx, u)
 
 	return nil
 }
