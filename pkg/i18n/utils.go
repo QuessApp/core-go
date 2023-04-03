@@ -16,7 +16,7 @@ var translations = map[locale]map[key]message{
 	"pt-BR": *locales.GetBrazilianPortugueseTranslation(),
 }
 
-func getDefaultLang(handlerCtx *configs.HandlersCtx) string {
+func getLang(handlerCtx *configs.HandlersCtx) string {
 	accept := handlerCtx.C.Get("Accept-Language")
 
 	if accept == "" {
@@ -31,7 +31,7 @@ func getDefaultLang(handlerCtx *configs.HandlersCtx) string {
 // It takes two parameters, a HandlerCtx and an key.
 // It returns a string with the translated key.
 func Translate(handlerCtx *configs.HandlersCtx, key string) string {
-	lang := getDefaultLang(handlerCtx)
+	lang := getLang(handlerCtx)
 
 	translation := translations[lang][key]
 
