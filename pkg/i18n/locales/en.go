@@ -66,8 +66,7 @@ func GetAmericanEnglishTranslations() *map[string]string {
 		"cant_edit_reply_not_replied_yet": "you can't edit this reply because it was not replied yet",
 		"cant_edit_reply_reached_limit":   "you can't edit this reply because you reached the limit of edits, that is five",
 
-		"did_blocked_receiver": "you blocked the user that you are trying to send a question to",
-
+		"did_blocked_receiver":     "you blocked the user that you are trying to send a question to",
 		"blocked_by_receiver":      "you can't send a question to this user because he blocked you",
 		"already_blocked":          "you can't block this user because he is already blocked",
 		"cant_block_yourself":      "you can't block yourself",
@@ -78,9 +77,6 @@ func GetAmericanEnglishTranslations() *map[string]string {
 		"cant_delete_report_not_sent_by_you": "you can't delete this report because it was not sent by you",
 		"cant_report_already_sent":           "you can't send a report because you already sent one",
 		"cant_report_yourself":               "you can't send a report to yourself",
-
-		"token_not_found": "token not found",
-		"token_expired":   "token expired",
 
 		"code_not_found": "the provided code does not exist",
 		"code_required":  "code field is required",

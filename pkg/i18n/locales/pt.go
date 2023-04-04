@@ -65,8 +65,7 @@ func GetBrazilianPortugueseTranslation() *map[string]string {
 		"cant_edit_reply_not_replied_yet": "não foi é possível editar resposta desta pergunta, pois ela ainda não foi respondida",
 		"cant_edit_reply_reached_limit":   "não foi é possível editar resposta desta pergunta, pois a mesma já foi editada cinco vezes",
 
-		"did_blocked_receiver": "você não pode enviar esta pergunta porque você bloqueou o usuário",
-
+		"did_blocked_receiver":     "você não pode enviar esta pergunta porque você bloqueou o usuário",
 		"blocked_by_receiver":      "o usuário destinatário bloqueou você",
 		"already_blocked":          "você não pode bloquear este usuário porque você já o bloqueou",
 		"cant_block_yourself":      "você não pode se bloquear",
@@ -77,9 +76,6 @@ func GetBrazilianPortugueseTranslation() *map[string]string {
 		"cant_delete_report_not_sent_by_you": "você não pode deletar esta denúncia, pois ela não foi enviada por você",
 		"cant_report_already_sent":           "você não pode enviar essa denúncia, pois já enviou uma semelhante anteriormente",
 		"cant_report_yourself":               "você não pode enviar uma denúncia para si mesmo",
-
-		"token_not_found": "token not found",
-		"token_expired":   "token expired",
 
 		"code_not_found": "o código fornecido não existe",
 		"code_required":  "campo de código é obrigatório",
