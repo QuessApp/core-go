@@ -14,6 +14,7 @@ type message = string
 var translations = map[locale]map[key]message{
 	"en-US": *locales.GetAmericanEnglishTranslations(),
 	"pt-BR": *locales.GetBrazilianPortugueseTranslation(),
+	"es-ES": *locales.GetSpanishTranslations(),
 }
 
 func getLang(handlerCtx *configs.HandlersCtx) string {
@@ -27,18 +28,31 @@ func getLang(handlerCtx *configs.HandlersCtx) string {
 	return accept
 }
 
-// Translate translates an key into a human readable message.
+// Translate translates re
 // It takes two parameters, a HandlerCtx and an key.
 // It returns a string with the translated key.
 func Translate(handlerCtx *configs.HandlersCtx, key string) string {
 	lang := getLang(handlerCtx)
 
-	translation := translations[lang][key]
+	foundTranslation := translations[lang][key]
 
-	if translation == "" {
-		log.Printf("[WARNING!!] Error [%s] not found in locale [%s]", key, lang)
-		return key
+	if foundTranslation != "" {
+		return foundTranslation
 	}
 
-	return translation
+	if foundTranslation == "" {
+		log.Printf("[WARNING!!] Key [%s] not found in locale [%s]", key, lang)
+
+		fallback := translations["en-US"][key]
+
+		// If the key is not found in the current locale, we try to find it in the fallback locale (en-US)
+		if fallback == "" {
+			log.Printf("[WARNING!!] Key [%s] not found in fallback locale (en-US)", key)
+			return key
+		}
+
+		return fallback
+	}
+
+	return key
 }
