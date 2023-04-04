@@ -6,7 +6,7 @@ Core API is the entry point to every action. If we want to send a new question, 
 
 ## Before you start
 
-1 - This project follows [this project layout](https://github.com/golang-standards/project-layout).
+1 - This project follows [this project layout](https://github.com/golang-standards/project-layout).<br/>
 2 - I guess that would be cool if you know that Quess don't have only this project.
 We have others projects, you can visit them at:
 
