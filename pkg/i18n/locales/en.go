@@ -97,5 +97,8 @@ func GetAmericanEnglishTranslations() *map[string]string {
 
 		"emails_report_sent_subject": "Report sent",
 		"emails_report_sent_body":    "Thank you for sending a report, we will analyze it and take the necessary actions",
+
+		"emails_unkown_login_attempt_subject": "Unkown login attempt",
+		"emails_unkown_login_attempt_body":    "We noticed that someone tried to login to your account, if you did not request this change, please contact us immediately. The location of the login attempt was: ",
 	}
 }

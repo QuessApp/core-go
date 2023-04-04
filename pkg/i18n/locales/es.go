@@ -97,5 +97,8 @@ func GetSpanishTranslations() *map[string]string {
 
 		"emails_report_sent_subject": "Reclamación enviada",
 		"emails_report_sent_body":    "El informe que envió se recibió con éxito. Gracias por ayudarnos a mantener segura a la comunidad.",
+
+		"emails_unkown_login_attempt_subject": "Intento de inicio de sesión desconocido",
+		"emails_unkown_login_attempt_body":    "Notamos que alguien intentó iniciar sesión en su cuenta, si no solicitó este cambio, contáctenos de inmediato. La ubicación del intento de inicio de sesión fue: ",
 	}
 }
