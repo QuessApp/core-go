@@ -29,7 +29,7 @@ We have others projects, you can visit them at:
 - MongoDB
 - Swagger
 - Testify
-- JWT
+- JWT <br/>
   ...
 
 ## Run Locally
