@@ -10,7 +10,6 @@ import (
 	"github.com/quessapp/core-go/docs"
 	"github.com/quessapp/core-go/internal/auth"
 	"github.com/quessapp/core-go/internal/blocks"
-	"github.com/quessapp/core-go/internal/database"
 	"github.com/quessapp/core-go/internal/middlewares"
 	"github.com/quessapp/core-go/internal/questions"
 	"github.com/quessapp/core-go/internal/queues"
@@ -18,6 +17,7 @@ import (
 	"github.com/quessapp/core-go/internal/settings"
 	"github.com/quessapp/core-go/internal/users"
 
+	"github.com/quessapp/toolkit/database"
 	"github.com/quessapp/toolkit/queue"
 	"github.com/quessapp/toolkit/s3"
 	"github.com/redis/go-redis/v9"
