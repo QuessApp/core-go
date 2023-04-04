@@ -22,6 +22,8 @@ $ ./scripts/start.sh
 $ make destroy
 ```
 
+or
+
 ```bash
 $ ./scripts/destroy.sh
 ```
