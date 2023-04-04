@@ -6,7 +6,7 @@ Core API é o ponto de partida de todas ações. Se você quiser enviar pergunta
 
 ## Antes de começar
 
-1 - Este projeto segue [essa estrutura de pastas](https://github.com/golang-standards/project-layout).
+1 - Este projeto segue [essa estrutura de pastas](https://github.com/golang-standards/project-layout). <br/>
 2 - Eu acredito que seria interessante você saber que Quess não possui somente este projeto.
 Nós temos outros projetos, você pode visitá-los em:
 
