@@ -96,5 +96,8 @@ func GetBrazilianPortugueseTranslation() *map[string]string {
 
 		"emails_report_sent_subject": "Denúncia enviada",
 		"emails_report_sent_body":    "A denúncia que você enviou foi recebida com sucesso. Obrigado por nos ajudar a manter a comunidade segura",
+
+		"emails_unkown_login_attempt_subject": "Tentativa de login desconhecida",
+		"emails_unkown_login_attempt_body":    "Uma tentativa de login desconhecida foi detectada em sua conta. Se você não solicitou o login, entre em contato conosco imediatamente. A localização do dispositivo é: ",
 	}
 }
