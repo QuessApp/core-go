@@ -60,8 +60,8 @@ func GetAmericanEnglishTranslations() *map[string]string {
 		"cant_delete_question_not_sent_by_you": "you can't delete this question because it was not sent by you",
 		"sending_question_to_yourself":         "you can't send a question to yourself",
 
-		"can_hide_already_hidden": "you can't hide this question because it was already hidden",
-		"cant_send_invalid_Id":    "you can't send a question to an invalid user",
+		"cant_hide_already_hidden": "you can't hide this question because it was already hidden",
+		"cant_send_invalid_id":     "you can't send a question to an invalid user",
 
 		"cant_edit_reply_not_replied_yet": "you can't edit this reply because it was not replied yet",
 		"cant_edit_reply_reached_limit":   "you can't edit this reply because you reached the limit of edits, that is five",

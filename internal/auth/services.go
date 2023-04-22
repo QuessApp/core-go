@@ -63,6 +63,7 @@ func SignUp(handlerCtx *configs.HandlersCtx, payload *SignUpUserDTO, authReposit
 	data := &users.ResponseWithUser{
 		User: &users.User{
 			ID:        u.ID,
+			Nick:      u.Nick,
 			AvatarURL: u.AvatarURL,
 			Name:      u.Name,
 			Email:     u.Email,
@@ -121,6 +122,7 @@ func SignIn(handlerCtx *configs.HandlersCtx, payload *SignInUserDTO, authReposit
 		User: &users.User{
 			ID:              u.ID,
 			AvatarURL:       u.AvatarURL,
+			Nick:            u.Nick,
 			Name:            u.Name,
 			Email:           u.Email,
 			PostsLimit:      u.PostsLimit,

@@ -14,7 +14,7 @@ require (
 	github.com/golang-jwt/jwt/v4 v4.5.0
 	github.com/google/uuid v1.3.0
 	github.com/jaswdr/faker v1.16.0
-	github.com/quessapp/toolkit v0.0.0-20230324133112-7f56a7df43a8
+	github.com/quessapp/toolkit v0.0.0-20230404193313-df29d068f66e
 	github.com/redis/go-redis/v9 v9.0.2
 	github.com/spf13/viper v1.15.0
 	github.com/streadway/amqp v1.0.0

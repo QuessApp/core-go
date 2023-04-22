@@ -59,8 +59,8 @@ func GetBrazilianPortugueseTranslation() *map[string]string {
 		"cant_delete_question_not_sent_by_you": "você não pode deletar esta pergunta, pois ela não foi enviada por você",
 		"sending_question_to_yourself":         "você não pode enviar uma pergunta para você mesmo",
 
-		"can_hide_already_hidden": "você não pode ocultar esta pergunta, pois ela já está oculta",
-		"cant_send_invalid_Id":    "id do destinátário é inválido",
+		"cant_hide_already_hidden": "você não pode ocultar esta pergunta, pois ela já está oculta",
+		"cant_send_invalid_id":     "id do destinátário é inválido",
 
 		"cant_edit_reply_not_replied_yet": "não foi é possível editar resposta desta pergunta, pois ela ainda não foi respondida",
 		"cant_edit_reply_reached_limit":   "não foi é possível editar resposta desta pergunta, pois a mesma já foi editada cinco vezes",

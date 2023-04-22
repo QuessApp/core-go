@@ -231,10 +231,11 @@ github.com/prometheus/common/model
 github.com/prometheus/procfs
 github.com/prometheus/procfs/internal/fs
 github.com/prometheus/procfs/internal/util
-# github.com/quessapp/toolkit v0.0.0-20230324133112-7f56a7df43a8
+# github.com/quessapp/toolkit v0.0.0-20230404193313-df29d068f66e
 ## explicit; go 1.20
 github.com/quessapp/toolkit/constants
 github.com/quessapp/toolkit/crypto
+github.com/quessapp/toolkit/database
 github.com/quessapp/toolkit/entities
 github.com/quessapp/toolkit/errors
 github.com/quessapp/toolkit/middlewares

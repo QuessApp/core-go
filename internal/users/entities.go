@@ -18,10 +18,11 @@ type BlockedUser struct {
 
 // User is a model for each user in app.
 type User struct {
-	ID        toolkitEntities.ID `json:"id" bson:"_id"`
-	Nick      string             `json:"nick,omitempty"`
-	Name      string             `json:"name,omitempty"`
-	AvatarURL string             `json:"avatarUrl" bson:"avatarUrl"`
+	ID         toolkitEntities.ID `json:"id" bson:"_id"`
+	IsVerified bool               `json:"isVerified" bson:"isVerified"`
+	Nick       string             `json:"nick,omitempty"`
+	Name       string             `json:"name,omitempty"`
+	AvatarURL  string             `json:"avatarUrl" bson:"avatarUrl"`
 
 	Password string `json:"-"`
 	Email    string `json:"email,omitempty"`
