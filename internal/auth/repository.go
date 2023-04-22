@@ -56,6 +56,7 @@ func (a AuthRepository) SignUp(payload *SignUpUserDTO) (*users.User, error) {
 		ProExpiresAt:    nil,
 		Locale:          payload.Locale,
 		TrustedIPs:      []string{},
+		IsVerified:      false,
 	}
 
 	_, err := coll.InsertOne(context.Background(), user)
