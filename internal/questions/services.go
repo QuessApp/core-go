@@ -90,10 +90,11 @@ func FindQuestionByID(handlerCtx *configs.HandlersCtx, id, authenticatedUserID t
 	questionOwner := usersRepository.FindUserByID(q.SentBy.(toolkitEntities.ID))
 
 	u := users.User{
-		ID:        questionOwner.ID,
-		Name:      questionOwner.Name,
-		Nick:      questionOwner.Nick,
-		AvatarURL: questionOwner.AvatarURL,
+		ID:         questionOwner.ID,
+		Name:       questionOwner.Name,
+		Nick:       questionOwner.Nick,
+		AvatarURL:  questionOwner.AvatarURL,
+		IsVerified: questionOwner.IsVerified,
 	}
 
 	q.SentBy = u
@@ -138,36 +139,40 @@ func GetAllQuestions(handlerCtx *configs.HandlersCtx, page *int64, sort, filter 
 	}
 
 	var allQuestions []Question
+	var totalCount int64 = 0
 
 	for _, q := range *questions.Questions {
-		if q.IsAnonymous {
+		isQuestionOwner := authenticatedUserID == q.SentBy.(toolkitEntities.ID)
+
+		if q.IsAnonymous && !isQuestionOwner {
 			q.SentBy = nil
 		}
 
-		if !q.IsAnonymous {
+		if !q.IsAnonymous || isQuestionOwner {
 			u := usersRepository.FindUserByID(q.SentBy.(toolkitEntities.ID))
 
 			userExists := !u.ID.IsZero()
 
 			if userExists {
 				q.SentBy = users.User{
-					ID:        u.ID,
-					Nick:      u.Nick,
-					Name:      u.Name,
-					AvatarURL: u.AvatarURL,
+					ID:         u.ID,
+					Nick:       u.Nick,
+					Name:       u.Name,
+					AvatarURL:  u.AvatarURL,
+					CreatedAt:  u.CreatedAt,
+					IsVerified: u.IsVerified,
 				}
 			}
-
-			if !userExists {
-				q.SentBy = nil
-			}
 		}
+
+		totalCount++
+
 		allQuestions = append(allQuestions, q)
 	}
 
 	result := PaginatedQuestions{
 		Questions:  &allQuestions,
-		TotalCount: questions.TotalCount,
+		TotalCount: totalCount,
 	}
 
 	return &result, nil

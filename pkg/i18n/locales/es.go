@@ -60,8 +60,8 @@ func GetSpanishTranslations() *map[string]string {
 		"cant_delete_question_not_sent_by_you": "no puede eliminar una pregunta que no fue enviada por usted",
 		"sending_question_to_yourself":         "no puede enviar una pregunta a usted mismo",
 
-		"can_hide_already_hidden": "ya ocultó esta pregunta",
-		"cant_send_invalid_Id":    "no puede enviar una pregunta a un usuario con id inválido",
+		"cant_hide_already_hidden": "ya ocultó esta pregunta",
+		"cant_send_invalid_id":     "no puede enviar una pregunta a un usuario con id inválido",
 
 		"cant_edit_reply_not_replied_yet": "no puedes editar esta respuesta porque aún no ha sido respondida",
 		"cant_edit_reply_reached_limit":   "no puedes editar esta respuesta porque alcanzaste el límite de ediciones, es decir, cinco",
