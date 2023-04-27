@@ -273,7 +273,6 @@ func GetFormatPasswordValidateDTOMock(t *testing.T, forgotPasswordData auth.Forg
 // GetResetPasswordValidateDTOMock returns a slice of BatchTest for ResetPasswordDTO.
 func GetResetPasswordValidateDTOMock(t *testing.T, resetPasswordData auth.ResetPasswordDTO) []tests.BatchTest {
 	forgotPasswordDataTest := []tests.BatchTest{
-
 		{
 			OnRun: func() {
 				resetPasswordData.Password = ""
