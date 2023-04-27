@@ -10,7 +10,7 @@ import (
 
 // GetReplyQuestionValidateDTOMock returns a slice of BatchTest for ReplyQuestionDTO.
 func GetReplyQuestionValidateDTOMock(t *testing.T, replyQuestionData questions.ReplyQuestionDTO) []tests.BatchTest {
-	blockUserDataTest := []tests.BatchTest{
+	replyQuestionDataTest := []tests.BatchTest{
 		{
 			OnRun: func() {
 				assert.EqualError(t, replyQuestionData.Validate(), "content_field_required.")
@@ -30,5 +30,5 @@ func GetReplyQuestionValidateDTOMock(t *testing.T, replyQuestionData questions.R
 		},
 	}
 
-	return blockUserDataTest
+	return replyQuestionDataTest
 }
