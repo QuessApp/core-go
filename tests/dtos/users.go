@@ -11,7 +11,7 @@ import (
 
 // GetUpdateUserProfileValidateDTOBatches returns a slice of BatchTest for UpdateProfileDTO.
 func GetUpdateUserProfileValidateDTOBatches(t *testing.T, updateProfileData users.UpdateProfileDTO) []tests.BatchTest {
-	updateUserProfileDataTest := []tests.BatchTest{
+	return []tests.BatchTest{
 		{
 			OnRun: func() {
 				updateProfileData.Nick = ""
@@ -83,6 +83,4 @@ func GetUpdateUserProfileValidateDTOBatches(t *testing.T, updateProfileData user
 			},
 		},
 	}
-
-	return updateUserProfileDataTest
 }

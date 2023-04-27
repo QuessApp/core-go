@@ -10,7 +10,8 @@ import (
 
 // GetCreateReportValidateDTOBatches returns a slice of BatchTest for CreateReportDTO.
 func GetCreateReportValidateDTOBatches(t *testing.T, createReportData reports.CreateReportDTO) []tests.BatchTest {
-	createReportDataTest := []tests.BatchTest{
+
+	return []tests.BatchTest{
 		{
 			OnRun: func() {
 				assert.NoError(t, createReportData.Validate())
@@ -44,6 +45,4 @@ func GetCreateReportValidateDTOBatches(t *testing.T, createReportData reports.Cr
 			},
 		},
 	}
-
-	return createReportDataTest
 }

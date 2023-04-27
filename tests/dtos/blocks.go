@@ -11,7 +11,7 @@ import (
 
 // GetBlockUserValidateDTOBatches returns a slice of BatchTest for BlockUserDTO.
 func GetBlockUserValidateDTOBatches(t *testing.T, blockUserData blocks.BlockUserDTO) []tests.BatchTest {
-	blockUserDataTest := []tests.BatchTest{
+	return []tests.BatchTest{
 		{
 			OnRun: func() {
 				assert.NoError(t, blockUserData.Validate())
@@ -27,6 +27,4 @@ func GetBlockUserValidateDTOBatches(t *testing.T, blockUserData blocks.BlockUser
 			},
 		},
 	}
-
-	return blockUserDataTest
 }

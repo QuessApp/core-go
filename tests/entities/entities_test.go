@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/quessapp/core-go/internal/questions"
+	"github.com/quessapp/core-go/internal/users"
 	"github.com/quessapp/core-go/pkg/tests"
 
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -23,4 +24,12 @@ func TestMapAnonymousFields(t *testing.T) {
 		RepliedAt:          &time.Time{},
 	})
 	tests.RunBatchTests(mapAnonymousFieldsBatches)
+}
+
+func TestForm(t *testing.T) {
+	formatUserDataBatches := GetFormaUserDataBatches(t, &users.User{
+		Nick:  "test",
+		Email: "",
+	})
+	tests.RunBatchTests(formatUserDataBatches)
 }
