@@ -9,9 +9,9 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// GetSignUpFormatDTOBatches returns a slice of BatchTest for SignUpUserDTO.
+// GetSignUpFormatDTOBatches returns a slice of BatchTest for SignUpUserDTO testing Format method.
 func GetSignUpFormatDTOBatches(t *testing.T, signUpData auth.SignUpUserDTO) []tests.BatchTest {
-	signUpDataTest := []tests.BatchTest{
+	return []tests.BatchTest{
 		{
 			OnRun: func() {
 				signUpData.Nick = "@ adsa32321@0-9"
@@ -48,13 +48,11 @@ func GetSignUpFormatDTOBatches(t *testing.T, signUpData auth.SignUpUserDTO) []te
 			},
 		},
 	}
-
-	return signUpDataTest
 }
 
-// GetSignUpFormatDTOBatches returns a slice of BatchTest for SignUpUserDTO.
+// GetSignUpFormatDTOBatches returns a slice of BatchTest for SignUpUserDTO testing Validate method.
 func GetSignUpValidateDTOBatches(t *testing.T, signUpData auth.SignUpUserDTO) []tests.BatchTest {
-	signUpDataTest := []tests.BatchTest{
+	return []tests.BatchTest{
 		{
 			OnRun: func() {
 				signUpData.Nick = ""
@@ -126,13 +124,11 @@ func GetSignUpValidateDTOBatches(t *testing.T, signUpData auth.SignUpUserDTO) []
 			},
 		},
 	}
-
-	return signUpDataTest
 }
 
-// GetSignInValidateDTOBatches returns a slice of BatchTest for SignInUserDTO.
+// GetSignInValidateDTOBatches returns a slice of BatchTest for SignInUserDTO testing Validate method.
 func GetSignInValidateDTOBatches(t *testing.T, signInData auth.SignInUserDTO) []tests.BatchTest {
-	signInDataTest := []tests.BatchTest{
+	return []tests.BatchTest{
 		{
 			OnRun: func() {
 				signInData.Nick = ""
@@ -158,13 +154,11 @@ func GetSignInValidateDTOBatches(t *testing.T, signInData auth.SignInUserDTO) []
 			},
 		},
 	}
-
-	return signInDataTest
 }
 
-// GetFormatPasswordValidateDTOBatches returns a slice of BatchTest for ForgotPasswordDTO.
+// GetFormatPasswordValidateDTOBatches returns a slice of BatchTest for ForgotPasswordDTO testing Validate method.
 func GetFormatPasswordValidateDTOBatches(t *testing.T, forgotPasswordData auth.ForgotPasswordDTO) []tests.BatchTest {
-	forgotPasswordDataTest := []tests.BatchTest{
+	return []tests.BatchTest{
 		{
 			OnRun: func() {
 				forgotPasswordData.Email = ""
@@ -182,13 +176,11 @@ func GetFormatPasswordValidateDTOBatches(t *testing.T, forgotPasswordData auth.F
 			},
 		},
 	}
-
-	return forgotPasswordDataTest
 }
 
-// GetResetPasswordValidateDTOBatches returns a slice of BatchTest for ResetPasswordDTO.
+// GetResetPasswordValidateDTOBatches returns a slice of BatchTest for ResetPasswordDTO testing Validate method.
 func GetResetPasswordValidateDTOBatches(t *testing.T, resetPasswordData auth.ResetPasswordDTO) []tests.BatchTest {
-	forgotPasswordDataTest := []tests.BatchTest{
+	return []tests.BatchTest{
 		{
 			OnRun: func() {
 				resetPasswordData.Password = ""
@@ -211,6 +203,4 @@ func GetResetPasswordValidateDTOBatches(t *testing.T, resetPasswordData auth.Res
 			},
 		},
 	}
-
-	return forgotPasswordDataTest
 }

@@ -8,9 +8,9 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// GetReplyQuestionValidateDTOBatches returns a slice of BatchTest for ReplyQuestionDTO.
+// GetReplyQuestionValidateDTOBatches returns a slice of BatchTest for ReplyQuestionDTO. testing Validate method
 func GetReplyQuestionValidateDTOBatches(t *testing.T, replyQuestionData questions.ReplyQuestionDTO) []tests.BatchTest {
-	replyQuestionDataTest := []tests.BatchTest{
+	return []tests.BatchTest{
 		{
 			OnRun: func() {
 				assert.ErrorContains(t, replyQuestionData.Validate(), "content_field_required")
@@ -23,13 +23,11 @@ func GetReplyQuestionValidateDTOBatches(t *testing.T, replyQuestionData question
 			},
 		},
 	}
-
-	return replyQuestionDataTest
 }
 
-// GetEditReplyQuestionValidateDTOBatches returns a slice of BatchTest for EditQuestionReplyDTO.
+// GetEditReplyQuestionValidateDTOBatches returns a slice of BatchTest for EditQuestionReplyDTO testing Validate method.
 func GetEditReplyQuestionValidateDTOBatches(t *testing.T, editReplyQuestionData questions.EditQuestionReplyDTO) []tests.BatchTest {
-	editReplyQuestionDataTest := []tests.BatchTest{
+	return []tests.BatchTest{
 		{
 			OnRun: func() {
 				assert.ErrorContains(t, editReplyQuestionData.Validate(), "content_field_required")
@@ -45,13 +43,11 @@ func GetEditReplyQuestionValidateDTOBatches(t *testing.T, editReplyQuestionData 
 			},
 		},
 	}
-
-	return editReplyQuestionDataTest
 }
 
-// GetCreateQuestionValidateDTOBatches returns a slice of BatchTest for CreateQuestionDTO.
+// GetCreateQuestionValidateDTOBatches returns a slice of BatchTest for CreateQuestionDTO testing Validate method.
 func GetCreateQuestionValidateDTOBatches(t *testing.T, createQuestionData questions.CreateQuestionDTO) []tests.BatchTest {
-	createQuestionDataTest := []tests.BatchTest{
+	return []tests.BatchTest{
 		{
 			OnRun: func() {
 				assert.ErrorContains(t, createQuestionData.Validate(), "content_field_required")
@@ -67,6 +63,4 @@ func GetCreateQuestionValidateDTOBatches(t *testing.T, createQuestionData questi
 			},
 		},
 	}
-
-	return createQuestionDataTest
 }

@@ -2,25 +2,26 @@ package entities
 
 import (
 	"testing"
-	"time"
 
-	"github.com/quessapp/core-go/internal/questions"
+	"github.com/quessapp/core-go/internal/users"
 	"github.com/quessapp/core-go/pkg/tests"
-
-	"go.mongodb.org/mongo-driver/bson/primitive"
+	"github.com/quessapp/core-go/tests/mocks"
 )
 
 func TestMapAnonymousFields(t *testing.T) {
-	mapAnonymousFieldsBatches := GetTestMapByAnonymousFieldsBatches(t, questions.Question{
-		Content:            "test",
-		Reply:              primitive.NewObjectID(),
-		IsAnonymous:        false,
-		IsHiddenByReceiver: true,
-		SentBy:             primitive.NewObjectID(),
-		IsReplied:          true,
-		RepliesHistory:     []questions.ReplyHistory{},
-		CreatedAt:          time.Now(),
-		RepliedAt:          &time.Time{},
-	})
+	mapAnonymousFieldsBatches := GetTestMapByAnonymousFieldsBatches(t, *mocks.NewQuestionMock())
 	tests.RunBatchTests(mapAnonymousFieldsBatches)
+}
+
+func TestFormat(t *testing.T) {
+	formatUserDataBatches := GetFormaUserDataBatches(t, &users.User{
+		Nick:  "test",
+		Email: "",
+	})
+	tests.RunBatchTests(formatUserDataBatches)
+}
+
+func TestGetBasicInfos(t *testing.T) {
+	getBasicUserDataBatches := GetBasicUserDataBatches(t, mocks.NewUserMock())
+	tests.RunBatchTests(getBasicUserDataBatches)
 }

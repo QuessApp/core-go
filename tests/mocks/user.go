@@ -8,8 +8,8 @@ import (
 	"github.com/jaswdr/faker"
 )
 
-// NewUser generates a fake user with generated fake fields values.
-func NewUser() *users.User {
+// NewUserMock generates a fake user with generated fake fields values.
+func NewUserMock() *users.User {
 	fake := faker.New()
 
 	return &users.User{
