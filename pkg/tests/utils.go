@@ -8,7 +8,6 @@ type BatchTest struct {
 }
 
 // RunBatchTests runs a batch of tests.
-// It runs the BeforeRun function before the test and the OnRun function on the test.
 func RunBatchTests(t []BatchTest) {
 	for _, t := range t {
 		t.OnRun()
