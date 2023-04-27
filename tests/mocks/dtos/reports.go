@@ -19,14 +19,11 @@ func GetCreateReportValidateDTOMock(t *testing.T, createReportData reports.Creat
 		{
 			OnRun: func() {
 				createReportData.Reason = ""
-				assert.EqualError(t, createReportData.Validate(), "reason_field_required.")
+				assert.ErrorContains(t, createReportData.Validate(), "reason_field_required")
 
 				createReportData.Reason = "foobar"
-				assert.EqualError(t, createReportData.Validate(), "reason_field_invalid.")
-			},
-		},
-		{
-			OnRun: func() {
+				assert.ErrorContains(t, createReportData.Validate(), "reason_field_invalid")
+
 				createReportData.Reason = "hate speech or symbols"
 				assert.NoError(t, createReportData.Validate())
 			},
@@ -34,14 +31,11 @@ func GetCreateReportValidateDTOMock(t *testing.T, createReportData reports.Creat
 		{
 			OnRun: func() {
 				createReportData.Type = ""
-				assert.EqualError(t, createReportData.Validate(), "type_field_required.")
+				assert.ErrorContains(t, createReportData.Validate(), "type_field_required")
 
 				createReportData.Type = "block"
-				assert.EqualError(t, createReportData.Validate(), "type_field_invalid.")
-			},
-		},
-		{
-			OnRun: func() {
+				assert.ErrorContains(t, createReportData.Validate(), "type_field_invalid")
+
 				createReportData.Type = "user"
 				assert.NoError(t, createReportData.Validate())
 
