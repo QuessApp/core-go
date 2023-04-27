@@ -1,4 +1,4 @@
-package batches
+package dtos
 
 import (
 	"testing"
@@ -9,7 +9,6 @@ import (
 	"github.com/quessapp/core-go/internal/reports"
 	"github.com/quessapp/core-go/internal/users"
 	"github.com/quessapp/core-go/pkg/tests"
-	DTOsBatches "github.com/quessapp/core-go/tests/batches/dtos"
 )
 
 var mockedSignUpPayload = auth.SignUpUserDTO{
@@ -21,52 +20,52 @@ var mockedSignUpPayload = auth.SignUpUserDTO{
 }
 
 func TestFormat(t *testing.T) {
-	signUpFormatDTOBatches := DTOsBatches.GetSignUpFormatDTOBatches(t, mockedSignUpPayload)
+	signUpFormatDTOBatches := GetSignUpFormatDTOBatches(t, mockedSignUpPayload)
 	tests.RunBatchTests(signUpFormatDTOBatches)
 }
 
 func TestValidate(t *testing.T) {
-	signInValidateDTOBatches := DTOsBatches.GetSignInValidateDTOBatches(t, auth.SignInUserDTO{
+	signInValidateDTOBatches := GetSignInValidateDTOBatches(t, auth.SignInUserDTO{
 		Nick:     "foobar",
 		Password: "test123",
 		TrustIP:  true,
 	})
 	tests.RunBatchTests(signInValidateDTOBatches)
 
-	signUpValidateDTOBatches := DTOsBatches.GetSignUpValidateDTOBatches(t, mockedSignUpPayload)
+	signUpValidateDTOBatches := GetSignUpValidateDTOBatches(t, mockedSignUpPayload)
 	tests.RunBatchTests(signUpValidateDTOBatches)
 
-	forgotPasswordValidateDTOBatches := DTOsBatches.GetFormatPasswordValidateDTOBatches(t, auth.ForgotPasswordDTO{
+	forgotPasswordValidateDTOBatches := GetFormatPasswordValidateDTOBatches(t, auth.ForgotPasswordDTO{
 		Email: "text-api@example.com",
 	})
 	tests.RunBatchTests(forgotPasswordValidateDTOBatches)
 
-	resetPasswordValidateDTOBatches := DTOsBatches.GetResetPasswordValidateDTOBatches(t, auth.ResetPasswordDTO{
+	resetPasswordValidateDTOBatches := GetResetPasswordValidateDTOBatches(t, auth.ResetPasswordDTO{
 		Code:                 "1bc23",
 		Password:             "123test",
 		LogoutFromAllDevices: true,
 	})
 	tests.RunBatchTests(resetPasswordValidateDTOBatches)
 
-	blockUserValidateDTO := DTOsBatches.GetBlockUserValidateDTOBatches(t, blocks.BlockUserDTO{})
+	blockUserValidateDTO := GetBlockUserValidateDTOBatches(t, blocks.BlockUserDTO{})
 	tests.RunBatchTests(blockUserValidateDTO)
 
-	replyQuestionValidateDTOBatches := DTOsBatches.GetReplyQuestionValidateDTOBatches(t, questions.ReplyQuestionDTO{})
+	replyQuestionValidateDTOBatches := GetReplyQuestionValidateDTOBatches(t, questions.ReplyQuestionDTO{})
 	tests.RunBatchTests(replyQuestionValidateDTOBatches)
 
-	editReplyQuestionValidateDTOBatches := DTOsBatches.GetEditReplyQuestionValidateDTOBatches(t, questions.EditQuestionReplyDTO{})
+	editReplyQuestionValidateDTOBatches := GetEditReplyQuestionValidateDTOBatches(t, questions.EditQuestionReplyDTO{})
 	tests.RunBatchTests(editReplyQuestionValidateDTOBatches)
 
-	createReplyQuestionValidateDTOBatches := DTOsBatches.GetCreateQuestionValidateDTOBatches(t, questions.CreateQuestionDTO{})
+	createReplyQuestionValidateDTOBatches := GetCreateQuestionValidateDTOBatches(t, questions.CreateQuestionDTO{})
 	tests.RunBatchTests(createReplyQuestionValidateDTOBatches)
 
-	createReportValidateDTOBatches := DTOsBatches.GetCreateReportValidateDTOBatches(t, reports.CreateReportDTO{
+	createReportValidateDTOBatches := GetCreateReportValidateDTOBatches(t, reports.CreateReportDTO{
 		Reason: "spam",
 		Type:   "question",
 	})
 	tests.RunBatchTests(createReportValidateDTOBatches)
 
-	updateUserProfileValidateDTOBatches := DTOsBatches.GetUpdateUserProfileValidateDTOBatches(t, users.UpdateProfileDTO{
+	updateUserProfileValidateDTOBatches := GetUpdateUserProfileValidateDTOBatches(t, users.UpdateProfileDTO{
 		Email:  "api@example.com",
 		Nick:   "foobar",
 		Name:   "example",

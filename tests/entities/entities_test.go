@@ -1,4 +1,4 @@
-package batches
+package entities
 
 import (
 	"testing"
@@ -6,12 +6,12 @@ import (
 
 	"github.com/quessapp/core-go/internal/questions"
 	"github.com/quessapp/core-go/pkg/tests"
-	entitiesBatches "github.com/quessapp/core-go/tests/batches/entities"
+
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 func TestMapAnonymousFields(t *testing.T) {
-	mapAnonymousFieldsBatches := entitiesBatches.GetTestMapByAnonymousFieldsBatches(t, questions.Question{
+	mapAnonymousFieldsBatches := GetTestMapByAnonymousFieldsBatches(t, questions.Question{
 		Content:            "test",
 		Reply:              primitive.NewObjectID(),
 		IsAnonymous:        false,

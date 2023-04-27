@@ -1,4 +1,4 @@
-package batches
+package dtos
 
 import (
 	"fmt"
