@@ -1,4 +1,4 @@
-package mocks
+package batches
 
 import (
 	"fmt"
@@ -9,8 +9,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// GetUpdateUserProfileValidateDTOMock returns a slice of BatchTest for UpdateProfileDTO.
-func GetUpdateUserProfileValidateDTOMock(t *testing.T, updateProfileData users.UpdateProfileDTO) []tests.BatchTest {
+// GetUpdateUserProfileValidateDTOBatches returns a slice of BatchTest for UpdateProfileDTO.
+func GetUpdateUserProfileValidateDTOBatches(t *testing.T, updateProfileData users.UpdateProfileDTO) []tests.BatchTest {
 	updateUserProfileDataTest := []tests.BatchTest{
 		{
 			OnRun: func() {

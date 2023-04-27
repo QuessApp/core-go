@@ -9,7 +9,7 @@ import (
 	"github.com/quessapp/core-go/internal/reports"
 	"github.com/quessapp/core-go/internal/users"
 	"github.com/quessapp/core-go/pkg/tests"
-	mocksDTOs "github.com/quessapp/core-go/tests/mocks/dtos"
+	DTOsBatches "github.com/quessapp/core-go/tests/batches/dtos"
 )
 
 var mockedSignUpPayload = auth.SignUpUserDTO{
@@ -21,56 +21,56 @@ var mockedSignUpPayload = auth.SignUpUserDTO{
 }
 
 func TestFormat(t *testing.T) {
-	signUpFormatDTOMock := mocksDTOs.GetSignUpFormatDTOMock(t, mockedSignUpPayload)
-	tests.RunBatchTests(signUpFormatDTOMock)
+	signUpFormatDTOBatches := DTOsBatches.GetSignUpFormatDTOBatches(t, mockedSignUpPayload)
+	tests.RunBatchTests(signUpFormatDTOBatches)
 }
 
 func TestValidate(t *testing.T) {
-	signInValidateDTOMock := mocksDTOs.GetSignInValidateDTOMock(t, auth.SignInUserDTO{
+	signInValidateDTOBatches := DTOsBatches.GetSignInValidateDTOBatches(t, auth.SignInUserDTO{
 		Nick:     "foobar",
 		Password: "test123",
 		TrustIP:  true,
 	})
-	tests.RunBatchTests(signInValidateDTOMock)
+	tests.RunBatchTests(signInValidateDTOBatches)
 
-	signUpValidateDTOMock := mocksDTOs.GetSignUpValidateDTOMock(t, mockedSignUpPayload)
-	tests.RunBatchTests(signUpValidateDTOMock)
+	signUpValidateDTOBatches := DTOsBatches.GetSignUpValidateDTOBatches(t, mockedSignUpPayload)
+	tests.RunBatchTests(signUpValidateDTOBatches)
 
-	forgotPasswordValidateDTOMock := mocksDTOs.GetFormatPasswordValidateDTOMock(t, auth.ForgotPasswordDTO{
+	forgotPasswordValidateDTOBatches := DTOsBatches.GetFormatPasswordValidateDTOBatches(t, auth.ForgotPasswordDTO{
 		Email: "text-api@example.com",
 	})
-	tests.RunBatchTests(forgotPasswordValidateDTOMock)
+	tests.RunBatchTests(forgotPasswordValidateDTOBatches)
 
-	resetPasswordValidateDTOMock := mocksDTOs.GetResetPasswordValidateDTOMock(t, auth.ResetPasswordDTO{
+	resetPasswordValidateDTOBatches := DTOsBatches.GetResetPasswordValidateDTOBatches(t, auth.ResetPasswordDTO{
 		Code:                 "1bc23",
 		Password:             "123test",
 		LogoutFromAllDevices: true,
 	})
-	tests.RunBatchTests(resetPasswordValidateDTOMock)
+	tests.RunBatchTests(resetPasswordValidateDTOBatches)
 
-	blockUserValidateDTO := mocksDTOs.GetBlockUserValidateDTOMock(t, blocks.BlockUserDTO{})
+	blockUserValidateDTO := DTOsBatches.GetBlockUserValidateDTOBatches(t, blocks.BlockUserDTO{})
 	tests.RunBatchTests(blockUserValidateDTO)
 
-	replyQuestionValidateDTOMock := mocksDTOs.GetReplyQuestionValidateDTOMock(t, questions.ReplyQuestionDTO{})
-	tests.RunBatchTests(replyQuestionValidateDTOMock)
+	replyQuestionValidateDTOBatches := DTOsBatches.GetReplyQuestionValidateDTOBatches(t, questions.ReplyQuestionDTO{})
+	tests.RunBatchTests(replyQuestionValidateDTOBatches)
 
-	editReplyQuestionValidateDTOMock := mocksDTOs.GetEditReplyQuestionValidateDTOMock(t, questions.EditQuestionReplyDTO{})
-	tests.RunBatchTests(editReplyQuestionValidateDTOMock)
+	editReplyQuestionValidateDTOBatches := DTOsBatches.GetEditReplyQuestionValidateDTOBatches(t, questions.EditQuestionReplyDTO{})
+	tests.RunBatchTests(editReplyQuestionValidateDTOBatches)
 
-	createReplyQuestionValidateDTOMock := mocksDTOs.GetCreateQuestionValidateDTOMock(t, questions.CreateQuestionDTO{})
-	tests.RunBatchTests(createReplyQuestionValidateDTOMock)
+	createReplyQuestionValidateDTOBatches := DTOsBatches.GetCreateQuestionValidateDTOBatches(t, questions.CreateQuestionDTO{})
+	tests.RunBatchTests(createReplyQuestionValidateDTOBatches)
 
-	createReportValidateDTOMock := mocksDTOs.GetCreateReportValidateDTOMock(t, reports.CreateReportDTO{
+	createReportValidateDTOBatches := DTOsBatches.GetCreateReportValidateDTOBatches(t, reports.CreateReportDTO{
 		Reason: "spam",
 		Type:   "question",
 	})
-	tests.RunBatchTests(createReportValidateDTOMock)
+	tests.RunBatchTests(createReportValidateDTOBatches)
 
-	updateUserProfileValidateDTOMock := mocksDTOs.GetUpdateUserProfileValidateDTOMock(t, users.UpdateProfileDTO{
+	updateUserProfileValidateDTOBatches := DTOsBatches.GetUpdateUserProfileValidateDTOBatches(t, users.UpdateProfileDTO{
 		Email:  "api@example.com",
 		Nick:   "foobar",
 		Name:   "example",
 		Locale: "en-US",
 	})
-	tests.RunBatchTests(updateUserProfileValidateDTOMock)
+	tests.RunBatchTests(updateUserProfileValidateDTOBatches)
 }

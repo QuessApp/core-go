@@ -1,4 +1,4 @@
-package mocks
+package batches
 
 import (
 	"testing"
@@ -8,8 +8,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// GetCreateReportValidateDTOMock returns a slice of BatchTest for CreateReportDTO.
-func GetCreateReportValidateDTOMock(t *testing.T, createReportData reports.CreateReportDTO) []tests.BatchTest {
+// GetCreateReportValidateDTOBatches returns a slice of BatchTest for CreateReportDTO.
+func GetCreateReportValidateDTOBatches(t *testing.T, createReportData reports.CreateReportDTO) []tests.BatchTest {
 	createReportDataTest := []tests.BatchTest{
 		{
 			OnRun: func() {

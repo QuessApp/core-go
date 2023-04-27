@@ -1,4 +1,4 @@
-package mocks
+package batches
 
 import (
 	"testing"
@@ -8,8 +8,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// GetReplyQuestionValidateDTOMock returns a slice of BatchTest for ReplyQuestionDTO.
-func GetReplyQuestionValidateDTOMock(t *testing.T, replyQuestionData questions.ReplyQuestionDTO) []tests.BatchTest {
+// GetReplyQuestionValidateDTOBatches returns a slice of BatchTest for ReplyQuestionDTO.
+func GetReplyQuestionValidateDTOBatches(t *testing.T, replyQuestionData questions.ReplyQuestionDTO) []tests.BatchTest {
 	replyQuestionDataTest := []tests.BatchTest{
 		{
 			OnRun: func() {
@@ -27,8 +27,8 @@ func GetReplyQuestionValidateDTOMock(t *testing.T, replyQuestionData questions.R
 	return replyQuestionDataTest
 }
 
-// GetEditReplyQuestionValidateDTOMock returns a slice of BatchTest for EditQuestionReplyDTO.
-func GetEditReplyQuestionValidateDTOMock(t *testing.T, editReplyQuestionData questions.EditQuestionReplyDTO) []tests.BatchTest {
+// GetEditReplyQuestionValidateDTOBatches returns a slice of BatchTest for EditQuestionReplyDTO.
+func GetEditReplyQuestionValidateDTOBatches(t *testing.T, editReplyQuestionData questions.EditQuestionReplyDTO) []tests.BatchTest {
 	editReplyQuestionDataTest := []tests.BatchTest{
 		{
 			OnRun: func() {
@@ -49,8 +49,8 @@ func GetEditReplyQuestionValidateDTOMock(t *testing.T, editReplyQuestionData que
 	return editReplyQuestionDataTest
 }
 
-// GetCreateQuestionValidateDTOMock returns a slice of BatchTest for CreateQuestionDTO.
-func GetCreateQuestionValidateDTOMock(t *testing.T, createQuestionData questions.CreateQuestionDTO) []tests.BatchTest {
+// GetCreateQuestionValidateDTOBatches returns a slice of BatchTest for CreateQuestionDTO.
+func GetCreateQuestionValidateDTOBatches(t *testing.T, createQuestionData questions.CreateQuestionDTO) []tests.BatchTest {
 	createQuestionDataTest := []tests.BatchTest{
 		{
 			OnRun: func() {
