@@ -5,6 +5,7 @@ import (
 
 	"github.com/quessapp/core-go/internal/auth"
 	"github.com/quessapp/core-go/internal/blocks"
+	"github.com/quessapp/core-go/internal/questions"
 	"github.com/quessapp/core-go/pkg/tests"
 	mocksDTOs "github.com/quessapp/core-go/tests/mocks/dtos"
 )
@@ -47,4 +48,7 @@ func TestValidate(t *testing.T) {
 
 	blockUserValidateDTO := mocksDTOs.GetBlockUserValidateDTOMock(t, blocks.BlockUserDTO{})
 	tests.RunBatchTests(blockUserValidateDTO)
+
+	replyQuestionValidateDTOMock := mocksDTOs.GetReplyQuestionValidateDTOMock(t, questions.ReplyQuestionDTO{})
+	tests.RunBatchTests(replyQuestionValidateDTOMock)
 }
