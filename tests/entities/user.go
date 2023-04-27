@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// GetFormaUserDataBatches returns a slice of BatchTest for User.
+// GetFormaUserDataBatches returns a slice of BatchTest for User testing Format method.
 func GetFormaUserDataBatches(t *testing.T, userData *users.User) []tests.BatchTest {
 	return []tests.BatchTest{
 		{
@@ -59,6 +59,21 @@ func GetFormaUserDataBatches(t *testing.T, userData *users.User) []tests.BatchTe
 				userData.Email = " caio@api.com "
 				userData.Format()
 				assert.Equal(t, "caio@api.com", userData.Email)
+			},
+		},
+	}
+}
+
+// GetBasicUserDataBatches returns a slice of BatchTest for User testing GetBasicInfos method.
+func GetBasicUserDataBatches(t *testing.T, userData *users.User) []tests.BatchTest {
+	return []tests.BatchTest{
+		{
+			OnRun: func() {
+				userData.Locale = "en-US"
+				assert.NotNil(t, userData.GetBasicInfos().ID)
+				assert.NotNil(t, userData.GetBasicInfos().Name)
+				assert.NotNil(t, userData.GetBasicInfos().Nick)
+				assert.NotNil(t, userData.GetBasicInfos().AvatarURL)
 			},
 		},
 	}

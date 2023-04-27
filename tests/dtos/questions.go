@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// GetReplyQuestionValidateDTOBatches returns a slice of BatchTest for ReplyQuestionDTO.
+// GetReplyQuestionValidateDTOBatches returns a slice of BatchTest for ReplyQuestionDTO. testing Validate method
 func GetReplyQuestionValidateDTOBatches(t *testing.T, replyQuestionData questions.ReplyQuestionDTO) []tests.BatchTest {
 	return []tests.BatchTest{
 		{
@@ -25,7 +25,7 @@ func GetReplyQuestionValidateDTOBatches(t *testing.T, replyQuestionData question
 	}
 }
 
-// GetEditReplyQuestionValidateDTOBatches returns a slice of BatchTest for EditQuestionReplyDTO.
+// GetEditReplyQuestionValidateDTOBatches returns a slice of BatchTest for EditQuestionReplyDTO testing Validate method.
 func GetEditReplyQuestionValidateDTOBatches(t *testing.T, editReplyQuestionData questions.EditQuestionReplyDTO) []tests.BatchTest {
 	return []tests.BatchTest{
 		{
@@ -45,7 +45,7 @@ func GetEditReplyQuestionValidateDTOBatches(t *testing.T, editReplyQuestionData 
 	}
 }
 
-// GetCreateQuestionValidateDTOBatches returns a slice of BatchTest for CreateQuestionDTO.
+// GetCreateQuestionValidateDTOBatches returns a slice of BatchTest for CreateQuestionDTO testing Validate method.
 func GetCreateQuestionValidateDTOBatches(t *testing.T, createQuestionData questions.CreateQuestionDTO) []tests.BatchTest {
 	return []tests.BatchTest{
 		{

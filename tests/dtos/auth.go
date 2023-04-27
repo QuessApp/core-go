@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// GetSignUpFormatDTOBatches returns a slice of BatchTest for SignUpUserDTO.
+// GetSignUpFormatDTOBatches returns a slice of BatchTest for SignUpUserDTO testing Format method.
 func GetSignUpFormatDTOBatches(t *testing.T, signUpData auth.SignUpUserDTO) []tests.BatchTest {
 	return []tests.BatchTest{
 		{
@@ -50,7 +50,7 @@ func GetSignUpFormatDTOBatches(t *testing.T, signUpData auth.SignUpUserDTO) []te
 	}
 }
 
-// GetSignUpFormatDTOBatches returns a slice of BatchTest for SignUpUserDTO.
+// GetSignUpFormatDTOBatches returns a slice of BatchTest for SignUpUserDTO testing Validate method.
 func GetSignUpValidateDTOBatches(t *testing.T, signUpData auth.SignUpUserDTO) []tests.BatchTest {
 	return []tests.BatchTest{
 		{
@@ -126,7 +126,7 @@ func GetSignUpValidateDTOBatches(t *testing.T, signUpData auth.SignUpUserDTO) []
 	}
 }
 
-// GetSignInValidateDTOBatches returns a slice of BatchTest for SignInUserDTO.
+// GetSignInValidateDTOBatches returns a slice of BatchTest for SignInUserDTO testing Validate method.
 func GetSignInValidateDTOBatches(t *testing.T, signInData auth.SignInUserDTO) []tests.BatchTest {
 	return []tests.BatchTest{
 		{
@@ -156,7 +156,7 @@ func GetSignInValidateDTOBatches(t *testing.T, signInData auth.SignInUserDTO) []
 	}
 }
 
-// GetFormatPasswordValidateDTOBatches returns a slice of BatchTest for ForgotPasswordDTO.
+// GetFormatPasswordValidateDTOBatches returns a slice of BatchTest for ForgotPasswordDTO testing Validate method.
 func GetFormatPasswordValidateDTOBatches(t *testing.T, forgotPasswordData auth.ForgotPasswordDTO) []tests.BatchTest {
 	return []tests.BatchTest{
 		{
@@ -178,7 +178,7 @@ func GetFormatPasswordValidateDTOBatches(t *testing.T, forgotPasswordData auth.F
 	}
 }
 
-// GetResetPasswordValidateDTOBatches returns a slice of BatchTest for ResetPasswordDTO.
+// GetResetPasswordValidateDTOBatches returns a slice of BatchTest for ResetPasswordDTO testing Validate method.
 func GetResetPasswordValidateDTOBatches(t *testing.T, resetPasswordData auth.ResetPasswordDTO) []tests.BatchTest {
 	return []tests.BatchTest{
 		{

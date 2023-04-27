@@ -9,8 +9,8 @@ import (
 	toolkitEntities "github.com/quessapp/toolkit/entities"
 )
 
-// NewQuestion generates a fake question with generated fake fields values.
-func NewQuestion() *questions.Question {
+// NewQuestionMock generates a fake question with generated fake fields values.
+func NewQuestionMock() *questions.Question {
 	fake := faker.New()
 
 	return &questions.Question{

@@ -9,7 +9,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-// GetBlockUserValidateDTOBatches returns a slice of BatchTest for BlockUserDTO.
+// GetBlockUserValidateDTOBatches returns a slice of BatchTest for BlockUserDTO testing Validate method.
 func GetBlockUserValidateDTOBatches(t *testing.T, blockUserData blocks.BlockUserDTO) []tests.BatchTest {
 	return []tests.BatchTest{
 		{

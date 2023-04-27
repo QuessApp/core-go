@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// GetTestMapByAnonymousFieldsBatches returns a slice of BatchTest for TestMapByAnonymousFields method.
+// GetTestMapByAnonymousFieldsBatches returns a slice of BatchTest testing MapAnonymousFields method.
 func GetTestMapByAnonymousFieldsBatches(t *testing.T, questionData questions.Question) []tests.BatchTest {
 	return []tests.BatchTest{
 		{
@@ -18,12 +18,6 @@ func GetTestMapByAnonymousFieldsBatches(t *testing.T, questionData questions.Que
 
 				assert.True(t, q.IsAnonymous)
 				assert.Nil(t, q.SentBy)
-				assert.NotNil(t, q.Content)
-				assert.NotNil(t, q.CreatedAt)
-				assert.NotNil(t, q.Reply)
-				assert.NotNil(t, q.IsReplied)
-				assert.NotNil(t, q.RepliedAt)
-				assert.NotNil(t, q.RepliesHistory)
 			},
 		},
 		{

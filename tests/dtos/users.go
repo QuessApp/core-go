@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// GetUpdateUserProfileValidateDTOBatches returns a slice of BatchTest for UpdateProfileDTO.
+// GetUpdateUserProfileValidateDTOBatches returns a slice of BatchTest for UpdateProfileDTO testing Validate method.
 func GetUpdateUserProfileValidateDTOBatches(t *testing.T, updateProfileData users.UpdateProfileDTO) []tests.BatchTest {
 	return []tests.BatchTest{
 		{

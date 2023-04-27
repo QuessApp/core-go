@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// GetCreateReportValidateDTOBatches returns a slice of BatchTest for CreateReportDTO.
+// GetCreateReportValidateDTOBatches returns a slice of BatchTest for CreateReportDTO testing Validate method.
 func GetCreateReportValidateDTOBatches(t *testing.T, createReportData reports.CreateReportDTO) []tests.BatchTest {
 
 	return []tests.BatchTest{
