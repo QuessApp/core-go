@@ -17,7 +17,6 @@ func GetTestMapByAnonymousFieldsBatches(t *testing.T, questionData questions.Que
 				q := questionData.MapAnonymousFields()
 
 				assert.True(t, q.IsAnonymous)
-
 				assert.Nil(t, q.SentBy)
 				assert.NotNil(t, q.Content)
 				assert.NotNil(t, q.CreatedAt)
