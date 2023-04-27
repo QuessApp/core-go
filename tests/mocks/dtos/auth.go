@@ -157,6 +157,36 @@ func GetSignUpValidateDTOMock(t *testing.T, signUpData auth.SignUpUserDTO) []tes
 				assert.NoError(t, signUpData.Validate())
 			},
 		},
+		{
+			OnRun: func() {
+				signUpData.Locale = "pt-ES"
+				assert.EqualError(t, signUpData.Validate(), "locale_field_invalid.")
+			},
+		},
+		{
+			OnRun: func() {
+				signUpData.Locale = "en-ES"
+				assert.EqualError(t, signUpData.Validate(), "locale_field_invalid.")
+			},
+		},
+		{
+			OnRun: func() {
+				signUpData.Locale = "pt-US"
+				assert.EqualError(t, signUpData.Validate(), "locale_field_invalid.")
+			},
+		},
+		{
+			OnRun: func() {
+				signUpData.Locale = "pt-BR"
+				assert.NoError(t, signUpData.Validate())
+			},
+		},
+		{
+			OnRun: func() {
+				signUpData.Locale = "en-US"
+				assert.NoError(t, signUpData.Validate())
+			},
+		},
 	}
 
 	return signUpDataTest
