@@ -1,4 +1,4 @@
-package mocks
+package batches
 
 import (
 	"testing"
@@ -9,8 +9,8 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-// GetBlockUserValidateDTOMock returns a slice of BatchTest for BlockUserDTO.
-func GetBlockUserValidateDTOMock(t *testing.T, blockUserData blocks.BlockUserDTO) []tests.BatchTest {
+// GetBlockUserValidateDTOBatches returns a slice of BatchTest for BlockUserDTO.
+func GetBlockUserValidateDTOBatches(t *testing.T, blockUserData blocks.BlockUserDTO) []tests.BatchTest {
 	blockUserDataTest := []tests.BatchTest{
 		{
 			OnRun: func() {

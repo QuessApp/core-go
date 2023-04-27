@@ -1,4 +1,4 @@
-package mocks
+package batches
 
 import (
 	"fmt"
@@ -9,8 +9,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// GetSignUpFormatDTOMock returns a slice of BatchTest for SignUpUserDTO.
-func GetSignUpFormatDTOMock(t *testing.T, signUpData auth.SignUpUserDTO) []tests.BatchTest {
+// GetSignUpFormatDTOBatches returns a slice of BatchTest for SignUpUserDTO.
+func GetSignUpFormatDTOBatches(t *testing.T, signUpData auth.SignUpUserDTO) []tests.BatchTest {
 	signUpDataTest := []tests.BatchTest{
 		{
 			OnRun: func() {
@@ -52,8 +52,8 @@ func GetSignUpFormatDTOMock(t *testing.T, signUpData auth.SignUpUserDTO) []tests
 	return signUpDataTest
 }
 
-// GetSignUpFormatDTOMock returns a slice of BatchTest for SignUpUserDTO.
-func GetSignUpValidateDTOMock(t *testing.T, signUpData auth.SignUpUserDTO) []tests.BatchTest {
+// GetSignUpFormatDTOBatches returns a slice of BatchTest for SignUpUserDTO.
+func GetSignUpValidateDTOBatches(t *testing.T, signUpData auth.SignUpUserDTO) []tests.BatchTest {
 	signUpDataTest := []tests.BatchTest{
 		{
 			OnRun: func() {
@@ -130,8 +130,8 @@ func GetSignUpValidateDTOMock(t *testing.T, signUpData auth.SignUpUserDTO) []tes
 	return signUpDataTest
 }
 
-// GetSignInValidateDTOMock returns a slice of BatchTest for SignInUserDTO.
-func GetSignInValidateDTOMock(t *testing.T, signInData auth.SignInUserDTO) []tests.BatchTest {
+// GetSignInValidateDTOBatches returns a slice of BatchTest for SignInUserDTO.
+func GetSignInValidateDTOBatches(t *testing.T, signInData auth.SignInUserDTO) []tests.BatchTest {
 	signInDataTest := []tests.BatchTest{
 		{
 			OnRun: func() {
@@ -162,8 +162,8 @@ func GetSignInValidateDTOMock(t *testing.T, signInData auth.SignInUserDTO) []tes
 	return signInDataTest
 }
 
-// GetFormatPasswordValidateDTOMock returns a slice of BatchTest for ForgotPasswordDTO.
-func GetFormatPasswordValidateDTOMock(t *testing.T, forgotPasswordData auth.ForgotPasswordDTO) []tests.BatchTest {
+// GetFormatPasswordValidateDTOBatches returns a slice of BatchTest for ForgotPasswordDTO.
+func GetFormatPasswordValidateDTOBatches(t *testing.T, forgotPasswordData auth.ForgotPasswordDTO) []tests.BatchTest {
 	forgotPasswordDataTest := []tests.BatchTest{
 		{
 			OnRun: func() {
@@ -186,8 +186,8 @@ func GetFormatPasswordValidateDTOMock(t *testing.T, forgotPasswordData auth.Forg
 	return forgotPasswordDataTest
 }
 
-// GetResetPasswordValidateDTOMock returns a slice of BatchTest for ResetPasswordDTO.
-func GetResetPasswordValidateDTOMock(t *testing.T, resetPasswordData auth.ResetPasswordDTO) []tests.BatchTest {
+// GetResetPasswordValidateDTOBatches returns a slice of BatchTest for ResetPasswordDTO.
+func GetResetPasswordValidateDTOBatches(t *testing.T, resetPasswordData auth.ResetPasswordDTO) []tests.BatchTest {
 	forgotPasswordDataTest := []tests.BatchTest{
 		{
 			OnRun: func() {
