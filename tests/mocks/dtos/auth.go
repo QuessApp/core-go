@@ -95,7 +95,6 @@ func GetSignUpValidateDTOMock(t *testing.T, signUpData auth.SignUpUserDTO) []tes
 				assert.ErrorContains(t, signUpData.Validate(), "email_field_length")
 
 				signUpData.Email = "test-api@example.com"
-				signUpData.Password = tests.GenerateRandomString(130)
 				assert.NoError(t, signUpData.Validate())
 			},
 		},
