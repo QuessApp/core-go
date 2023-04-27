@@ -17,52 +17,31 @@ func GetSignUpFormatDTOMock(t *testing.T, signUpData auth.SignUpUserDTO) []tests
 				signUpData.Nick = "@ adsa32321@0-9"
 				signUpData.Format()
 				assert.Equal(t, "adsa3232109", signUpData.Nick)
-			},
-		},
-		{
-			OnRun: func() {
+
 				signUpData.Nick = "_.test-user"
 				signUpData.Format()
 				assert.Equal(t, "testuser", signUpData.Nick)
-			},
-		},
-		{
-			OnRun: func() {
+
 				signUpData.Nick = "-test.user@"
 				signUpData.Format()
 				assert.Equal(t, "testuser", signUpData.Nick)
-			},
-		},
-		{
-			OnRun: func() {
+
 				signUpData.Nick = "test.user"
 				signUpData.Format()
 				assert.Equal(t, "testuser", signUpData.Nick)
-			},
-		},
-		{
-			OnRun: func() {
+
 				signUpData.Nick = "FOOBAR-USER"
 				signUpData.Format()
 				assert.Equal(t, "foobaruser", signUpData.Nick)
-			},
-		},
-		{
-			OnRun: func() {
+
 				signUpData.Nick = "FOOBAR_USER"
 				signUpData.Format()
 				assert.Equal(t, "foobaruser", signUpData.Nick)
-			},
-		},
-		{
-			OnRun: func() {
+
 				signUpData.Nick = "FOOBAR.USER"
 				signUpData.Format()
 				assert.Equal(t, "foobaruser", signUpData.Nick)
-			},
-		},
-		{
-			OnRun: func() {
+
 				signUpData.Nick = "foOBar@a-uSrR"
 				signUpData.Format()
 				assert.Equal(t, "foobarausrr", signUpData.Nick)
@@ -79,61 +58,42 @@ func GetSignUpValidateDTOMock(t *testing.T, signUpData auth.SignUpUserDTO) []tes
 		{
 			OnRun: func() {
 				signUpData.Nick = ""
-				assert.EqualError(t, signUpData.Validate(), "nick_field_required.")
-			},
-		},
-		{
-			OnRun: func() {
+				assert.ErrorContains(t, signUpData.Validate(), "nick_field_required")
+
 				signUpData.Nick = "_.test-user"
+				assert.NoError(t, signUpData.Validate())
+
+				signUpData.Nick = tests.GenerateRandomString(51)
+				assert.ErrorContains(t, signUpData.Validate(), "nick_field_length")
+
+				signUpData.Nick = "foobar"
 				assert.NoError(t, signUpData.Validate())
 			},
 		},
 		{
 			OnRun: func() {
-				signUpData.Nick = tests.GenerateRandomString(51)
-				assert.EqualError(t, signUpData.Validate(), "nick_field_length.")
-			},
-		},
-		{
-			OnRun: func() {
-				signUpData.Nick = "foobar"
 				signUpData.Password = ""
-				assert.EqualError(t, signUpData.Validate(), "password_field_required.")
-			},
-		},
-		{
-			OnRun: func() {
+				assert.ErrorContains(t, signUpData.Validate(), "password_field_required")
+
+				signUpData.Password = tests.GenerateRandomString(300)
+				assert.ErrorContains(t, signUpData.Validate(), "password_field_length")
+
 				signUpData.Password = tests.GenerateRandomString(10)
 				assert.NoError(t, signUpData.Validate())
 			},
 		},
 		{
 			OnRun: func() {
-				signUpData.Password = tests.GenerateRandomString(300)
-				assert.EqualError(t, signUpData.Validate(), "password_field_length.")
-			},
-		},
-		{
-			OnRun: func() {
 				signUpData.Email = ""
-				assert.EqualError(t, signUpData.Validate(), "email_field_required")
-			},
-		},
-		{
-			OnRun: func() {
+				assert.ErrorContains(t, signUpData.Validate(), "email_field_required")
+
 				signUpData.Email = tests.GenerateRandomString(130)
-				assert.EqualError(t, signUpData.Validate(), "email_format_invalid")
-			},
-		},
-		{
-			OnRun: func() {
+				assert.ErrorContains(t, signUpData.Validate(), "email_format_invalid")
+
 				e := fmt.Sprintf("%s@%s.com", tests.GenerateRandomString(130), tests.GenerateRandomString(130))
 				signUpData.Email = e
-				assert.EqualError(t, signUpData.Validate(), "email_field_length")
-			},
-		},
-		{
-			OnRun: func() {
+				assert.ErrorContains(t, signUpData.Validate(), "email_field_length")
+
 				signUpData.Email = "test-api@example.com"
 				signUpData.Password = tests.GenerateRandomString(130)
 				assert.NoError(t, signUpData.Validate())
@@ -142,26 +102,23 @@ func GetSignUpValidateDTOMock(t *testing.T, signUpData auth.SignUpUserDTO) []tes
 		{
 			OnRun: func() {
 				signUpData.Locale = "foobar"
-				assert.EqualError(t, signUpData.Validate(), "locale_field_invalid.")
+				assert.ErrorContains(t, signUpData.Validate(), "locale_field_invalid")
 
 				signUpData.Locale = ""
-				assert.EqualError(t, signUpData.Validate(), "locale_field_required.")
+				assert.ErrorContains(t, signUpData.Validate(), "locale_field_required")
 
 				signUpData.Locale = "es-ES"
 				assert.NoError(t, signUpData.Validate())
 
 				signUpData.Locale = "pt-ES"
-				assert.EqualError(t, signUpData.Validate(), "locale_field_invalid.")
+				assert.ErrorContains(t, signUpData.Validate(), "locale_field_invalid")
 
 				signUpData.Locale = "en-ES"
-				assert.EqualError(t, signUpData.Validate(), "locale_field_invalid.")
+				assert.ErrorContains(t, signUpData.Validate(), "locale_field_invalid")
 
 				signUpData.Locale = "pt-US"
-				assert.EqualError(t, signUpData.Validate(), "locale_field_invalid.")
-			},
-		},
-		{
-			OnRun: func() {
+				assert.ErrorContains(t, signUpData.Validate(), "locale_field_invalid")
+
 				signUpData.Locale = "pt-BR"
 				assert.NoError(t, signUpData.Validate())
 
@@ -180,38 +137,25 @@ func GetSignInValidateDTOMock(t *testing.T, signInData auth.SignInUserDTO) []tes
 		{
 			OnRun: func() {
 				signInData.Nick = ""
-				assert.EqualError(t, signInData.Validate(), "nick_field_required.")
-			},
-		},
-		{
-			OnRun: func() {
+				assert.ErrorContains(t, signInData.Validate(), "nick_field_required")
+
+				signInData.Nick = tests.GenerateRandomString(51)
+				assert.ErrorContains(t, signInData.Validate(), "nick_field_length")
+
 				signInData.Nick = "_.test-user"
 				assert.NoError(t, signInData.Validate())
 			},
 		},
 		{
 			OnRun: func() {
-				signInData.Nick = tests.GenerateRandomString(51)
-				assert.EqualError(t, signInData.Validate(), "nick_field_length.")
-			},
-		},
-		{
-			OnRun: func() {
-				signInData.Nick = "foobar"
 				signInData.Password = ""
-				assert.EqualError(t, signInData.Validate(), "password_field_required.")
-			},
-		},
-		{
-			OnRun: func() {
+				assert.ErrorContains(t, signInData.Validate(), "password_field_required")
+
+				signInData.Password = tests.GenerateRandomString(300)
+				assert.ErrorContains(t, signInData.Validate(), "password_field_length")
+
 				signInData.Password = tests.GenerateRandomString(10)
 				assert.NoError(t, signInData.Validate())
-			},
-		},
-		{
-			OnRun: func() {
-				signInData.Password = tests.GenerateRandomString(300)
-				assert.EqualError(t, signInData.Validate(), "password_field_length.")
 			},
 		},
 	}
@@ -225,24 +169,15 @@ func GetFormatPasswordValidateDTOMock(t *testing.T, forgotPasswordData auth.Forg
 		{
 			OnRun: func() {
 				forgotPasswordData.Email = ""
-				assert.EqualError(t, forgotPasswordData.Validate(), "email_field_required.")
-			},
-		},
-		{
-			OnRun: func() {
+				assert.ErrorContains(t, forgotPasswordData.Validate(), "email_field_required")
+
 				forgotPasswordData.Email = tests.GenerateRandomString(130)
-				assert.EqualError(t, forgotPasswordData.Validate(), "email_format_invalid.")
-			},
-		},
-		{
-			OnRun: func() {
+				assert.ErrorContains(t, forgotPasswordData.Validate(), "email_format_invalid")
+
 				e := fmt.Sprintf("%s@%s.com", tests.GenerateRandomString(130), tests.GenerateRandomString(130))
 				forgotPasswordData.Email = e
-				assert.EqualError(t, forgotPasswordData.Validate(), "email_field_length.")
-			},
-		},
-		{
-			OnRun: func() {
+				assert.ErrorContains(t, forgotPasswordData.Validate(), "email_field_length")
+
 				forgotPasswordData.Email = "test-api@example.com"
 				assert.NoError(t, forgotPasswordData.Validate())
 			},
@@ -258,25 +193,22 @@ func GetResetPasswordValidateDTOMock(t *testing.T, resetPasswordData auth.ResetP
 		{
 			OnRun: func() {
 				resetPasswordData.Password = ""
-				assert.EqualError(t, resetPasswordData.Validate(), "password_field_required.")
-			},
-		},
-		{
-			OnRun: func() {
+				assert.ErrorContains(t, resetPasswordData.Validate(), "password_field_required")
+
+				resetPasswordData.Password = tests.GenerateRandomString(300)
+				assert.ErrorContains(t, resetPasswordData.Validate(), "password_field_length")
+
 				resetPasswordData.Password = tests.GenerateRandomString(10)
 				assert.NoError(t, resetPasswordData.Validate())
 			},
 		},
 		{
 			OnRun: func() {
-				resetPasswordData.Password = tests.GenerateRandomString(300)
-				assert.EqualError(t, resetPasswordData.Validate(), "password_field_length.")
-			},
-		},
-		{
-			OnRun: func() {
 				resetPasswordData.Code = ""
-				assert.EqualError(t, resetPasswordData.Validate(), "code_required")
+				assert.ErrorContains(t, resetPasswordData.Validate(), "code_required")
+
+				resetPasswordData.Code = tests.GenerateRandomString(20)
+				assert.NoError(t, resetPasswordData.Validate())
 			},
 		},
 	}

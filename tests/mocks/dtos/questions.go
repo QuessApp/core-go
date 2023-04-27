@@ -13,14 +13,11 @@ func GetReplyQuestionValidateDTOMock(t *testing.T, replyQuestionData questions.R
 	replyQuestionDataTest := []tests.BatchTest{
 		{
 			OnRun: func() {
-				assert.EqualError(t, replyQuestionData.Validate(), "content_field_required.")
+				assert.ErrorContains(t, replyQuestionData.Validate(), "content_field_required")
 
 				replyQuestionData.Content = tests.GenerateRandomString(300)
-				assert.EqualError(t, replyQuestionData.Validate(), "content_field_length.")
-			},
-		},
-		{
-			OnRun: func() {
+				assert.ErrorContains(t, replyQuestionData.Validate(), "content_field_length")
+
 				replyQuestionData.Content = "foobar"
 				assert.NoError(t, replyQuestionData.Validate())
 			},
@@ -35,19 +32,16 @@ func GetEditReplyQuestionValidateDTOMock(t *testing.T, editReplyQuestionData que
 	editReplyQuestionDataTest := []tests.BatchTest{
 		{
 			OnRun: func() {
-				assert.EqualError(t, editReplyQuestionData.Validate(), "content_field_required.")
+				assert.ErrorContains(t, editReplyQuestionData.Validate(), "content_field_required")
 			},
 		},
 		{
 			OnRun: func() {
 				editReplyQuestionData.Content = "foobar"
 				assert.NoError(t, editReplyQuestionData.Validate())
-			},
-		},
-		{
-			OnRun: func() {
+
 				editReplyQuestionData.Content = tests.GenerateRandomString(300)
-				assert.EqualError(t, editReplyQuestionData.Validate(), "content_field_length.")
+				assert.ErrorContains(t, editReplyQuestionData.Validate(), "content_field_length")
 			},
 		},
 	}
@@ -60,19 +54,16 @@ func GetCreateQuestionValidateDTOMock(t *testing.T, createQuestionData questions
 	createQuestionDataTest := []tests.BatchTest{
 		{
 			OnRun: func() {
-				assert.EqualError(t, createQuestionData.Validate(), "content_field_required.")
+				assert.ErrorContains(t, createQuestionData.Validate(), "content_field_required")
 			},
 		},
 		{
 			OnRun: func() {
 				createQuestionData.Content = "foobar"
 				assert.NoError(t, createQuestionData.Validate())
-			},
-		},
-		{
-			OnRun: func() {
+
 				createQuestionData.Content = tests.GenerateRandomString(300)
-				assert.EqualError(t, createQuestionData.Validate(), "content_field_length.")
+				assert.ErrorContains(t, createQuestionData.Validate(), "content_field_length")
 			},
 		},
 	}

@@ -7,6 +7,7 @@ import (
 	"github.com/quessapp/core-go/internal/blocks"
 	"github.com/quessapp/core-go/internal/questions"
 	"github.com/quessapp/core-go/internal/reports"
+	"github.com/quessapp/core-go/internal/users"
 	"github.com/quessapp/core-go/pkg/tests"
 	mocksDTOs "github.com/quessapp/core-go/tests/mocks/dtos"
 )
@@ -64,4 +65,12 @@ func TestValidate(t *testing.T) {
 		Type:   "question",
 	})
 	tests.RunBatchTests(createReportValidateDTOMock)
+
+	updateUserProfileValidateDTOMock := mocksDTOs.GetUpdateUserProfileValidateDTOMock(t, users.UpdateProfileDTO{
+		Email:  "api@example.com",
+		Nick:   "foobar",
+		Name:   "example",
+		Locale: "en-US",
+	})
+	tests.RunBatchTests(updateUserProfileValidateDTOMock)
 }
