@@ -57,3 +57,28 @@ func GetEditReplyQuestionValidateDTOMock(t *testing.T, editReplyQuestionData que
 
 	return editReplyQuestionDataTest
 }
+
+// GetCreateQuestionValidateDTOMock returns a slice of BatchTest for CreateQuestionDTO.
+func GetCreateQuestionValidateDTOMock(t *testing.T, createQuestionData questions.CreateQuestionDTO) []tests.BatchTest {
+	createQuestionDataTest := []tests.BatchTest{
+		{
+			OnRun: func() {
+				assert.EqualError(t, createQuestionData.Validate(), "content_field_required.")
+			},
+		},
+		{
+			OnRun: func() {
+				createQuestionData.Content = "foobar"
+				assert.NoError(t, createQuestionData.Validate())
+			},
+		},
+		{
+			OnRun: func() {
+				createQuestionData.Content = tests.GenerateRandomString(300)
+				assert.EqualError(t, createQuestionData.Validate(), "content_field_length.")
+			},
+		},
+	}
+
+	return createQuestionDataTest
+}
