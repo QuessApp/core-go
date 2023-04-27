@@ -51,4 +51,7 @@ func TestValidate(t *testing.T) {
 
 	replyQuestionValidateDTOMock := mocksDTOs.GetReplyQuestionValidateDTOMock(t, questions.ReplyQuestionDTO{})
 	tests.RunBatchTests(replyQuestionValidateDTOMock)
+
+	editReplyQuestionValidateDTOMock := mocksDTOs.GetEditReplyQuestionValidateDTOMock(t, questions.EditQuestionReplyDTO{})
+	tests.RunBatchTests(editReplyQuestionValidateDTOMock)
 }
