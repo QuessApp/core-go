@@ -14,18 +14,15 @@ func GetReplyQuestionValidateDTOMock(t *testing.T, replyQuestionData questions.R
 		{
 			OnRun: func() {
 				assert.EqualError(t, replyQuestionData.Validate(), "content_field_required.")
+
+				replyQuestionData.Content = tests.GenerateRandomString(300)
+				assert.EqualError(t, replyQuestionData.Validate(), "content_field_length.")
 			},
 		},
 		{
 			OnRun: func() {
 				replyQuestionData.Content = "foobar"
 				assert.NoError(t, replyQuestionData.Validate())
-			},
-		},
-		{
-			OnRun: func() {
-				replyQuestionData.Content = tests.GenerateRandomString(300)
-				assert.EqualError(t, replyQuestionData.Validate(), "content_field_length.")
 			},
 		},
 	}
