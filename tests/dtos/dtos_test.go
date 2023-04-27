@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/quessapp/core-go/internal/auth"
+	"github.com/quessapp/core-go/internal/blocks"
 	"github.com/quessapp/core-go/pkg/tests"
 	mocksDTOs "github.com/quessapp/core-go/tests/mocks/dtos"
 )
@@ -43,4 +44,7 @@ func TestValidate(t *testing.T) {
 		LogoutFromAllDevices: true,
 	})
 	tests.RunBatchTests(resetPasswordValidateDTOMock)
+
+	blockUserValidateDTO := mocksDTOs.GetBlockUserValidateDTOMock(t, blocks.BlockUserDTO{})
+	tests.RunBatchTests(blockUserValidateDTO)
 }
