@@ -1,6 +1,8 @@
 package healthcheck
 
 import (
+	"log"
+
 	"github.com/quessapp/core-go/configs"
 	"github.com/quessapp/core-go/internal/auth"
 	"github.com/quessapp/core-go/internal/questions"
@@ -28,6 +30,7 @@ func Run(handlerCtx *configs.HandlersCtx, authRepository *auth.AuthRepository, q
 	})
 
 	if err != nil {
+		log.Fatalf("Error when creating user %s for health check: %s \n", firstUser.ID, err)
 		return err
 	}
 
@@ -40,6 +43,7 @@ func Run(handlerCtx *configs.HandlersCtx, authRepository *auth.AuthRepository, q
 	})
 
 	if err != nil {
+		log.Fatalf("Error when creating user %s for health check: %s \n", secondUser.ID, err)
 		return err
 	}
 
@@ -51,6 +55,7 @@ func Run(handlerCtx *configs.HandlersCtx, authRepository *auth.AuthRepository, q
 		SentBy:      firstUser.ID,
 		IsAnonymous: false,
 	}); err != nil {
+		log.Fatalf("Error when creating question for health check: %s \n", err)
 		return err
 	}
 
@@ -61,20 +66,24 @@ func Run(handlerCtx *configs.HandlersCtx, authRepository *auth.AuthRepository, q
 	q, err := questionsRepository.GetAll(&page, &sort, &filter, firstUser.ID)
 
 	if err != nil {
+		log.Fatalf("Error when listing questions created by user %s for health check: %s \n", firstUser.ID, err)
 		return err
 	}
 
 	questions := *q.Questions
 
 	if err := questionsRepository.Delete(questions[0].ID); err != nil {
+		log.Fatalf("Error when deleting question %s for health check: %s \n", questions[0].ID, err)
 		return err
 	}
 
 	if err := usersRepository.Delete(firstUser.ID); err != nil {
+		log.Fatalf("Error when deleting user %s for health check: %s \n", firstUser.ID, err)
 		return err
 	}
 
 	if err := usersRepository.Delete(secondUser.ID); err != nil {
+		log.Fatalf("Error when deleting user %s for health check: %s \n", secondUser.ID, err)
 		return err
 	}
 
