@@ -14,7 +14,7 @@ func TestMapAnonymousFields(t *testing.T) {
 }
 
 func TestFormat(t *testing.T) {
-	formatUserDataBatches := GetFormaUserDataBatches(t, &users.User{
+	formatUserDataBatches := GetFormatUserDataBatches(t, &users.User{
 		Nick:  "test",
 		Email: "",
 	})

@@ -8,8 +8,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// GetFormaUserDataBatches returns a slice of BatchTest for User testing Format method.
-func GetFormaUserDataBatches(t *testing.T, userData *users.User) []tests.BatchTest {
+// GetFormatUserDataBatches returns a slice of BatchTest for User testing Format method.
+func GetFormatUserDataBatches(t *testing.T, userData *users.User) []tests.BatchTest {
 	return []tests.BatchTest{
 		{
 			OnRun: func() {
