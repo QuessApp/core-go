@@ -262,3 +262,14 @@ func (u *UsersRepository) UpdateProfile(userID toolkitEntities.ID, payload *Upda
 
 	return err
 }
+
+// Delete takes a user ID and deletes the corresponding user document from the database.
+func (u *UsersRepository) Delete(userID toolkitEntities.ID) error {
+	coll := u.db.Collection(collections.USERS)
+
+	filter := bson.D{{Key: "_id", Value: userID}}
+
+	_, err := coll.DeleteOne(context.Background(), filter)
+
+	return err
+}
