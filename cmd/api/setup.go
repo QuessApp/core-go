@@ -10,6 +10,7 @@ import (
 	"github.com/quessapp/core-go/docs"
 	"github.com/quessapp/core-go/internal/auth"
 	"github.com/quessapp/core-go/internal/blocks"
+	healthcheck "github.com/quessapp/core-go/internal/health-check"
 	"github.com/quessapp/core-go/internal/middlewares"
 	"github.com/quessapp/core-go/internal/questions"
 	"github.com/quessapp/core-go/internal/queues"
@@ -108,6 +109,7 @@ func initRoutes(appCtx *configs.AppCtx, authRepository *auth.AuthRepository, use
 	questions.LoadRoutes(appCtx, usersRepository, questionsRepository, blocksRepository)
 	blocks.LoadRoutes(appCtx, usersRepository, blocksRepository)
 	users.LoadRoutes(appCtx, usersRepository)
+	healthcheck.LoadRoutes(appCtx, authRepository, questionsRepository, usersRepository)
 	settings.LoadRoutes(appCtx, usersRepository)
 	reports.LoadRoutes(appCtx, questionsRepository, usersRepository, reportsRepository)
 	docs.LoadRoutes(appCtx)
