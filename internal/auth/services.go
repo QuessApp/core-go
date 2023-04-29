@@ -5,7 +5,7 @@ import (
 
 	"github.com/quessapp/core-go/configs"
 	"github.com/quessapp/core-go/internal/queues/emails"
-	trustedips "github.com/quessapp/core-go/internal/queues/trusted-ips"
+	trustedIPs "github.com/quessapp/core-go/internal/queues/trusted-ips"
 	"github.com/quessapp/core-go/internal/users"
 	toolkitEntities "github.com/quessapp/toolkit/entities"
 
@@ -95,7 +95,7 @@ func SignIn(handlerCtx *configs.HandlersCtx, payload *SignInUserDTO, authReposit
 
 	if !authRepository.CheckIfTrustedIPExists(u.ID, ip) {
 		log.Printf("IP %s is not trusted \n", ip)
-		trustedips.SendIPToQueue(handlerCtx.Cfg, handlerCtx.MessageQueueCh, handlerCtx.TrustedIPsQueue, ip, u.Email)
+		trustedIPs.SendIPToQueue(handlerCtx.Cfg, handlerCtx.MessageQueueCh, handlerCtx.TrustedIPsQueue, ip, u.Email)
 	}
 
 	if err := users.UserExists(u); err != nil {
@@ -170,13 +170,7 @@ func RefreshToken(handlerCtx *configs.HandlersCtx, authenticatedUserID toolkitEn
 // The function first deletes the token from the database using the AuthRepository's DeleteRefreshToken function.
 // If any error occurs, the function returns the error. Otherwise, it returns nil.
 func Logout(handlerCtx *configs.HandlersCtx, authenticatedUserID toolkitEntities.ID, token string, authRepository *AuthRepository) error {
-	err := authRepository.DeleteRefreshToken(token)
-
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return authRepository.DeleteRefreshToken(token)
 }
 
 // ForgotPassword function handles the password reset process.
@@ -199,9 +193,7 @@ func ForgotPassword(handlerCtx *configs.HandlersCtx, payload ForgotPasswordDTO, 
 	}
 
 	tokenType := "Code"
-	err := authRepository.DeleteAllUserTokens(u.ID, &tokenType)
-
-	if err != nil {
+	if err := authRepository.DeleteAllUserTokens(u.ID, &tokenType); err != nil {
 		return err
 	}
 

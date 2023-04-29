@@ -10,13 +10,14 @@ import (
 	"github.com/quessapp/core-go/docs"
 	"github.com/quessapp/core-go/internal/auth"
 	"github.com/quessapp/core-go/internal/blocks"
-	healthcheck "github.com/quessapp/core-go/internal/health-check"
 	"github.com/quessapp/core-go/internal/middlewares"
 	"github.com/quessapp/core-go/internal/questions"
 	"github.com/quessapp/core-go/internal/queues"
 	"github.com/quessapp/core-go/internal/reports"
 	"github.com/quessapp/core-go/internal/settings"
 	"github.com/quessapp/core-go/internal/users"
+
+	healthcheck "github.com/quessapp/core-go/internal/health-check"
 
 	"github.com/quessapp/toolkit/database"
 	"github.com/quessapp/toolkit/queue"
