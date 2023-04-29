@@ -46,7 +46,7 @@ func CreateReportHandler(handlerCtx *configs.HandlersCtx, questionsRepository *q
 // It then calls the FindReportByID function to retrieve the report with the given ID, and checks if the user is authorized to view the report.
 // Finally, it returns the report data in a successful response or an error response in case of failures.
 func FindReportByIDHandler(handlerCtx *configs.HandlersCtx, reportsRepository *ReportsRepository, usersRepository *users.UsersRepository, questionsRepository *questions.QuestionsRepository) error {
-	ID, err := toolkitEntities.ParseID(handlerCtx.C.Params("id"))
+	id, err := toolkitEntities.ParseID(handlerCtx.C.Params("id"))
 
 	if err != nil {
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, i18n.Translate(handlerCtx, err.Error()))
@@ -54,7 +54,7 @@ func FindReportByIDHandler(handlerCtx *configs.HandlersCtx, reportsRepository *R
 
 	authenticatedUserID := users.GetUserByToken(handlerCtx).ID
 
-	r, err := FindReportByID(handlerCtx, ID, authenticatedUserID, reportsRepository, usersRepository, questionsRepository)
+	r, err := FindReportByID(handlerCtx, id, authenticatedUserID, reportsRepository, usersRepository, questionsRepository)
 
 	if err != nil {
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, i18n.Translate(handlerCtx, err.Error()))
@@ -72,7 +72,7 @@ func FindReportByIDHandler(handlerCtx *configs.HandlersCtx, reportsRepository *R
 // If the DeleteReport function returns an error, it returns a bad request response.
 // Otherwise, it returns a successful response with status code 201.
 func DeleteReportHandler(handlerCtx *configs.HandlersCtx, reportsRepository *ReportsRepository) error {
-	ID, err := toolkitEntities.ParseID(handlerCtx.C.Params("id"))
+	id, err := toolkitEntities.ParseID(handlerCtx.C.Params("id"))
 
 	if err != nil {
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, i18n.Translate(handlerCtx, err.Error()))
@@ -80,7 +80,7 @@ func DeleteReportHandler(handlerCtx *configs.HandlersCtx, reportsRepository *Rep
 
 	authenticatedUserID := users.GetUserByToken(handlerCtx).ID
 
-	if err := DeleteReport(handlerCtx, ID, authenticatedUserID, reportsRepository); err != nil {
+	if err := DeleteReport(handlerCtx, id, authenticatedUserID, reportsRepository); err != nil {
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, i18n.Translate(handlerCtx, err.Error()))
 	}
 

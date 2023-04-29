@@ -40,9 +40,7 @@ func UnblockUser(userID toolkitEntities.ID, usersRepository *users.UsersReposito
 		return err
 	}
 
-	err := blocksRepository.UnblockUser(userID)
-
-	if err != nil {
+	if err := blocksRepository.UnblockUser(userID); err != nil {
 		return err
 	}
 

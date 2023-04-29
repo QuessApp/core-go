@@ -14,14 +14,14 @@ import (
 // It takes in a HandlersCtx, a UsersRepository, and a BlocksRepository, and returns an error if there is one.
 func BlockUserHandler(handlerCtx *configs.HandlersCtx, usersRepository *users.UsersRepository, blocksRepository *BlocksRepository) error {
 	payload := BlockUserDTO{}
-	ID, err := toolkitEntities.ParseID(handlerCtx.C.Params("id"))
+	id, err := toolkitEntities.ParseID(handlerCtx.C.Params("id"))
 
 	if err != nil {
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, i18n.Translate(handlerCtx, err.Error()))
 	}
 
 	payload.BlockedBy = users.GetUserByToken(handlerCtx).ID
-	payload.UserToBlock = ID
+	payload.UserToBlock = id
 
 	if err := BlockUser(&payload, usersRepository, blocksRepository); err != nil {
 		return responses.ParseUnsuccesfull(handlerCtx.C, http.StatusBadRequest, i18n.Translate(handlerCtx, err.Error()))
