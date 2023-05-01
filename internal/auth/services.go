@@ -95,7 +95,7 @@ func SignIn(handlerCtx *configs.HandlersCtx, payload *SignInUserDTO, authReposit
 
 	if !authRepository.CheckIfTrustedIPExists(u.ID, ip) {
 		log.Printf("IP %s is not trusted \n", ip)
-		trustedIPs.SendIPToQueue(handlerCtx.Cfg, handlerCtx.MessageQueueCh, handlerCtx.TrustedIPsQueue, ip, u.Email)
+		trustedIPs.SendIPToQueue(handlerCtx.Cfg, handlerCtx.MessageQueueCh, handlerCtx.TrustedIPsQueue, u.Locale, ip, u.Email)
 	}
 
 	if err := users.UserExists(u); err != nil {
