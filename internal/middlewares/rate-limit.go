@@ -7,13 +7,14 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/limiter"
 
+	"github.com/quessapp/core-go/configs"
+	"github.com/quessapp/core-go/pkg/i18n"
 	"github.com/quessapp/toolkit/responses"
 )
 
 const (
 	MAX_REQUESTS             = 100
 	TIME_TO_RESET_IN_SECONDS = 30
-	ERROR_MESSAGE            = "Você fez muitas requisições em pouco tempo. Por favor, aguarde alguns segundos."
 )
 
 // ApplyRateLimitMiddleware applies rate limiter middleware for all routes.
@@ -25,7 +26,9 @@ func ApplyRateLimitMiddleware(app *fiber.App) {
 		},
 		Expiration: TIME_TO_RESET_IN_SECONDS * time.Second,
 		LimitReached: func(c *fiber.Ctx) error {
-			return responses.ParseUnsuccesfull(c, fiber.StatusTooManyRequests, ERROR_MESSAGE)
+			handlerCtx := configs.HandlersCtx{C: c}
+
+			return responses.ParseUnsuccesfull(c, fiber.StatusTooManyRequests, i18n.Translate(&handlerCtx, "max_rate_limit"))
 		},
 	}))
 }

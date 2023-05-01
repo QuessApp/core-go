@@ -45,7 +45,7 @@ func GetAmericanEnglishTranslations() *map[string]string {
 		"type_field_required": "type field is required",
 		"type_field_invalid":  "type field has invalid value",
 
-		"user_not_found":           "user not found",
+		"user_not_found":           "user with provided information not found",
 		"user_to_block_required":   "user to block field is required",
 		"user_to_unblock_required": "user to unblock field is required",
 
@@ -100,5 +100,7 @@ func GetAmericanEnglishTranslations() *map[string]string {
 
 		"emails_unkown_login_attempt_subject": "Unkown login attempt",
 		"emails_unkown_login_attempt_body":    "We noticed that someone tried to login to your account, if you did not request this change, please contact us immediately. The location of the login attempt was: ",
+
+		"max_rate_limit": "you can't do this action because you reached the limit of requests, please try again later",
 	}
 }
