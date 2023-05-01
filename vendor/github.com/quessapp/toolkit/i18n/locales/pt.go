@@ -44,7 +44,7 @@ func GetBrazilianPortugueseTranslation() *map[string]string {
 		"type_field_required": "campo de tipo é obrigatório",
 		"type_field_invalid":  "campo de tipo possui valor inválido",
 
-		"user_not_found":           "usuário não encontrado",
+		"user_not_found":           "usuário com os dados informados não foi encontrado",
 		"user_to_block_required":   "campo de quem deve ser bloqueado é obrigatório",
 		"user_to_unblock_required": "campo de quem deve ser bloqueado é obrigatório",
 
@@ -99,5 +99,7 @@ func GetBrazilianPortugueseTranslation() *map[string]string {
 
 		"emails_unkown_login_attempt_subject": "Tentativa de login desconhecida",
 		"emails_unkown_login_attempt_body":    "Uma tentativa de login desconhecida foi detectada em sua conta. Se você não solicitou o login, entre em contato conosco imediatamente. A localização do dispositivo é: ",
+
+		"max_rate_limit": "você não pode realizar esta ação porque atingiu o limite de solicitações, tente novamente mais tarde",
 	}
 }

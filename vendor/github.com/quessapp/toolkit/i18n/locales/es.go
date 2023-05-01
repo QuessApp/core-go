@@ -45,7 +45,7 @@ func GetSpanishTranslations() *map[string]string {
 		"type_field_required": "campo de tipo es obligatorio",
 		"type_field_invalid":  "campo de tipo tiene valor inválido",
 
-		"user_not_found":           "usuario no encontrado",
+		"user_not_found":           "no se encontró el usuario con los datos dados",
 		"user_to_block_required":   "campo de usuario a bloquear es obligatorio",
 		"user_to_unblock_required": "campo de usuario a desbloquear es obligatorio",
 
@@ -100,5 +100,7 @@ func GetSpanishTranslations() *map[string]string {
 
 		"emails_unkown_login_attempt_subject": "Intento de inicio de sesión desconocido",
 		"emails_unkown_login_attempt_body":    "Notamos que alguien intentó iniciar sesión en su cuenta, si no solicitó este cambio, contáctenos de inmediato. La ubicación del intento de inicio de sesión fue: ",
+
+		"max_rate_limit": "no puede realizar esta acción porque alcanzó el límite de solicitudes, intente nuevamente más tarde",
 	}
 }
