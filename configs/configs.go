@@ -4,15 +4,15 @@ import (
 	"log"
 
 	"github.com/aws/aws-sdk-go/service/s3"
-	"github.com/eko/gocache/lib/v4/cache"
 	"github.com/gofiber/fiber/v2"
+	"github.com/redis/go-redis/v9"
 	"github.com/spf13/viper"
 	"github.com/streadway/amqp"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
 // Cache is a type alias for cache.Cache[string].
-type Cache = cache.Cache[string]
+type Cache = redis.Client
 
 // AppConfig holds the application configuration.
 type AppConfig struct {
