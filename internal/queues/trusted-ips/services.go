@@ -1,14 +1,19 @@
 package trustedips
 
 import (
-	"fmt"
+	"encoding/json"
 	"log"
-	"strings"
 
 	"github.com/quessapp/core-go/configs"
 	"github.com/quessapp/toolkit/queue"
 	"github.com/streadway/amqp"
 )
+
+type Message struct {
+	SendToEmail string
+	IP          string
+	Locale      string
+}
 
 // SendIPToQueue sends an IP address to an AMQP queue using the provided configuration, channel, queue, and destination queue name.
 // If the IP address is local (either "127.0.0.1" or "0.0.0.0"), the function returns without sending anything to the queue.
@@ -22,10 +27,19 @@ func SendIPToQueue(cfg *configs.Conf, ch *amqp.Channel, q *amqp.Queue, locale, i
 		return
 	}
 
-	normalizedIP := strings.ReplaceAll(ip, ".", "")
-	message := fmt.Sprintf("%s-%s-%s", sendToEmail, normalizedIP, locale)
+	msg := Message{
+		SendToEmail: sendToEmail,
+		IP:          ip,
+		Locale:      locale,
+	}
 
-	if err := queue.Publish(ch, q.Name, cfg.Crypto.Key, []byte(message)); err != nil {
+	m, err := json.Marshal(msg)
+
+	if err != nil {
+		log.Fatalf("fail to marshal message %s \n", err)
+	}
+
+	if err := queue.Publish(ch, q.Name, cfg.Crypto.Key, m); err != nil {
 		log.Fatalf("fail to send email to user %s \n", err)
 	}
 }
