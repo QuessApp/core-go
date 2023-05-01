@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/eko/gocache/lib/v4/cache"
 	"github.com/quessapp/core-go/configs"
 	"github.com/quessapp/core-go/docs"
 	"github.com/quessapp/core-go/internal/auth"
@@ -29,8 +28,6 @@ import (
 
 	"github.com/streadway/amqp"
 	"go.mongodb.org/mongo-driver/mongo"
-
-	redis_store "github.com/eko/gocache/store/redis/v4"
 )
 
 func loadConfig() *configs.Conf {
@@ -56,11 +53,11 @@ func initDatabase(cfg *configs.Conf) *mongo.Database {
 }
 
 func initCache(cfg *configs.Conf) *configs.Cache {
-	redisStore := redis_store.NewRedis(redis.NewClient(&redis.Options{
+	cache := redis.NewClient(&redis.Options{
 		Addr: cfg.Cache.URI,
-	}))
+	})
 
-	return cache.New[string](redisStore)
+	return cache
 }
 
 func initMessageBroker(cfg *configs.Conf) (*amqp.Connection, *amqp.Channel) {
