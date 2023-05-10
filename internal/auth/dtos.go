@@ -114,7 +114,6 @@ func (d ResetPasswordDTO) Validate() error {
 	validationResult := validation.ValidateStruct(&d,
 		validation.Field(&d.Password, validation.Required.Error(errors.PASSWORD_FIELD_REQUIRED), validation.Length(6, 200).Error(errors.PASSWORD_FIELD_LENGTH)),
 		validation.Field(&d.Code, validation.Required.Error(errors.CODE_REQUIRED)),
-		validation.Field(&d.LogoutFromAllDevices, validation.Required.Error(errors.LOGOUT_FROM_ALL_DEVICES_REQUIRED), validation.In(true, false).Error(errors.LOGOUT_FROM_ALL_DEVICES_INVALID)),
 	)
 
 	return validations.GetValidationError(validationResult)
