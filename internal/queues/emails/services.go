@@ -47,11 +47,12 @@ func SendEmailNewQuestionReceived(handlerCtx *configs.HandlersCtx, content strin
 // The email is encrypted and sent using an AMQP channel and queue.
 func SendEmailForgotPassword(handlerCtx *configs.HandlersCtx, code string, userToSendEmail *users.User) error {
 	translatedBody := i18n.Translate(handlerCtx, "emails_forgot_password_body")
+	url := fmt.Sprintf("%s?code=%s", handlerCtx.Cfg.App.FrontendURL, code)
 
 	email := toolkitEntities.Email{
 		To:      userToSendEmail.Email,
 		Subject: i18n.Translate(handlerCtx, "emails_forgot_password_subject"),
-		Body:    fmt.Sprintf(translatedBody, code),
+		Body:    fmt.Sprintf(translatedBody, url),
 	}
 
 	emailParsed, err := json.Marshal(email)
