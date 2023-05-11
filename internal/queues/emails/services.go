@@ -52,7 +52,7 @@ func SendEmailForgotPassword(handlerCtx *configs.HandlersCtx, code string, userT
 	email := toolkitEntities.Email{
 		To:      userToSendEmail.Email,
 		Subject: i18n.Translate(handlerCtx, "emails_forgot_password_subject"),
-		Body:    fmt.Sprintf(translatedBody, url),
+		Body:    translatedBody + url,
 	}
 
 	emailParsed, err := json.Marshal(email)
