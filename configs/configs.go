@@ -16,11 +16,12 @@ type Cache = redis.Client
 
 // AppConfig holds the application configuration.
 type AppConfig struct {
-	APPName    string `mapstructure:"APP_NAME"`
-	ServerPort string `mapstructure:"SERVER_PORT"`
-	ServerHost string `mapstructure:"SERVER_HOST"`
-	Env        string `mapstructure:"ENV"`
-	APIKey     string `mapstructure:"API_KEY"`
+	APPName     string `mapstructure:"APP_NAME"`
+	ServerPort  string `mapstructure:"SERVER_PORT"`
+	ServerHost  string `mapstructure:"SERVER_HOST"`
+	Env         string `mapstructure:"ENV"`
+	APIKey      string `mapstructure:"API_KEY"`
+	FrontendURL string `mapstructure:"FRONTEND_URL"`
 }
 
 // DBConfig holds the database configuration.
